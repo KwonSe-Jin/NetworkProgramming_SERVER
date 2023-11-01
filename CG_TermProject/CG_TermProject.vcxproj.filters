@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Animal">
+      <UniqueIdentifier>{e045b10b-318a-44e4-aaad-d6582b3f6b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Leg">
+      <UniqueIdentifier>{8b5bd487-d1f4-4e64-b2ce-b9c9de27b9c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Nose">
+      <UniqueIdentifier>{1788b5ff-fe68-425d-89e2-5fd3938f5447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Head">
+      <UniqueIdentifier>{decae9ff-3921-405f-8c20-a93688c8e67d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Body">
+      <UniqueIdentifier>{e9f2810d-49a3-42a2-958b-7044f1fa0bb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Arm">
+      <UniqueIdentifier>{7fb78a37-90bf-4c9e-847f-859e13d7e2a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Ear">
+      <UniqueIdentifier>{c9ecb07c-5b64-4ef1-8d67-568f77c640b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Eyes">
+      <UniqueIdentifier>{d7e02a56-a6c0-41dc-8b59-647d78ed81df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Beard">
+      <UniqueIdentifier>{bcf383dd-4b8d-4ef2-a82e-1e5b527bd38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Sword">
+      <UniqueIdentifier>{f1268a03-620a-44ef-a251-b72c3fb75499}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animal\Hero">
+      <UniqueIdentifier>{570d1643-aae0-44be-9419-af575d498441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{aa6d5cf5-c63d-45c5-9540-b46884dfd076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Attack">
+      <UniqueIdentifier>{dd271e27-39c5-4443-a34d-7509911f2e1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CatDogBear">
+      <UniqueIdentifier>{074d78df-5d43-4811-8faf-6b0d1687186c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Door">
+      <UniqueIdentifier>{3628a6e3-d9da-4629-85f7-cdac927613bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{445c4a88-2f56-4957-84dc-f9d5ceb859cd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Header.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Motion.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Leg.h">
+      <Filter>Animal\Leg</Filter>
+    </ClInclude>
+    <ClInclude Include="Animals.h">
+      <Filter>Animal</Filter>
+    </ClInclude>
+    <ClInclude Include="Head.h">
+      <Filter>Animal\Head</Filter>
+    </ClInclude>
+    <ClInclude Include="Arm.h">
+      <Filter>Animal\Arm</Filter>
+    </ClInclude>
+    <ClInclude Include="Body.h">
+      <Filter>Animal\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Nose.h">
+      <Filter>Animal\Nose</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardUP.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Eyes.h">
+      <Filter>Animal\Eyes</Filter>
+    </ClInclude>
+    <ClInclude Include="Ear.h">
+      <Filter>Animal\Ear</Filter>
+    </ClInclude>
+    <ClInclude Include="Beard.h">
+      <Filter>Animal\Beard</Filter>
+    </ClInclude>
+    <ClInclude Include="sword.h">
+      <Filter>Animal\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>Animal\Hero</Filter>
+    </ClInclude>
+    <ClInclude Include="Gun.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Grass.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="CatAttack.h">
+      <Filter>Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="DogAttack.h">
+      <Filter>Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="Cat.h">
+      <Filter>CatDogBear</Filter>
+    </ClInclude>
+    <ClInclude Include="Dog.h">
+      <Filter>CatDogBear</Filter>
+    </ClInclude>
+    <ClInclude Include="Bear.h">
+      <Filter>CatDogBear</Filter>
+    </ClInclude>
+    <ClInclude Include="BearAttack.h">
+      <Filter>Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="CastleObj.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Tunnel.h">
+      <Filter>Door</Filter>
+    </ClInclude>
+    <ClInclude Include="DoorL.h">
+      <Filter>Door</Filter>
+    </ClInclude>
+    <ClInclude Include="DoorR.h">
+      <Filter>Door</Filter>
+    </ClInclude>
+    <ClInclude Include="Crown.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Motion.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Draw.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Leg.cpp">
+      <Filter>Animal\Leg</Filter>
+    </ClCompile>
+    <ClCompile Include="Animals.cpp">
+      <Filter>Animal</Filter>
+    </ClCompile>
+    <ClCompile Include="Head.cpp">
+      <Filter>Animal\Head</Filter>
+    </ClCompile>
+    <ClCompile Include="Arm.cpp">
+      <Filter>Animal\Arm</Filter>
+    </ClCompile>
+    <ClCompile Include="Body.cpp">
+      <Filter>Animal\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Nose.cpp">
+      <Filter>Animal\Nose</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardUP.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Eyes.cpp">
+      <Filter>Animal\Eyes</Filter>
+    </ClCompile>
+    <ClCompile Include="Ear.cpp">
+      <Filter>Animal\Ear</Filter>
+    </ClCompile>
+    <ClCompile Include="Beard.cpp">
+      <Filter>Animal\Beard</Filter>
+    </ClCompile>
+    <ClCompile Include="Sword.cpp">
+      <Filter>Animal\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>Animal\Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="Gun.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Project.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Grass.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="CatAttack.cpp">
+      <Filter>Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="DogAttack.cpp">
+      <Filter>Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Cat.cpp">
+      <Filter>CatDogBear</Filter>
+    </ClCompile>
+    <ClCompile Include="Dog.cpp">
+      <Filter>CatDogBear</Filter>
+    </ClCompile>
+    <ClCompile Include="Bear.cpp">
+      <Filter>CatDogBear</Filter>
+    </ClCompile>
+    <ClCompile Include="BearAttack.cpp">
+      <Filter>Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="CastleObj.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tunnel.cpp">
+      <Filter>Door</Filter>
+    </ClCompile>
+    <ClCompile Include="DoorL.cpp">
+      <Filter>Door</Filter>
+    </ClCompile>
+    <ClCompile Include="DoorR.cpp">
+      <Filter>Door</Filter>
+    </ClCompile>
+    <ClCompile Include="Crown.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex.glsl">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="fragment.glsl">
+      <Filter>리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="최종총소리.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+  </ItemGroup>
+</Project>
