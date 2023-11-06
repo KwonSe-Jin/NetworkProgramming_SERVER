@@ -3,6 +3,11 @@
 GLvoid KeyboardUP(unsigned char key, int x, int y)
 {
 	switch (key) {
+	case 'P':
+	case 'p':
+		RestartPress = false;
+		break;
+
 	case 'w':
 	case 'W':
 		isW = false;
