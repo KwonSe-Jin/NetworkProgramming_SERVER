@@ -124,6 +124,11 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 		std::cout << "Received from the server: " << receivedData << std::endl;
 	}
 
+	start(argc, argv);
+}
+
+void start(int argc, char* argv[])
+{
 
 	//sndPlaySound(L"전투.wav", SND_ASYNC | SND_LOOP);
 	//--- 윈도우 생성하기
@@ -132,8 +137,8 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(width, height);
 	glutCreateWindow("Project");
-	
-	
+
+
 	glewExperimental = GL_TRUE;
 	glewInit();
 
