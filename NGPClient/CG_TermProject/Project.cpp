@@ -1,3 +1,4 @@
+#include "NetworkManager.h"
 #include "Header.h"
 #include "Draw.h"
 #include "Timer.h"
@@ -103,7 +104,25 @@ GLuint crossVAO, crossVBO;
 
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
-	
+	NetworkManager networkManager("127.0.0.1", 7777);
+
+	if (!networkManager.Connect()) {
+		std::cerr << "Failed to connect to the server" << std::endl;
+		return;
+	}
+
+	// Send data to the server
+	std::string dataToSend;
+	std::cin >> dataToSend;
+	if (!networkManager.SendData(dataToSend)) {
+		return;
+	}
+
+	// Receive data from the server
+	std::string receivedData;
+	if (networkManager.ReceiveData(receivedData)) {
+		std::cout << "Received from the server: " << receivedData << std::endl;
+	}
 	//sndPlaySound(L"전투.wav", SND_ASYNC | SND_LOOP);
 	//--- 윈도우 생성하기
 	glutInit(&argc, argv);
