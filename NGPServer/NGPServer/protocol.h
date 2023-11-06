@@ -1,5 +1,4 @@
 #pragma once
-
 constexpr int SC_PLAYER = 1;
 constexpr int SC_MONSTER = 2;
 constexpr int SC_BULLET = 3;
