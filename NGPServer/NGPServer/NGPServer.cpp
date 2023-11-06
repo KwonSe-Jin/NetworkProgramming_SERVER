@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include "protocol.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
 
@@ -41,9 +42,11 @@ void CalculateThread()
 
 void HandleClientSocket(SOCKET clientSocket)
 {
+	SC_PLAYER_PACKET p;
+
 	// 클라이언트에게 스레드 ID를 보내기 위한 작업
-	string threadIdStr = "Thread ID: " + to_string(LThreadId);
-	send(clientSocket, threadIdStr.c_str(), threadIdStr.length(), 0);
+	p.player_id = LThreadId;
+	send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 
 	// 나머지 클라이언트 소켓 처리 코드
 	while (true)
