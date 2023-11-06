@@ -123,6 +123,8 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	if (networkManager.ReceiveData(receivedData)) {
 		std::cout << "Received from the server: " << receivedData << std::endl;
 	}
+
+
 	//sndPlaySound(L"전투.wav", SND_ASYNC | SND_LOOP);
 	//--- 윈도우 생성하기
 	glutInit(&argc, argv);

@@ -32,6 +32,7 @@
     <ClInclude Include="DoorL.h" />
     <ClInclude Include="DoorR.h" />
     <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="protocol.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="CatAttack.h" />
     <ClInclude Include="Dog.h" />
