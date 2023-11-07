@@ -51,6 +51,20 @@ public:
         return true;
     }
 
+
+    bool SendData(const bool& ready) {
+        SC_PLAYER_PACKET p;
+
+        // 클라이언트에게 스레드 ID를 보내기 위한 작업
+        p.ready = ready;
+        int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
+        if (result == SOCKET_ERROR) {
+            std::cout << "Failed to send data" << std::endl;
+            return false;
+        }
+        return true;
+    }
+
     bool ReceiveData(std::string& receivedData) {
         char buffer[1024];
         int result = recv(clientSocket, buffer, sizeof(buffer), 0);

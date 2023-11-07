@@ -1,4 +1,3 @@
-#include "NetworkManager.h"
 #include "Header.h"
 #include "Draw.h"
 #include "Timer.h"
@@ -47,6 +46,8 @@ bool make_fragmentShaders();
 GLuint make_shaderProgram();
 void timer(int value);
 GLvoid Motion(int x, int y);
+void start(int argc, char* argv[]);
+
 GLvoid Mouse(int button, int state, int x, int y);
 //창 크기
 GLint width{ 1000 }, height{ 800 };
@@ -104,7 +105,7 @@ GLuint crossVAO, crossVBO;
 
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
-	NetworkManager networkManager("127.0.0.1", 7777);
+	
 
 	if (!networkManager.Connect()) {
 		std::cerr << "Failed to connect to the server" << std::endl;
@@ -124,7 +125,11 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 		std::cout << "Received from the server: " << receivedData << std::endl;
 	}
 
+
+
 	start(argc, argv);
+
+
 }
 
 void start(int argc, char* argv[])

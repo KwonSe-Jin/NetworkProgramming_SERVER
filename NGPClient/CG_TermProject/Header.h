@@ -1,9 +1,10 @@
 #pragma once
+#include "NetworkManager.h"
 
 #include <iostream>
-
 #include <Windows.h>
 #pragma comment(lib,"winmm.lib")
+
 
 #include <mmsystem.h>
 #include <Digitalv.h>
@@ -19,6 +20,7 @@
 #include "OpenGL/glew.h"
 #include "OpenGL/freeglut.h"
 #include "OpenGL/glm/ext.hpp"
+#include "protocol.h"
 
 #pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "freeglut.lib")
@@ -27,8 +29,6 @@ using namespace std;
 #define AnimCnt 6
 
 extern bool RestartPress;
-
-
 extern GLint width, height;
 
 extern GLuint aColor;
@@ -128,4 +128,4 @@ extern int catdead;
 extern int dogdead;
 extern int beardead;
 
-
+extern NetworkManager networkManager;
