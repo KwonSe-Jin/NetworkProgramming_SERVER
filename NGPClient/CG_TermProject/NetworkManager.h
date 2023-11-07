@@ -3,6 +3,8 @@
 #include <ws2tcpip.h>
 #include <iostream>
 #include <string>
+#include "protocol.h"
+
 
 #pragma comment(lib, "ws2_32.lib")
 class NetworkManager {
@@ -52,11 +54,11 @@ public:
     }
 
 
-    bool SendData(const bool& ready) {
-        SC_PLAYER_PACKET p;
-
+    bool SendPlayerData (CS_PLAYER_PACKET& p) {
         // 클라이언트에게 스레드 ID를 보내기 위한 작업
-        p.ready = ready;
+
+        int size = sizeof(p);
+        send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
         int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
         if (result == SOCKET_ERROR) {
             std::cout << "Failed to send data" << std::endl;
@@ -81,6 +83,39 @@ public:
         return false; // Connection closed
     }
 
+    bool PacketData() {
+        char buf[100];
+        int size;
+        recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), MSG_WAITALL);
+        std::cout << size << "바이트 받음" << std::endl;
+        recv(clientSocket, buf, size, MSG_WAITALL);
+
+        switch (buf[0]) {
+        case SC_PLAYER: {
+            SC_PLAYER_PACKET* p = reinterpret_cast<SC_PLAYER_PACKET*>(buf);
+            std::cout << "패킷 타입" << p->packet_type << std::endl;
+            std::cout << "좌표 데이터 x, y, z : " << p->Player_pos.x << ", " << p->Player_pos.y << ", " << p->Player_pos.z << std::endl;
+            
+        }
+                        break;
+        case SC_MONSTER: {
+            SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
+            std::cout << "패킷 타입" << p->packet_type << std::endl;
+            std::cout << "애니멀 타입 : " << p->animal_type << std::endl;
+        }
+                  break;
+        case SC_BULLET: {
+            SC_BULLET_PACKET* p = reinterpret_cast<SC_BULLET_PACKET*>(buf);
+            std::cout << "패킷 타입" << p->packet_type << std::endl;
+            std::cout << "좌표 데이터 x, y, z : " << p->dirx << ", " << p->diry << ", " << p->dirz << std::endl;
+        }
+                       break;
+        default:
+            std::cout << "잘못된 데이터" << std::endl;
+            break;
+        }
+        return false;
+    }
 private:
     std::string serverIP;
     int serverPort;

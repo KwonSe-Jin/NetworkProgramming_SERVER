@@ -113,6 +113,7 @@ DoorR Catright{ 1 };
 float CatEndPosX;
 float CatEndPosZ;
 
+
 NetworkManager networkManager("127.0.0.1", 7777);
 
 //random_device rd;
@@ -122,6 +123,7 @@ NetworkManager networkManager("127.0.0.1", 7777);
 
 GLvoid drawScene()
 {
+	networkManager.PacketData();
 
 	GLuint SelectColor = glGetUniformLocation(shaderID, "SelectColor");
 	glUniform1i(SelectColor, 1);

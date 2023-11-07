@@ -15,26 +15,59 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 		break;
 	case 'w':
 	case 'W':
+	{
+		CS_PLAYER_PACKET p;
+		p.Player_key.is_w = true;
+		if (!networkManager.SendPlayerData(p)) {
+			std::cout << "패킷보내기 실패" << std::endl;
+		}
 		isW = true;
 		break;
-
+	}
 	case 'a':
 	case 'A':
+	{
+		CS_PLAYER_PACKET p;
+		p.Player_key.is_a = true;
+		if (!networkManager.SendPlayerData(p)) {
+			std::cout << "패킷보내기 실패" << std::endl;
+		}
 		isA = true;
 		break;
+	}
 	case 's':
 	case 'S':
+	{
+		CS_PLAYER_PACKET p;
+		p.Player_key.is_s = true;
+		if (!networkManager.SendPlayerData(p)) {
+			std::cout << "패킷보내기 실패" << std::endl;
+		}
 		isS = true;
 		break;
+	}
 	case 'd':
 	case 'D':
+	{
+		CS_PLAYER_PACKET p;
+		p.Player_key.is_d = true;
+		if (!networkManager.SendPlayerData(p)) {
+			std::cout << "패킷보내기 실패" << std::endl;
+		}
 		isD = true;
 		break;
+	}
 	case' ':
+	{
+		CS_PLAYER_PACKET p;
+		p.Player_key.is_space = true;
+		if (!networkManager.SendPlayerData(p)) {
+			std::cout << "패킷보내기 실패" << std::endl;
+		}
 		isJump = true;
 		jumpUp = true;
 		break;
-
+	}
 	case 'q':
 	case 'Q':
 		glutLeaveMainLoop();
@@ -42,13 +75,19 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 
 	case 'r':
 	case 'R':
-		glutFullScreenToggle();
+	{
+		CS_PLAYER_PACKET p;
+		p.ready = true;
+		if (!networkManager.SendPlayerData(p)) {
+			std::cout << "패킷보내기 실패" << std::endl;
+		}
 		break;
+	}
 	case 'z':
 	case 'Z':
-		if (!networkManager.SendData("dataToSend")) {
-			return;
-		}
+	
+		glutFullScreenToggle();
+		break;
 
 	}
 	glutPostRedisplay();
