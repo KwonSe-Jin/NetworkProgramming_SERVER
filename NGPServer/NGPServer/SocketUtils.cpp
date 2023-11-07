@@ -28,6 +28,16 @@ bool SocketUtils::SetReuseAddress(SOCKET socket, bool flag)
 	return SetSockOpt(socket, SOL_SOCKET, SO_REUSEADDR, flag);
 }
 
+bool SocketUtils::SetRecvBufferSize(SOCKET socket, int size)
+{
+	return SetSockOpt(socket, SOL_SOCKET, SO_RCVBUF, size);
+}
+
+bool SocketUtils::SetSendBufferSize(SOCKET socket, int size)
+{
+	return SetSockOpt(socket, SOL_SOCKET, SO_SNDBUF, size);
+}
+
 bool SocketUtils::SetTcpNoDelay(SOCKET socket, bool flag)
 {
 	return SetSockOpt(socket, SOL_SOCKET, TCP_NODELAY, flag);
