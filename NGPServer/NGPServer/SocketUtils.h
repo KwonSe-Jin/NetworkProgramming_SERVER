@@ -9,6 +9,8 @@ public:
 	static void Clear();
 	static SOCKET CreateSocket();
 	static bool SetReuseAddress(SOCKET socket, bool flag);
+	static bool SetRecvBufferSize(SOCKET socket, int size);
+	static bool SetSendBufferSize(SOCKET socket, int size);
 	static bool SetTcpNoDelay(SOCKET socket, bool flag);
 	static bool Bind(SOCKET socket, SOCKADDR_IN netAddr);
 	static bool BindAnyAddress(SOCKET socket, unsigned short port);

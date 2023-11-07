@@ -3,6 +3,7 @@ bool isW, isA, isS, isD;
 bool isJump;
 
 extern bool RestartPress ;
+extern NetworkManager networkManager;
 
 
 GLvoid Keyboard(unsigned char key, int x, int y)
@@ -43,6 +44,12 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 	case 'R':
 		glutFullScreenToggle();
 		break;
+	case 'z':
+	case 'Z':
+		if (!networkManager.SendData("dataToSend")) {
+			return;
+		}
+
 	}
 	glutPostRedisplay();
 }

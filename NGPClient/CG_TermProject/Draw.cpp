@@ -90,8 +90,8 @@ vector<Particle*> particle{ new Particle,new Particle, new Particle, new Particl
 vector<Cat*> cats{ new Cat, new Cat, new Cat, new Cat, new Cat, new Cat };
 vector<Dog*> dogs{ new Dog, new Dog, new Dog, new Dog, new Dog, new Dog };
 Bear bear;
-Hero hero;
 
+Hero hero;
 
 World world{};
 Tree tree[400];
@@ -113,6 +113,7 @@ DoorR Catright{ 1 };
 float CatEndPosX;
 float CatEndPosZ;
 
+NetworkManager networkManager("127.0.0.1", 7777);
 
 //random_device rd;
 //default_random_engine dre(rd());
