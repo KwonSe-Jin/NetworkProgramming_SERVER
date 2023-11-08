@@ -94,7 +94,7 @@ void HandleClientSocket(SOCKET clientSocket)
 		//cout << "Player_key.dirx : " << p->Player_key.dirx << endl;
 		//cout << "Player_key.diry : " << p->Player_key.diry << endl;
 		//cout << "Player_key.dirz : " << p->Player_key.dirz << endl;
-
+		SocketUtils::SetTcpNoDelay(clientSocket, true);
 		int type = rand() % 3 + 1;
 		switch (type) {
 		case 1: {
@@ -147,7 +147,7 @@ void HandleClientSocket(SOCKET clientSocket)
 			  break;
 		}
 		std::cout << std::endl;
-		std::this_thread::sleep_for(std::chrono::seconds{ 1 });
+		//std::this_thread::sleep_for(std::chrono::seconds{ 1 });
 
 	}
 	// 클라이언트 소켓 종료
