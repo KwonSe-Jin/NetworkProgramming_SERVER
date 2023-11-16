@@ -120,10 +120,16 @@ NetworkManager networkManager("127.0.0.1", 7777);
 //default_random_engine dre(rd());
 //uniform_real_distribution<float> urd{ 0, 255 };
 
-
+int t_count;
 GLvoid drawScene()
 {
 	networkManager.PacketData();
+	CS_PLAYER_PACKET p;
+	p.Player_key.is_bullet = true;
+	if (!networkManager.SendPlayerData(p)) {
+		std::cout << "패킷보내기 실패" << std::endl;
+	}
+
 
 	GLuint SelectColor = glGetUniformLocation(shaderID, "SelectColor");
 	glUniform1i(SelectColor, 1);

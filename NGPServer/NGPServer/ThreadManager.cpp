@@ -16,7 +16,7 @@ void ThreadManager::Launch(function<void(void)> callback)
 {
 	lock_guard<mutex> guard(_lock);
 
-	_threads.push_back(thread([=]()
+	_threads.emplace_back(thread([=]()
 		{
 			InitTLS();
 			callback();

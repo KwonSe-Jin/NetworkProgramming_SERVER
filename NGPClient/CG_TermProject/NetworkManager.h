@@ -57,6 +57,10 @@ public:
     bool SendPlayerData (CS_PLAYER_PACKET& p) {
         // 클라이언트에게 스레드 ID를 보내기 위한 작업
 
+        p.Player_pos.x = 3;
+        p.Player_pos.y = 3;
+        p.Player_pos.z = 3;
+
         int size = sizeof(p);
         send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
         int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
@@ -85,10 +89,8 @@ public:
 
     bool PacketData() {
         char buf[100];
-        int size;
-        recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), MSG_WAITALL);
-        std::cout << size << "바이트 받음" << std::endl;
-        recv(clientSocket, buf, size, MSG_WAITALL);
+
+        recv(clientSocket, buf, 100, 0);
 
         switch (buf[0]) {
         case SC_PLAYER: {
