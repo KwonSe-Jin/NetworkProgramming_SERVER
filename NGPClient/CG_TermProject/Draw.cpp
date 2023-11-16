@@ -125,11 +125,11 @@ GLvoid drawScene()
 {
 	networkManager.PacketData();
 
-	CS_PLAYER_PACKET p;
+	/*CS_PLAYER_PACKET p;
 	p.Player_key.is_bullet = true;
 	if (!networkManager.SendPlayerData(p)) {
 		std::cout << "패킷보내기 실패" << std::endl;
-	}
+	}*/
 
 
 	GLuint SelectColor = glGetUniformLocation(shaderID, "SelectColor");
@@ -680,7 +680,6 @@ void Restartinit()
 
 	hero.initHero();
 
-	
 
 	///왕관 초기화
 	crown.initCrown();

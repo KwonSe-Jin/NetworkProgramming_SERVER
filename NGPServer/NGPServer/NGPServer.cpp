@@ -56,10 +56,12 @@ void CalculateThread()
 	while (true)
 	{
 		//todo
+		//std::cout << "여기 들어옴1 ???" << endl;
 
 		player_m.lock();
 		while (!playerInput.empty())
 		{
+			std::cout << "여기 들어옴 ???" << endl;
 	/*		CS_PLAYER_PACKET* playerCalculate = playerInput.front();
 			playerInput.pop();*/
 
@@ -80,6 +82,7 @@ void CalculateThread()
 			//player_m.lock();
 
 		}
+
 		player_m.unlock();
 
 
@@ -137,11 +140,10 @@ void HandleClientSocket(SOCKET clientSocket)
 		}
 		CS_PLAYER_PACKET* p = reinterpret_cast<CS_PLAYER_PACKET*>(buf);
 
-		player_m.lock();
+		//player_m.lock();
 
 		playerInput.push(std::make_pair(p, clientSocket));
-
-		player_m.unlock();
+		//player_m.unlock();
 	}
 	// 클라이언트 소켓 종료
 	SocketUtils::Close(clientSocket);
@@ -169,7 +171,8 @@ int main()
 	cout << "서버 대기중.................." << endl;
 	SOCKADDR_IN clientAddr;
 	int addrLen = sizeof(clientAddr);
-	
+	thread calculationThread(CalculateThread);
+
 
 	// Accept
 	while (true)
@@ -192,7 +195,6 @@ int main()
 			});
 
 	}
-	thread calculationThread(CalculateThread);
 	threadManager.Join();
 	calculationThread.join();
 
