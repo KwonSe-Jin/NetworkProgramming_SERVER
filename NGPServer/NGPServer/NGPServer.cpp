@@ -6,8 +6,7 @@
 
 
 std::mutex g_m;
-queue<CS_PLAYER_PACKET*> playerInput;
-
+std::queue<std::pair<CS_PLAYER_PACKET*, SOCKET>> playerInput;
 mutex player_m;
 
 //// 소켓 함수 오류 출력 후 종료
@@ -38,9 +37,10 @@ void err_display(const char* msg)
 }
 
 
-void SendToClient(SOCKET clientSocket, SC_PLAYER_PACKET& p)
+void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
 	//SC_PLAYER_PACKET p;
+	p.packet_type = SC_PLAYER;
 	int size = sizeof(p);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
@@ -51,7 +51,7 @@ void SendToClient(SOCKET clientSocket, SC_PLAYER_PACKET& p)
 }
 
 // 게임 논리를 처리할 계산 스레드
-void CalculateThread(SOCKET clientSocket)
+void CalculateThread()
 {
 	while (true)
 	{
@@ -60,24 +60,24 @@ void CalculateThread(SOCKET clientSocket)
 		player_m.lock();
 		while (!playerInput.empty())
 		{
-			CS_PLAYER_PACKET* playerCalculate = playerInput.front();
+	/*		CS_PLAYER_PACKET* playerCalculate = playerInput.front();
+			playerInput.pop();*/
+
+			std::pair<CS_PLAYER_PACKET*, SOCKET> packetInfo = playerInput.front();
 			playerInput.pop();
 
+			CS_PLAYER_PACKET* playerCalculate = packetInfo.first;
+			SOCKET clientSocket = packetInfo.second;
 
 			playerCalculate->player_hp = 100;
 			SC_PLAYER_PACKET p;
 			p.player_hp = playerCalculate->player_hp;
 
-			/*int size = sizeof(p);
-			send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-			int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
-			if (result == SOCKET_ERROR) {
-				std::cout << "Failed to send data" << std::endl;
 
-			}*/
-			SendToClient(clientSocket, p);
-
-			player_m.lock();
+			SendToClient(p, clientSocket);
+			//std::cout << std::endl;
+			//std::this_thread::sleep_for(std::chrono::seconds{ 1 });
+			//player_m.lock();
 
 		}
 		player_m.unlock();
@@ -111,6 +111,7 @@ void HandleClientSocket(SOCKET clientSocket)
 	cout << "Recv Data len = " << recvLen << endl;
 
 	SC_PLAYER_PACKET p;
+	p.packet_type = SC_PLAYER;
 	int size = sizeof(p);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
@@ -136,34 +137,11 @@ void HandleClientSocket(SOCKET clientSocket)
 		}
 		CS_PLAYER_PACKET* p = reinterpret_cast<CS_PLAYER_PACKET*>(buf);
 
-		//player패킷 테스트!!
-	/*	cout << "player_id : " << p->player_id << endl;
-		cout << "player_status : " << p->status << endl;
-		cout << "player_ready : " << p->ready  << endl;
-		cout << "Player_key.is_w : " << p->Player_key.is_w << endl;
-		cout << "Player_key.is_a : " << p->Player_key.is_a << endl;
-		cout << "Player_key.is_s : " << p->Player_key.is_s << endl;
-		cout << "Player_key.is_d : " << p->Player_key.is_d << endl;
-		cout << "Player_key.is_q : " << p->Player_key.is_q << endl;
-
-		cout << "Player_key.is_space : " << p->Player_key.is_space << endl;
-		cout << "Player_key.is_bullet : " << p->Player_key.is_bullet << endl;
-		cout << "Player_key.dirx : " << p->Player_key.dirx << endl;
-		cout << "Player_key.diry : " << p->Player_key.diry << endl;
-		cout << "Player_key.dirz : " << p->Player_key.dirz << endl;*/
-
-
 		player_m.lock();
 
-		playerInput.push(p);
+		playerInput.push(std::make_pair(p, clientSocket));
 
 		player_m.unlock();
-
-
-
-
-
-
 	}
 	// 클라이언트 소켓 종료
 	SocketUtils::Close(clientSocket);
@@ -191,6 +169,7 @@ int main()
 	cout << "서버 대기중.................." << endl;
 	SOCKADDR_IN clientAddr;
 	int addrLen = sizeof(clientAddr);
+	
 
 	// Accept
 	while (true)
@@ -211,11 +190,11 @@ int main()
 				// 스레드에서 클라이언트 소켓 처리 코드를 실행
 				HandleClientSocket(clientSocket);
 			});
-		thread calculationThread(CalculateThread, clientSocket);
-		calculationThread.join();
 
 	}
+	thread calculationThread(CalculateThread);
 	threadManager.Join();
+	calculationThread.join();
 
 
 
