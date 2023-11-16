@@ -7,6 +7,7 @@
 
 std::mutex g_m;
 queue<CS_PLAYER_PACKET*> playerInput;
+
 mutex player_m;
 
 //// 소켓 함수 오류 출력 후 종료
@@ -37,7 +38,17 @@ void err_display(const char* msg)
 }
 
 
+void SendToClient(SOCKET clientSocket, SC_PLAYER_PACKET& p)
+{
+	//SC_PLAYER_PACKET p;
+	int size = sizeof(p);
+	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
+	if (result == SOCKET_ERROR) {
+		std::cout << "Failed to send data" << std::endl;
 
+	}
+}
 
 // 게임 논리를 처리할 계산 스레드
 void CalculateThread(SOCKET clientSocket)
@@ -56,14 +67,16 @@ void CalculateThread(SOCKET clientSocket)
 			playerCalculate->player_hp = 100;
 			SC_PLAYER_PACKET p;
 			p.player_hp = playerCalculate->player_hp;
-			int size = sizeof(p);
+
+			/*int size = sizeof(p);
 			send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 			int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 			if (result == SOCKET_ERROR) {
 				std::cout << "Failed to send data" << std::endl;
-				
-			}
-			
+
+			}*/
+			SendToClient(clientSocket, p);
+
 			player_m.lock();
 
 		}
@@ -72,7 +85,7 @@ void CalculateThread(SOCKET clientSocket)
 
 	}
 
-	
+
 }
 
 
@@ -85,7 +98,7 @@ void HandleClientSocket(SOCKET clientSocket)
 	//send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 
 	// 나머지 클라이언트 소켓 처리 코드
-	
+
 	char recvBuffer[1000];
 	int recvLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
 	if (recvLen == SOCKET_ERROR)
@@ -96,13 +109,21 @@ void HandleClientSocket(SOCKET clientSocket)
 
 	cout << "Recv Data = " << recvBuffer << endl;
 	cout << "Recv Data len = " << recvLen << endl;
-	
+
+	SC_PLAYER_PACKET p;
+	int size = sizeof(p);
+	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
+	if (result == SOCKET_ERROR) {
+		std::cout << "Failed to send data" << std::endl;
+
+	}
 
 	while (true)
 	{
 
 		//클라이언트에서 키입력 받기 고정길이 // 가변길이 방식
-	
+
 		char buf[100];
 		int size;
 		recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
@@ -135,13 +156,13 @@ void HandleClientSocket(SOCKET clientSocket)
 		player_m.lock();
 
 		playerInput.push(p);
-	
+
 		player_m.unlock();
 
-		
 
-		
-	
+
+
+
 
 	}
 	// 클라이언트 소켓 종료
@@ -166,7 +187,7 @@ int main()
 
 	if (SocketUtils::Listen(listenSocket, SOMAXCONN) == false)
 		return 0;
-	
+
 	cout << "서버 대기중.................." << endl;
 	SOCKADDR_IN clientAddr;
 	int addrLen = sizeof(clientAddr);
@@ -177,11 +198,11 @@ int main()
 		SOCKET clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
 		if (clientSocket == INVALID_SOCKET)
 		{
-			return 0 ;
+			return 0;
 		}
 
 		//SocketUtils::SetTcpNoDelay(clientSocket, true);
-		
+
 		cout << "Client Connected!" << endl;
 
 		// 클라이언트 별로 스레드 시작
@@ -195,7 +216,7 @@ int main()
 
 	}
 	threadManager.Join();
-	
+
 
 
 	SocketUtils::Close(listenSocket);
