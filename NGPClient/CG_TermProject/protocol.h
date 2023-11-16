@@ -42,6 +42,12 @@ struct SC_PLAYER_PACKET
 
 	}Player_key;
 
+	struct Player_light {
+		float R;
+		float G;
+		float B;
+	};
+
 };
 
 struct SC_MONSTER_PACKET
@@ -77,22 +83,23 @@ struct CS_PLAYER_PACKET
 
 	struct Player_pos {
 
-		float x;
-		float y;
-		float z;
+		float x = 0;
+		float y = 0;
+		float z = 0;
 
 	}Player_pos;
 
 	struct Player_key {
-		bool is_w;
-		bool is_a;
-		bool is_s;
-		bool is_d;
-		bool is_space;
-		bool is_bullet;
-		float dirx;
-		float diry;
-		float dirz;
+		bool is_w = false;
+		bool is_a = false;
+		bool is_s = false;
+		bool is_d = false;
+		bool is_q = false;
+		bool is_space = false;
+		bool is_bullet = false;
+		float dirx = 0 ;
+		float diry = 0;
+		float dirz = 0;
 
 	}Player_key;
 

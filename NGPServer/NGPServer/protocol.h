@@ -42,6 +42,8 @@ struct SC_PLAYER_PACKET
 
 	}Player_key;
 
+
+
 };
 
 struct SC_MONSTER_PACKET
@@ -88,6 +90,7 @@ struct CS_PLAYER_PACKET
 		bool is_a;
 		bool is_s;
 		bool is_d;
+		bool is_q;
 		bool is_space;
 		bool is_bullet;
 		float dirx;
