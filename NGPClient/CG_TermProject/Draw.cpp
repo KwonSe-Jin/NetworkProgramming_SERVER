@@ -124,6 +124,7 @@ int t_count;
 GLvoid drawScene()
 {
 	networkManager.PacketData();
+
 	CS_PLAYER_PACKET p;
 	p.Player_key.is_bullet = true;
 	if (!networkManager.SendPlayerData(p)) {

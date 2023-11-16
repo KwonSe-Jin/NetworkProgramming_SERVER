@@ -89,15 +89,18 @@ public:
 
     bool PacketData() {
         char buf[100];
-
-        recv(clientSocket, buf, 100, 0);
+        int size;
+        recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+        std::cout << size << "바이트 받음" << std::endl;
+        recv(clientSocket, buf, size, MSG_WAITALL);
 
         switch (buf[0]) {
         case SC_PLAYER: {
             SC_PLAYER_PACKET* p = reinterpret_cast<SC_PLAYER_PACKET*>(buf);
             std::cout << "패킷 타입" << p->packet_type << std::endl;
+
             std::cout << "좌표 데이터 x, y, z : " << p->Player_pos.x << ", " << p->Player_pos.y << ", " << p->Player_pos.z << std::endl;
-            
+            std::cout << "계산!!! " << p->player_hp << std::endl;
         }
                         break;
         case SC_MONSTER: {
