@@ -108,10 +108,10 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	
 
 
-	if (!networkManager.Connect()) {
-		std::cerr << "Failed to connect to the server" << std::endl;
-		return;
-	}
+	//if (!networkManager.Connect()) {
+	//	std::cerr << "Failed to connect to the server" << std::endl;
+	//	return;
+	//}
 
 	//// Receive data from the server
 	//std::string receivedData;
@@ -122,11 +122,11 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 
 
 	// Send data to the server
-	std::string dataToSend;
-	std::cin >> dataToSend;
-	if (!networkManager.SendData(dataToSend)) {
-		return;
-	}
+	//std::string dataToSend;
+	//std::cin >> dataToSend;
+	//if (!networkManager.SendData(dataToSend)) {
+	//	return;
+	//}
 
 
 	start(argc, argv);

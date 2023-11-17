@@ -127,14 +127,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animal.cpp" />
+    <ClCompile Include="Attack.cpp" />
+    <ClCompile Include="Hero.cpp" />
     <ClCompile Include="NGPServer.cpp" />
+    <ClCompile Include="Room.cpp" />
     <ClCompile Include="SocketUtils.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="TLS.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animal.h" />
+    <ClInclude Include="Attack.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Hero.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="protocol.h" />
+    <ClInclude Include="Room.h" />
     <ClInclude Include="SocketUtils.h" />
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="TLS.h" />

@@ -4,12 +4,10 @@
 #include "DogAttack.h"
 #include "BearAttack.h"
 
+
 extern CatAttack catattack[AnimCnt];
 extern DogAttack dogattack[AnimCnt];
 extern BearAttack bearattack;
-//extern GLuint shaderID;
-//extern glm::vec3 TermGunDir;
-//extern glm::vec3 cameraPos;
 
 class Hero
 {
@@ -25,6 +23,7 @@ class Hero
 	float PosX;
 	float PosY;
 	float PosZ;
+	bool firstmap;
 /// <summary>
 /// 카메라 시작합니다.
 /// </summary>
@@ -54,7 +53,6 @@ class Hero
 	float CarDZ = 0.0;
 	float ortho = 12.0;
 
-
 	glm::mat4 projection;
 
 
@@ -63,13 +61,16 @@ class Hero
 
 
 public:
+	float lightColorR = 1.0f;
+	float lightColorG = 1.0f;
+	float lightColorB = 1.0f;
 	Hero();
 	~Hero();
 	void ISW();
 	void ISA();
 	void ISS();
 	void ISD();
-	void Jump();
+	//void Jump();
 	void damage();
 	void Update();
 	void Draw();

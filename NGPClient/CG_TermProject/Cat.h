@@ -49,12 +49,12 @@ class Cat
 	int HP;
 	int Attack;
 
-	int Index;
 
 public:
 	Cat();
 	~Cat();
 
+	int Index = 0;
 	void draw();
 	void update();
 	void damage();
@@ -67,7 +67,7 @@ public:
 	float getTop();
 	friend void AnimalCollideCat();
 	friend void BulletCollideCat();
-	friend void Catroomtest();
+	friend void CatAndRoomCollision();
 
 	void initCat();
 };

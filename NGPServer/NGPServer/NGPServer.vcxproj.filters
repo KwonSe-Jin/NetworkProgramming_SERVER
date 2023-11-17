@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="헤더 파일">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
@@ -19,10 +15,17 @@
     <Filter Include="Thread">
       <UniqueIdentifier>{f88f9552-8d92-41ef-86f3-48118353d590}</UniqueIdentifier>
     </Filter>
+    <Filter Include="object">
+      <UniqueIdentifier>{64962957-b541-46ed-8e1c-68bd46efc1db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="object\소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NGPServer.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>object\소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Thread</Filter>
@@ -32,6 +35,18 @@
     </ClCompile>
     <ClCompile Include="SocketUtils.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Animal.cpp">
+      <Filter>object\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>object\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Attack.cpp">
+      <Filter>object\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>object\소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +63,21 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="protocol.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Animal.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Attack.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

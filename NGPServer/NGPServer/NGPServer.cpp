@@ -2,12 +2,49 @@
 #include "protocol.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
+
 #include <mutex>
+#include <vector>
+
 
 
 std::mutex g_m;
 std::queue<std::pair<CS_PLAYER_PACKET*, SOCKET>> playerInput;
 mutex player_m;
+//전역 만든 것 
+int AnimalCnt = 0;
+
+vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
+
+
+ bool catlive=false;
+ bool doglive = false;
+ bool bearlive = false;
+ bool herodead = false;
+
+ float HeroLocationX=0;
+ float HeroLocationZ=0;
+
+
+ int catdead{};
+ int dogdead{};
+ int beardead{};
+
+ Room catRoom{ Cat };
+ Room dogRoom{ Dog };
+ Room bearRoom{ Bear };
+
+
+ vector<Animal*> AniCats{ new Animal(Cat,0), new Animal(Cat,1),new Animal(Cat,2), new Animal(Cat,3),new Animal(Cat,4),new Animal(Cat,5) };
+ vector<Animal*> AniDogs{ new Animal(Dog,0), new Animal(Dog,1),new Animal(Dog,2), new Animal(Dog,3),new Animal(Dog,4),new Animal(Dog,5) };
+ Animal AniBear(Bear,0);
+
+
+Attack catattack[AnimalMax];
+Attack dogattack[AnimalMax];
+Attack bearattack;
+
+
 
 //// 소켓 함수 오류 출력 후 종료
 void err_quit(const char* msg)
@@ -173,6 +210,8 @@ int main()
 	int addrLen = sizeof(clientAddr);
 	thread calculationThread(CalculateThread);
 
+	Hero Hero1;
+	heroes.push_back(Hero1);
 
 	// Accept
 	while (true)

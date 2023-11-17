@@ -1,5 +1,6 @@
 #include "Cat.h"
-extern int add;
+
+extern int CatCnt;
 
 Cat::Cat() : 
 head(Head(glm::vec3(207. / 255, 207. / 255, 207. / 255),1)),
@@ -33,9 +34,9 @@ swordR(Sword(glm::vec3(72. / 255, 255. / 255, 255. / 255), 1,1))
 	HP = 20;
 	Attack = 10;
 	CatCrushHero = false;
-	Index = add;
+	++CatCnt;
+	Index= CatCnt;
 
-	++add;
 }
 
 
@@ -65,18 +66,10 @@ void Cat::draw()
 
 
 void Cat::update()
-{/*
-	if (Position.x > -95)
-		Position.x -= 0.1;
-	if (Position.x < -105)
-		Position.x += 0.1;
-
-	if (Position.z > 5)
-		Position.z -= 0.1;
-	if (Position.z < -5)
-		Position.z += 0.1;*/
+{
 
 
+		//여기는 고양이 - 주인공 따라오기 알고리즘 
 		hero.location();
 		float dz = HeroLocationZ - Position.z;
 		float dx = HeroLocationX - Position.x;
@@ -117,6 +110,7 @@ void Cat::update()
 		if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
 			CatCrushHero = true;
 			catattack[Index].Activate = true;
+			++catattack[Index].AttackCount;
 		}
 		else {
 			CatCrushHero = false;
@@ -144,8 +138,9 @@ void Cat::update()
 		swordL.keyIn(Position, Direction);
 		swordR.keyIn(Position, Direction);
 
-		AnimalCollideCat();
-		Catroomtest();
+	
+
+
 	}
 
 
@@ -195,5 +190,6 @@ void Cat::initCat()
 {
 	Direction=0.f;
 	HP = 20;
-	Index = add;
+	closelineX = 0;
+	closelineZ = 0;
 }

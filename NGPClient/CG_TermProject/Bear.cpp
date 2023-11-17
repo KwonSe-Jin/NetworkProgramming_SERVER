@@ -86,6 +86,7 @@ void Bear::update()
 
 	if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
 		bearattack.Activate = true;
+		++bearattack.AttackCount;
 	}
 	else {
 		bearattack.Activate = false;
@@ -154,6 +155,8 @@ void Bear::InitBear()
 	Attack = 30;
 	Position = glm::vec3(0.f, -1.f, -100.f);
 	Direction= 0.f;
+	closelineX = 0;
+	closelineZ = 0;
 }
 
 
