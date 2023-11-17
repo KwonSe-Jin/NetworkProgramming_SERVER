@@ -93,12 +93,10 @@ void CalculateThread()
 	while (true)
 	{
 		//todo
-		//std::cout << "여기 들어옴1 ???" << endl;
 
 		player_m.lock();
 		while (!playerInput.empty())
 		{
-			std::cout << "여기 들어옴 ???" << endl;
 	/*		CS_PLAYER_PACKET* playerCalculate = playerInput.front();
 			playerInput.pop();*/
 
@@ -146,6 +144,8 @@ void HandleClientSocket(SOCKET clientSocket)
 		cout << "클라이언트와 연결이 끊김" << endl;
 		return;
 	}
+	
+	recvBuffer[recvLen] = '\0';
 
 	cout << "Recv Data = " << recvBuffer << endl;
 	cout << "Recv Data len = " << recvLen << endl;

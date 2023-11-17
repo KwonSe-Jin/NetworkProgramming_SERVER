@@ -125,13 +125,13 @@ NetworkManager networkManager("127.0.0.1", 7777);
 int t_count;
 GLvoid drawScene()
 {
-	//networkManager.PacketData();
+	networkManager.PacketData();
 
-	/*CS_PLAYER_PACKET p;
+	CS_PLAYER_PACKET p;
 	p.Player_key.is_bullet = true;
 	if (!networkManager.SendPlayerData(p)) {
 		std::cout << "패킷보내기 실패" << std::endl;
-	}*/
+	}
 
 
 	GLuint SelectColor = glGetUniformLocation(shaderID, "SelectColor");
