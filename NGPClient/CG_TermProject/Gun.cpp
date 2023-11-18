@@ -33,15 +33,6 @@ void Gun::Update()
 	Change = Trans * Scale;
 }
 
-//void Gun::BulletErase(vector<Gun*> gun)
-//{
-//	gun.erase(remove_if(gun.begin(), gun.end(), [](Gun* guns) {
-//		if ((guns->startP_Pos()) > 100) {
-//			return true;
-//		}
-//		}));
-//
-//}
 
 float Gun::GetPosZ() {
 	return GunDir.z;

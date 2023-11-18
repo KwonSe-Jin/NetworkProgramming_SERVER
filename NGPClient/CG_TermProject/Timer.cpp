@@ -19,7 +19,7 @@ void timer(int value)
 		hero.ISD();
 	}
 	if (isJump) {
-		hero.Jump();
+		//hero.Jump();
 	}
 
 	for (int i = 0; i < cats.size(); ++i) {

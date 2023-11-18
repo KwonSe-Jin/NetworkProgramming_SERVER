@@ -23,8 +23,8 @@ public:
 	float getRight();
 	float getBehind();
 	float getFront();
-	friend void Catroomtest();
-	friend void Dogroomtest();
+	friend void CatAndRoomCollision();
+	friend void DogAndRoomCollision();
 	friend void Bearroomtest();
 	friend void HeroVSDog();
 	friend void HeroVSBear();

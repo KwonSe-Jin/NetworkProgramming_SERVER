@@ -1,6 +1,6 @@
 #include "Dog.h"
 
-extern int DAC;
+extern int DogCnt;
 
 Dog::Dog() : 
 head(Head(glm::vec3(156. / 255, 91. / 255, 54. / 255),2)),
@@ -34,8 +34,8 @@ swordR(Sword(glm::vec3(72. / 255, 255. / 255, 255. / 255), 1,2))
 	Position.z = urdZ(dre);
 	HP = 40;
 	Attack = 20;
-	Index = DAC;
-	++DAC;
+	Index = DogCnt;
+	++DogCnt;
 }
 
 
@@ -63,13 +63,15 @@ void Dog::update()
 {
 
 	hero.location();
-	float dz = HeroLocationZ - Position.z;
-	float dx = HeroLocationX - Position.x;
+	float dz = HeroLocationZ - Position.z; //HeroLocationZ전역 
+	float dx = HeroLocationX - Position.x; //HeroLocationZ전역 
 
 	Direction = atan2(dx, dz);
 
 	closelineX = HeroLocationX - Position.x;
 	closelineZ = HeroLocationZ - Position.z;
+
+
 	if (doglive && !herodead) {
 
 		if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
@@ -99,6 +101,7 @@ void Dog::update()
 
 	if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
 		dogattack[Index].Activate = true;
+		++dogattack[Index].AttackCount;
 	}
 	else {
 		dogattack[Index].Activate = false;
@@ -121,8 +124,7 @@ void Dog::update()
 	swordL.keyIn(Position, Direction);
 	swordR.keyIn(Position, Direction);
 
-	AnimalCollideDog();
-	Dogroomtest();
+
 }
 
 Dog::~Dog()
@@ -163,7 +165,6 @@ void Dog::initDog()
 {
 	Direction=0.f;
 	HP = 40;
-	Index = DAC;
 }
 
 

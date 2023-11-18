@@ -15,8 +15,8 @@ void AnimalCollideDog();
 void BulletCollideCat();
 void BulletCollideDog();
 
-void Catroomtest();
-void Dogroomtest();
+void CatAndRoomCollision();
+void DogAndRoomCollision();
 void Bearroomtest();
 
 bool isCollideCatroom(Cat r1, Room r2);
@@ -37,19 +37,18 @@ int dogdead{};
 int beardead{};
 
 int HerogetHP = 10;
+
 float lightPosX = 0.0;
 float lightPosY = 30.0;
 float lightPosZ = 0.0;
+
 int lightcolorN = 0;
 float lightRot;
-float lightColorR = 1.0f;
-float lightColorG = 1.0f;
-float lightColorB = 1.0f;
+
 bool isParticle = false;
 bool isBullet = false;
 bool BearLife = true;
-int add=0;
-int DAC=0;
+
 float openingCat=0;
 float openingDog=0;
  int i = 0;
@@ -67,7 +66,6 @@ bool catlive = false;
 bool doglive = false;
 bool bearlive = false;
 bool herodead = false;
-bool firstmap = true;
 float HeroLocationX=0;
 float HeroLocationZ=0;
 CatAttack catattack[AnimCnt];
@@ -77,6 +75,10 @@ bool jumpUp = true;
 
 void Restartinit();
 vector<Gun*> gun;
+
+int CatCnt = 0;
+int DogCnt = 0;
+
 
 
 vector<Particle*> particle{ new Particle,new Particle, new Particle, new Particle, new Particle
@@ -135,7 +137,7 @@ GLvoid drawScene()
 	GLuint SelectColor = glGetUniformLocation(shaderID, "SelectColor");
 	glUniform1i(SelectColor, 1);
 
-	if (lightColorR < 0.35)
+	if (hero.lightColorR < 0.35)
 		glClearColor(0.f, 0.f, 0.f, 1.0f);
 	else
 		glClearColor(1.f, 1.f, 1.f, 1.0f);
@@ -157,8 +159,8 @@ GLvoid drawScene()
 	draw();
 	hero.DrawHP();
 	hero.cameraProjection2();
-	hero.TopView();
-	draw();
+	//hero.TopView();
+	//draw();
 	glutSwapBuffers();
 };
 
@@ -171,14 +173,14 @@ void draw() {
 	}
 
 	if (beardead) {
-		lightColorR = 1.0f;
-		lightColorG = 1.0f;
-		lightColorB = 1.0f;
+		hero.lightColorR = 1.0f;
+		hero.lightColorG = 1.0f;
+		hero.lightColorB = 1.0f;
 	}
 	if (herodead) {
-		lightColorR = 0.5f;
-		lightColorG = 0.5f;
-		lightColorB = 0.5f;
+		hero.lightColorR = 0.5f;
+		hero.lightColorG = 0.5f;
+		hero.lightColorB = 0.5f;
 
 	}
 	
@@ -188,7 +190,7 @@ void draw() {
 	tempv = Lightrotate * tempv;
 	glUniform3f(lightPosLocation, tempv.x, tempv.y, tempv.z);
 	unsigned int lightColorLocation = glGetUniformLocation(shaderID, "lightColor");   //--- lightColor 
-	glUniform3f(lightColorLocation, lightColorR, lightColorG, lightColorB);
+	glUniform3f(lightColorLocation, hero.lightColorR, hero.lightColorG, hero.lightColorB);
 	unsigned int aColor = glGetUniformLocation(shaderID, "objectColor");   //--- object Color
 	glUniform4f(aColor, 1, 1., 1., 1.);
 
@@ -250,7 +252,11 @@ void draw() {
 	Dogright.Draw();
 	Dogright.Update();
 
+	//AnimalCollideCat();
+	//Catroomtest();
 
+	//AnimalCollideDog();
+	//DogAndRoomCollision();
 
 	GLuint selectColorLocation = glGetUniformLocation(shaderID, "selectColor");
 	glUniform1i(selectColorLocation, 0);
@@ -263,9 +269,17 @@ void draw() {
 	crown.Draw();
 	crown.Update();
 
-	if (herodead) {
 
-	}
+
+
+	AnimalCollideCat();
+	CatAndRoomCollision();
+
+	AnimalCollideDog();
+	DogAndRoomCollision();
+
+
+
 	for (int i = 0; i < cats.size(); ++i) {
 		cats[i]->draw();
 	}
@@ -280,19 +294,28 @@ void draw() {
 	hero.Update();
 	hero.Draw();
 
+
+
+	if (catlive)
+		HeroVSCat();
+
+	if (doglive)
+		HeroVSDog();
+
+	if (bearlive)
+		HeroVSBear();
+
 	for (Gun*& gunbullet : gun) {
 		gunbullet->Update();
 		gunbullet->Draw();
 
 	}
-	if (CatEndPosX != 0 && CatEndPosZ != 0) {
 		if (isParticle) {
 			for (int i = 0; i < 40; ++i) {
 				particle[i]->update();
 				particle[i]->draw();
 			}
 		}
-	}
 	if (isBullet && BulletLimit == 0) {
 		BulletLimit += 1;
 		gun.push_back(new Gun{ cameraPos.x,cameraPos.y,cameraPos.z, TermGunDir.x,TermGunDir.y,TermGunDir.z });
@@ -390,8 +413,6 @@ void BulletCollideDog() {
 					for (int i = 0; i < 40; ++i) {
 						particle[i]->dirY = -0.2;
 					}
-					CatEndPosX = dogs[j]->Position.x;
-					CatEndPosZ = dogs[j]->Position.z;
 					isParticle = true;
 					delete dogs[j];
 					dogdead++;
@@ -418,9 +439,6 @@ void BulletCollideBear() {
 				for (int i = 0; i < 40; ++i) {
 					particle[i]->dirY = -0.2;
 				}
-				CatEndPosX = bear.Position.x;
-				CatEndPosZ = bear.Position.z;
-
 				BearLife = false;
 				beardead = true;
 				isParticle = true;
@@ -482,7 +500,7 @@ bool HeroVSRoom(Hero r1, Room r2)
 	return true;
 }
 
-void Catroomtest()
+void CatAndRoomCollision()
 {
 	for (int i = 0; i < cats.size(); ++i) {
 		if (isCollideCatroom(*cats[i], catRoom)) {
@@ -500,11 +518,10 @@ void Catroomtest()
 }
 
 
-void Dogroomtest()
+void DogAndRoomCollision()
 {
 	for (int i = 0; i < dogs.size(); ++i) {
 		if (isCollideDogroom(*dogs[i], dogRoom)) {
-
 			if (dogs[i]->Position.x < dogRoom.PositionX - 5)
 				dogs[i]->Position.x += 1;
 			if (dogs[i]->Position.x > dogRoom.PositionX + 5)
@@ -609,21 +626,20 @@ void Restartinit()
 	lightPosZ = 0.0;
 	lightcolorN = 0;
 	lightRot = 0;
-	lightColorR = 1.0f;
-	lightColorG = 1.0f;
-	lightColorB = 1.0f;
+
 	isParticle = false;
 	isBullet = false;
-	add = 0;
-	DAC = 0;
 	openingCat = 0;
 	openingDog = 0;
 	i = 0;
-
+	DogCnt = 0;
+	CatCnt = 0;
 
 	// cat 초기화 
 	for (int i = 0; i < cats.size(); ++i) {
 		cats[i]->initCat();
+		cats[i]->Index = CatCnt;
+		++CatCnt;
 	}
 
 	if (cats.size()!= 6)
@@ -638,6 +654,8 @@ void Restartinit()
 
 	for (int i = 0; i < dogs.size(); ++i) {
 		dogs[i]->initDog();
+		dogs[i]->Index = DogCnt;
+		++DogCnt;
 	}
 
 	if (dogs.size() != 6)
@@ -653,19 +671,20 @@ void Restartinit()
 	BearLife = true;
 
 	//주인공 초기화 
-	HeroMovY = 0;
-	MovX = 0;
-	MovZ = 0;
+
 	catlive = false;
 	doglive = false;
 	bearlive = false;
+
 	herodead = false;
-	firstmap = true;
+
 	catopen = true;
 	dogopen = true;
 
 	HeroLocationX = 0;
 	HeroLocationZ = 0;
+	DogCnt = 0;
+	CatCnt = 0;
 
 	for (int i = 0; i < AnimCnt; ++i)
 	{
@@ -680,7 +699,6 @@ void Restartinit()
 
 	hero.initHero();
 
-	
 
 	///왕관 초기화
 	crown.initCrown();

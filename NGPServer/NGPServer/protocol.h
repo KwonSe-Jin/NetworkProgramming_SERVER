@@ -4,7 +4,7 @@ constexpr int SC_MONSTER = 2;
 constexpr int SC_BULLET = 3;
 constexpr int CS_PLAYER = 4;
 
-enum Animal
+enum AnimalNUM
 {
 	CAT,
 	DOG,

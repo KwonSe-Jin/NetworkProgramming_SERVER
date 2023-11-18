@@ -92,7 +92,7 @@ public:
         int size;
         recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
         std::cout << size << "바이트 받음" << std::endl;
-        recv(clientSocket, buf, size, MSG_WAITALL);
+        recv(clientSocket, buf, size, 0);
 
         switch (buf[0]) {
         case SC_PLAYER: {

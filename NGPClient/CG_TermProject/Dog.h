@@ -16,6 +16,7 @@
 
 extern Hero hero;
 
+
 class Dog
 {
 	Head head;
@@ -36,17 +37,18 @@ class Dog
 
 	int HP;
 	int Attack;
-	int Index;
 	glm::vec3 Position;
 	float Direction;
 
 	float closelineX;
 	float closelineZ;
 
+
 public:
 	Dog();
 	~Dog();
 
+	int Index = 0;
 	void draw();
 	void update();
 
@@ -58,8 +60,7 @@ public:
 	float getTop();
 	friend void AnimalCollideDog();
 	friend void BulletCollideDog();
-	friend void Dogroomtest();
-
+	friend void DogAndRoomCollision();
 	void initDog();
 };
 

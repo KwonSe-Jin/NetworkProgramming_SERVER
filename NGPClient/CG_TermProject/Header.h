@@ -63,14 +63,10 @@ extern float lightPosX;
 extern float lightPosY;
 extern float lightPosZ;
 
-//ok
-extern float lightColorR;
-extern float lightColorG;
-extern float lightColorB;
+
 
 
 extern bool herodead;
-extern bool firstmap;
 
 
 extern glm::vec3 TermGunDir;
@@ -100,8 +96,8 @@ extern void AnimalCollideDog();
 extern void BulletCollideCat();
 extern void BulletCollideDog();
 extern void BulletCollideBear();
-extern void Catroomtest();
-extern void Dogroomtest();
+extern void CatAndRoomCollision();
+extern void DogAndRoomCollision();
 extern void Bearroomtest();
 extern void HeroVSDog();
 extern void HeroVSBear();
@@ -129,3 +125,8 @@ extern int dogdead;
 extern int beardead;
 
 extern NetworkManager networkManager;
+
+
+
+extern int DogCnt ;
+extern int CatCnt ;

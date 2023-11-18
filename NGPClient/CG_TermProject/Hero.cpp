@@ -1,22 +1,21 @@
 #include "Hero.h"
-
 #include "Sound.h"
 extern Sound playSound;
 
-extern float HeroMovY;
-extern float MovX;
-extern float MovZ;
+//extern float HeroMovY;
+//extern float MovX;
+//extern float MovZ;
 extern bool catlive;
 extern bool doglive ;
 extern bool bearlive;
 extern bool herodead;
-extern bool firstmap;
+
 extern float HeroLocationX;
 extern float HeroLocationZ;
 extern CatAttack catattack[AnimCnt];
 extern DogAttack dogattack[AnimCnt];
 extern BearAttack bearattack;
-extern bool jumpUp;
+//extern bool jumpUp;
 
 Hero::Hero() : Unit(1.f)
 {
@@ -31,6 +30,7 @@ Hero::Hero() : Unit(1.f)
 	PosY = 0.5;
 	PosZ = 10.0;
 	HP = 100;
+	firstmap = true;
 
 }
 
@@ -85,7 +85,7 @@ void Hero::Update()
 	glm::mat4 Scale = glm::scale(Unit, glm::vec3(scaleX, scaleY, scaleZ));
 	glm::mat4 Trans;
 	
-		Trans = glm::translate(Unit, glm::vec3(PosX, PosY + HeroMovY, PosZ ));
+	Trans = glm::translate(Unit, glm::vec3(PosX, PosY, PosZ ));
 
 
 		if (PosX < -1 && firstmap)
@@ -102,20 +102,13 @@ void Hero::Update()
 			PosZ -= 0.1;
 		}
 
-		if (PosZ < -10 && catdead ==0) {
+		if (PosZ < -10 && firstmap) {
 			PosX = -100;
 			PosZ = 0;
 			catlive = true;
 			bearlive = false;
 			doglive = false;
 
-			CarX = -100;
-			CarY = 1.0;
-			CarZ = 0.0;
-
-			CarDX = -100;
-			CarDY = 0.0;
-			CarDZ = 0.0;
 			ortho = 5.0;
 
 			lightPosX = -100;
@@ -126,42 +119,28 @@ void Hero::Update()
 			playSound.BasicBGM();
 			firstmap = false;
 		}
-		if (PosZ < -7 && catdead == 6) {
+		if (PosZ < -7 &&catlive) {
 			PosX = 100;
 			PosZ = 0;
-			doglive = true;
 			catlive = false;
+			doglive = true;
 			bearlive = false;
-			CarX = 100;
-			CarY = 1.0;
-			CarZ = 0.0;
 
-			CarDX = 100;
-			CarDY = 0.0;
-			CarDZ = 0.0;
 			ortho = 5.0;
 
 			lightPosX = 100;
 			lightPosY = 15.0;
 			lightPosZ = 0;
 
-			catdead++;
 		}
-		if (PosZ < -7 && dogdead == 6) {
+		if (PosZ < -7 && doglive) {
 			PosX = 0;
 			PosZ = -100;
-			dogdead++;
 
 			doglive = false;
-			bearlive = true;
 			catlive = false;
-			CarX = 0.0;
-			CarY = 1.0;
-			CarZ = -100.0;
+			bearlive = true;
 
-			CarDX = 0.0;
-			CarDY = 0.0;
-			CarDZ = -100.0;
 			ortho = 5.0;
 
 			lightPosX = 0;
@@ -171,39 +150,9 @@ void Hero::Update()
 		
 	glm::mat4 AddTrans = glm::translate(Unit, glm::vec3(0., 1., 0.));
 	Change = Trans * Scale * AddTrans;
-	if (catlive  )
-	{
-		HeroVSCat();
-	}
-		
-	if(doglive)
-		HeroVSDog();
-		
-	if(bearlive)
-		HeroVSBear();
 }
 
-void Hero::Jump()
-{
-	if (isJump) {
-		if (jumpUp) {
-			HeroMovY += 0.1f;
-			cameraJump +=0.1f;
-			if (HeroMovY >= 1) {
-				jumpUp = false;
-			}
-		}
-		else {
-			HeroMovY -= 0.1f;
-			cameraJump -= 0.1f;
-			if (HeroMovY <= 0.f) {
-				isJump = false;
-			}
-		}
-	}
-	
-	
-}
+
 
 void Hero::Draw()
 {
@@ -229,16 +178,13 @@ void Hero::location()
 
 void Hero::ISW()
 {
-	carAddZ -= 0.075 * glm::cos(glm::radians(VAngleY));
-	carAddX += 0.075 * glm::sin(glm::radians(VAngleY));
 	PosZ -= 0.075 * glm::cos(glm::radians(VAngleY));
 	PosX += 0.075 * glm::sin(glm::radians(VAngleY));
+
 }
 
 void Hero::ISA()
 {
-	carAddZ -= 0.075 * glm::sin(glm::radians(VAngleY));
-	carAddX -= 0.075 * glm::cos(glm::radians(VAngleY));
 	PosZ -= 0.075 * glm::sin(glm::radians(VAngleY));
 	PosX -= 0.075 * glm::cos(glm::radians(VAngleY));
 
@@ -246,16 +192,12 @@ void Hero::ISA()
 
 void Hero::ISS()
 {
-	carAddZ += 0.075 * glm::cos(glm::radians(VAngleY));
-	carAddX -= 0.075 * glm::sin(glm::radians(VAngleY));
 	PosZ += 0.075 * glm::cos(glm::radians(VAngleY));
 	PosX -= 0.075 * glm::sin(glm::radians(VAngleY));
 }
 
 void Hero::ISD()
 {
-	carAddZ += 0.075 * glm::sin(glm::radians(VAngleY));
-	carAddX += 0.075 * glm::cos(glm::radians(VAngleY));
 	PosZ  += 0.075 * glm::sin(glm::radians(VAngleY));
 	PosX  += 0.075 * glm::cos(glm::radians(VAngleY));
 }
@@ -291,82 +233,8 @@ float Hero::getFront()
 void Hero::camera()
 {
 
-	cameraPos = glm::vec3(carAddX + 0, carAddY + cameraJump, carAddZ);
-	if (carAddX < -1 && firstmap)
-	{
-		carAddX += 0.1;
-	}
-	if (carAddX > 1 && firstmap)
-	{
-		carAddX -= 0.1;
-	}
-	if (carAddZ > 11 && firstmap)
-	{
-		carAddZ -= 0.1;
-	}
-	if (bearlive) {
-		if (third) {
-			carAddX = 0;
-			carAddZ = -100;
-			third = false;
-		}
-		if (-5 > carAddX)
-			carAddX += 1.0;
-		if (5 < carAddX)
-			carAddX -= 1.0;
-		if (-105 > carAddZ)
-			carAddZ += 1.0;
-		if (-95 < carAddZ)
-			carAddZ -= 1.0;
-		//bearlive = false;
-	}
+	cameraPos = glm::vec3(PosX, PosY-1.0, PosZ);
 
-	else if (doglive) {
-		if (second) {
-			carAddX = 100;
-			carAddZ = 0;
-			second = false;
-		}
-
-		if (dogdead == 6 && carAddX < 101 && carAddX > 98 && carAddZ < -4.5 && isW) {
-			carAddZ -= 0.1;
-
-		}
-		else {
-			if (95 > carAddX)
-				carAddX += 1.0;
-			if (105 < carAddX)
-				carAddX -= 1.0;
-			if (-5 > carAddZ)
-				carAddZ += 1.0;
-			if (+5 < carAddZ)
-				carAddZ -= 1.0;
-		}
-
-	}
-	else if (catlive) {
-		if (first) {
-			carAddX = -100;
-			carAddZ = 0;
-			first = false;
-		}
-
-		if (catdead == 6 && carAddX > -101 && carAddX < -98 && carAddZ < -4.5 && isW) {
-			carAddZ -= 0.1;
-
-		}
-		else {
-			if (-105 > carAddX)
-				carAddX += 1.0;
-			if (-95 < carAddX)
-				carAddX -= 1.0;
-			if (-5 > carAddZ)
-				carAddZ += 1.0;
-			if (+5 < carAddZ)
-				carAddZ -= 1.0;
-		}
-
-	}
 
 	glm::mat4 VAngleY_Rot = glm::rotate(glm::mat4(1.0f), glm::radians(-VAngleY), glm::vec3(0.0, 1.0, 0.0));
 	glm::mat4 VAngleX_Rot = glm::rotate(glm::mat4(1.0f), glm::radians(-VAngleX), glm::vec3(1.0, 0.0, 0.0));
@@ -378,9 +246,13 @@ void Hero::camera()
 	glm::vec3 cameraDirection(cameraPos + CDir);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	cameraDirection.y -= 0.5f;
-	cameraPos.y -= 0.5f;
 	glm::mat4 view = glm::lookAt(cameraPos, cameraDirection, cameraUp);
+
+
+	//이거 여기서 총알 발사 방향 계산하려고.... 한거임 
 	TermGunDir = normalize(cameraDirection - cameraPos);
+
+	/////////////////////////////////////////////////////////////////////
 
 	unsigned int viewLocation = glGetUniformLocation(shaderID, "viewTransform");
 	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, &view[0][0]);
@@ -392,8 +264,8 @@ void Hero::camera()
 
 void Hero::TopView()
 {
-	glm::vec3 cameraPos = glm::vec3(CarX, CarY, CarZ);
-	glm::vec3 cameraDirection = glm::vec3(CarDX, CarDY, CarDZ);
+	glm::vec3 cameraPos = glm::vec3(PosX, PosY+0.5, PosZ);
+	glm::vec3 cameraDirection = glm::vec3(PosX, 0.0, PosZ);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::mat4 view = glm::mat4(1.0f);
 
@@ -475,34 +347,22 @@ void Hero::VAngleMotion(int x, int y)
 
 void Hero::initHero()
 {
-	scaleX = 0.3;
-	scaleY = 0.3;
-	scaleZ = 0.3;
 	PosX = 0;
 	PosY = 0.5;
 	PosZ = 10.0;
+
 	HP = 100;
 
-	//카메라 초기화~
-	first = true;
-	second = true;
-	third = true;
 
-	 carAddX = 0;
-	 carAddY = 0;
-	 carAddZ=10;
+	lightColorR = 1.0f;
+	lightColorG = 1.0f;
+	lightColorB = 1.0f;
+
+
 	 VAngleX = 0;
 	 VAngleY = 0;
+	 firstmap = true;
 
-
-	 cameraJump=0;
-	 CarX = 0.0;
-	 CarY = 1.0;
-	 CarZ = 0.0;
-
-	 CarDX = 0.0;
-	 CarDY = 0.0;
-	 CarDZ = 0.0;
 	 ortho = 12.0;
 
 

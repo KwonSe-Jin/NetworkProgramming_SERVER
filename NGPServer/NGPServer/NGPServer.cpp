@@ -2,12 +2,49 @@
 #include "protocol.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
+
 #include <mutex>
+#include <vector>
+
 
 
 std::mutex g_m;
 std::queue<std::pair<CS_PLAYER_PACKET*, SOCKET>> playerInput;
 mutex player_m;
+//전역 만든 것 
+int AnimalCnt = 0;
+
+vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
+
+
+ bool catlive=false;
+ bool doglive = false;
+ bool bearlive = false;
+ bool herodead = false;
+
+ float HeroLocationX=0;
+ float HeroLocationZ=0;
+
+
+ int catdead{};
+ int dogdead{};
+ int beardead{};
+
+ Room catRoom{ Cat };
+ Room dogRoom{ Dog };
+ Room bearRoom{ Bear };
+
+
+ vector<Animal*> AniCats{ new Animal(Cat,0), new Animal(Cat,1),new Animal(Cat,2), new Animal(Cat,3),new Animal(Cat,4),new Animal(Cat,5) };
+ vector<Animal*> AniDogs{ new Animal(Dog,0), new Animal(Dog,1),new Animal(Dog,2), new Animal(Dog,3),new Animal(Dog,4),new Animal(Dog,5) };
+ Animal AniBear(Bear,0);
+
+
+Attack catattack[AnimalMax];
+Attack dogattack[AnimalMax];
+Attack bearattack;
+
+
 
 //// 소켓 함수 오류 출력 후 종료
 void err_quit(const char* msg)
@@ -80,6 +117,7 @@ void CalculateThread()
 			//player_m.lock();
 
 		}
+
 		player_m.unlock();
 
 
@@ -99,13 +137,15 @@ void HandleClientSocket(SOCKET clientSocket)
 
 	// 나머지 클라이언트 소켓 처리 코드
 
-	char recvBuffer[1000];
-	int recvLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+	char recvBuffer[1000+1];
+	int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
 	if (recvLen == SOCKET_ERROR)
 	{
 		cout << "클라이언트와 연결이 끊김" << endl;
 		return;
 	}
+	
+	recvBuffer[recvLen] = '\0';
 
 	cout << "Recv Data = " << recvBuffer << endl;
 	cout << "Recv Data len = " << recvLen << endl;
@@ -137,11 +177,10 @@ void HandleClientSocket(SOCKET clientSocket)
 		}
 		CS_PLAYER_PACKET* p = reinterpret_cast<CS_PLAYER_PACKET*>(buf);
 
-		player_m.lock();
+		//player_m.lock();
 
 		playerInput.push(std::make_pair(p, clientSocket));
-
-		player_m.unlock();
+		//player_m.unlock();
 	}
 	// 클라이언트 소켓 종료
 	SocketUtils::Close(clientSocket);
@@ -169,7 +208,10 @@ int main()
 	cout << "서버 대기중.................." << endl;
 	SOCKADDR_IN clientAddr;
 	int addrLen = sizeof(clientAddr);
-	
+	thread calculationThread(CalculateThread);
+
+	Hero Hero1;
+	heroes.push_back(Hero1);
 
 	// Accept
 	while (true)
@@ -192,7 +234,6 @@ int main()
 			});
 
 	}
-	thread calculationThread(CalculateThread);
 	threadManager.Join();
 	calculationThread.join();
 

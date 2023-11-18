@@ -22,9 +22,6 @@ void Arm::update()
 			rotate += 2.5f;
 			if (rotate > 30.f) {
 				isrotDirec = false;
-				if (bearattack.Activate) {
-					++bearattack.AttackCount;
-				}
 			}
 			
 		}
@@ -32,9 +29,6 @@ void Arm::update()
 			rotate -= 2.5f;
 			if (rotate < -30.f)
 				isrotDirec = true;
-			if (bearattack.Activate) {
-				++bearattack.AttackCount;
-			}
 		}
 
 		Trans = glm::translate(Unit, glm::vec3(0, 1.f, 0));
@@ -71,32 +65,13 @@ void Arm::update()
 			rotate += 2.5f;
 			if (rotate > 30.f) {
 				isrotDirec = false;
-				for (int i = 0; i < 6; ++i) {
-					if (catattack[i].Activate) {
-						++catattack[i].AttackCount;
-					}
-					if (dogattack[i].Activate) {
-						++dogattack[i].AttackCount;
-					}
-				}
 			}
-
-
 		}
 		else {
 			rotate -= 2.5f;
 			if (rotate < -30.f) {
 				isrotDirec = true;
-				for (int i = 0; i < 6; ++i) {
-					if (catattack[i].Activate) {
-						++catattack[i].AttackCount;
-					}
-					if (dogattack[i].Activate) {
-						++dogattack[i].AttackCount;
-					}
-				}
 			}
-
 		}
 
 		Trans = glm::translate(Unit, glm::vec3(0, 1.f, 0));
