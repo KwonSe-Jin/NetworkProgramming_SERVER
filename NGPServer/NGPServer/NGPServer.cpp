@@ -137,8 +137,8 @@ void HandleClientSocket(SOCKET clientSocket)
 
 	// 나머지 클라이언트 소켓 처리 코드
 
-	char recvBuffer[1000];
-	int recvLen = ::recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
+	char recvBuffer[1000+1];
+	int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
 	if (recvLen == SOCKET_ERROR)
 	{
 		cout << "클라이언트와 연결이 끊김" << endl;
