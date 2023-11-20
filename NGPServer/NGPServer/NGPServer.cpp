@@ -55,6 +55,8 @@ void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 		std::cout << "Failed to send data" << std::endl;
 
 	}
+
+
 }
 
 SC_PLAYER_PACKET processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, Hero& hero) {
@@ -113,13 +115,11 @@ void CalculateThread()
 
 			CS_PLAYER_PACKET* playerInputPacket = packetInfo.first;
 			SOCKET clientSocket = packetInfo.second;
-
 			{
 				lock_guard<mutex> lock(heroMutex);
 				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket, heroInstance);
 				SendToClient(responsePacket, clientSocket);
 			}
-
 			//SendToClient(responsePacket, clientSocket);
 			delete playerInputPacket;
 		}
@@ -214,6 +214,8 @@ int main()
 
 	Hero Hero1;
 	heroes.push_back(Hero1);
+
+
 
 	// Accept
 	while (true)

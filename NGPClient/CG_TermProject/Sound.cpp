@@ -2,15 +2,15 @@
 
 Sound::Sound()
 {
-	openGunSound.lpstrElementName = L"최종총소리.wav";
-	openGunSound.lpstrDeviceType = L"waveaudio";
+	openGunSound.lpstrElementName = "최종총소리.wav";
+	openGunSound.lpstrDeviceType = "waveaudio";
 
 	mciSendCommand(NULL, MCI_OPEN, MCI_OPEN_ELEMENT | MCI_OPEN_TYPE, (DWORD_PTR)(LPMCI_OPEN_PARMS)&openGunSound);
 }
 
 void Sound::BasicBGM()
 {
-	PlaySound(L"전투시작.wav", 0, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	PlaySound("전투시작.wav", 0, SND_FILENAME | SND_ASYNC | SND_LOOP);
 }
 
 void Sound::stopBGM()

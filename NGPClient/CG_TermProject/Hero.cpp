@@ -1,5 +1,10 @@
+//#include "Header.h"
 #include "Hero.h"
 #include "Sound.h"
+//#include "CatAttack.h"
+//#include "DogAttack.h"
+//#include "BearAttack.h"
+
 extern Sound playSound;
 
 //extern float HeroMovY;
@@ -12,9 +17,9 @@ extern bool herodead;
 
 extern float HeroLocationX;
 extern float HeroLocationZ;
-extern CatAttack catattack[AnimCnt];
-extern DogAttack dogattack[AnimCnt];
-extern BearAttack bearattack;
+//extern CatAttack catattack[AnimCnt];
+//extern DogAttack dogattack[AnimCnt];
+//extern BearAttack bearattack;
 //extern bool jumpUp;
 
 Hero::Hero() : Unit(1.f)
@@ -343,6 +348,15 @@ void Hero::VAngleMotion(int x, int y)
 		VAngleX = -15.f;
 	}
 	glutWarpPointer(width / 2, height / 2);
+}
+
+void Hero::setInfo(SC_PLAYER_PACKET* p)
+{
+	HP = p->player_hp;
+	PosX = p->Player_pos.x;
+	PosY = p->Player_pos.y;
+	PosZ = p->Player_pos.z;
+
 }
 
 void Hero::initHero()

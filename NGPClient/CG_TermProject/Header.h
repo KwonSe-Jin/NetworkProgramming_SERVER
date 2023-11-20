@@ -1,5 +1,8 @@
 #pragma once
+#define AnimCnt 6
+
 #include "NetworkManager.h"
+
 
 #include <iostream>
 #include <Windows.h>
@@ -17,6 +20,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <cmath>
+
 #include "OpenGL/glew.h"
 #include "OpenGL/freeglut.h"
 #include "OpenGL/glm/ext.hpp"
@@ -26,7 +30,6 @@
 #pragma comment(lib, "freeglut.lib")
 using namespace std;
 
-#define AnimCnt 6
 
 extern bool RestartPress;
 extern GLint width, height;
@@ -62,7 +65,6 @@ extern float lightRot;
 extern float lightPosX;
 extern float lightPosY;
 extern float lightPosZ;
-
 
 
 

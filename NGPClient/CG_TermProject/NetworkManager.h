@@ -1,4 +1,5 @@
 #pragma once
+
 #include <winSock2.h>
 #include <ws2tcpip.h>
 #include <iostream>
@@ -7,6 +8,9 @@
 
 
 #pragma comment(lib, "ws2_32.lib")
+void makeInfo(SC_PLAYER_PACKET* p);
+
+
 class NetworkManager {
 public:
     NetworkManager(const std::string& serverIP, int serverPort)
@@ -53,7 +57,6 @@ public:
         return true;
     }
 
-
     bool SendPlayerData (CS_PLAYER_PACKET& p) {
         // 클라이언트에게 스레드 ID를 보내기 위한 작업
 
@@ -87,7 +90,7 @@ public:
         return false; // Connection closed
     }
 
-    bool PacketData() {
+    bool recvData() {
         char buf[100];
         int size;
         recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
@@ -97,22 +100,21 @@ public:
         switch (buf[0]) {
         case SC_PLAYER: {
             SC_PLAYER_PACKET* p = reinterpret_cast<SC_PLAYER_PACKET*>(buf);
-            std::cout << "패킷 타입" << p->packet_type << std::endl;
-
-            std::cout << "좌표 데이터 x, y, z : " << p->Player_pos.x << ", " << p->Player_pos.y << ", " << p->Player_pos.z << std::endl;
-            std::cout << "계산!!! " << p->player_hp << std::endl;
+            std::cout << p->Player_pos.x << std::endl;
+            std::cout << p->Player_pos.y << std::endl;
+            std::cout << p->Player_pos.z << std::endl;
+            //if (p->player_id == hero.id)
+            makeInfo(p);
+            
         }
-                        break;
+        break;
         case SC_MONSTER: {
             SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
-            std::cout << "패킷 타입" << p->packet_type << std::endl;
-            std::cout << "애니멀 타입 : " << p->animal_type << std::endl;
+       
         }
-                  break;
+        break;
         case SC_BULLET: {
             SC_BULLET_PACKET* p = reinterpret_cast<SC_BULLET_PACKET*>(buf);
-            std::cout << "패킷 타입" << p->packet_type << std::endl;
-            std::cout << "좌표 데이터 x, y, z : " << p->dirx << ", " << p->diry << ", " << p->dirz << std::endl;
         }
                        break;
         default:

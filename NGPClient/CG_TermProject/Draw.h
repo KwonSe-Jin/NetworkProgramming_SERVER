@@ -21,4 +21,3 @@
 extern vector<Particle*> particle;
 GLvoid drawScene();
 
-

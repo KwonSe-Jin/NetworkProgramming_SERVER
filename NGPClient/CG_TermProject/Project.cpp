@@ -107,7 +107,6 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
 	
 
-
 	if (!networkManager.Connect()) {
 		std::cerr << "Failed to connect to the server" << std::endl;
 		return;
