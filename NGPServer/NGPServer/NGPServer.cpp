@@ -57,6 +57,8 @@ void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 		std::cout << "Failed to send data" << std::endl;
 
 	}
+
+
 }
 
 SC_PLAYER_PACKET processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, Hero& hero) {
@@ -108,6 +110,7 @@ void CalculateThread()
 		//todo
 
 		player_m.lock();
+
 		while (!playerInput.empty())
 		{
 			std::tuple<CS_PLAYER_PACKET*, Hero, SOCKET> packetInfo = playerInput.front();
@@ -122,9 +125,7 @@ void CalculateThread()
 				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket, heroRef);
 				SendToClient(responsePacket, clientSocket);
 			}
-
 			//SendToClient(responsePacket, clientSocket);
-			delete playerInputPacket;
 		}
 		player_m.unlock();
 	}
@@ -146,6 +147,7 @@ void HandleClientSocket(SOCKET clientSocket)
 		heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
 	}
 
+	cout << heroes[0].ID << endl;
 
 	char recvBuffer[1000 + 1];
 	int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
@@ -215,6 +217,8 @@ int main()
 	SOCKADDR_IN clientAddr;
 	int addrLen = sizeof(clientAddr);
 	thread calculationThread(CalculateThread);
+
+
 
 	// Accept
 	while (true)

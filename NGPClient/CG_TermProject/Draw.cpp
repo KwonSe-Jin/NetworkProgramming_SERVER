@@ -1,4 +1,7 @@
 #include "Draw.h"
+#include "DogAttack.h"
+#include "BearAttack.h"
+
 
 //전역 변수
 GLuint shaderID;
@@ -93,7 +96,7 @@ vector<Cat*> cats{ new Cat, new Cat, new Cat, new Cat, new Cat, new Cat };
 vector<Dog*> dogs{ new Dog, new Dog, new Dog, new Dog, new Dog, new Dog };
 Bear bear;
 
-Hero hero;
+Hero hero{};
 
 World world{};
 Tree tree[400];
@@ -116,17 +119,26 @@ float CatEndPosX;
 float CatEndPosZ;
 
 
+
 NetworkManager networkManager("127.0.0.1", 7777);
 
 //random_device rd;
 //default_random_engine dre(rd());
 //uniform_real_distribution<float> urd{ 0, 255 };
 
+void makeInfo(SC_PLAYER_PACKET* p)
+{
+	hero.setInfo(p);
+}
+
+
 int t_count;
+
 GLvoid drawScene()
 {
-	networkManager.PacketData();
+	networkManager.recvData();
 
+	//idle 상태!
 	CS_PLAYER_PACKET p;
 	p.Player_key.is_bullet = true;
 	if (!networkManager.SendPlayerData(p)) {

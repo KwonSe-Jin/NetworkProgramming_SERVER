@@ -64,6 +64,7 @@ public:
 	float lightColorR = 1.0f;
 	float lightColorG = 1.0f;
 	float lightColorB = 1.0f;
+	int Hero_id = 1;
 	Hero();
 	~Hero();
 	void ISW();
@@ -93,6 +94,7 @@ public:
 	void DrawHP();
 	void cameraProjection2();
 	void VAngleMotion(int x, int y);
+	void setInfo(SC_PLAYER_PACKET* p);
 
 
 	void initHero();

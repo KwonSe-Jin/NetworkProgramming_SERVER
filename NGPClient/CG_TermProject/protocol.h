@@ -20,6 +20,7 @@ struct SC_PLAYER_PACKET
 	int player_hp;
 	bool status = true;
 	bool ready = false;
+	int size; 
 
 	struct Player_pos {
 
@@ -47,6 +48,12 @@ struct SC_PLAYER_PACKET
 		float G;
 		float B;
 	};
+	
+	struct camera {
+		
+		float VangleX;
+		float VangleY;
+	};
 
 };
 
@@ -56,7 +63,7 @@ struct SC_MONSTER_PACKET
 	int animal_type;
 	bool status;
 	float direction;
-	int count;
+	int count; // Á×Àº µ¿¹°...!
 	float x;
 	float y;
 	float z;
@@ -102,6 +109,12 @@ struct CS_PLAYER_PACKET
 		float dirz = 0;
 
 	}Player_key;
+
+
+	struct Player_mouse {
+		int x;
+		int y;
+	}Player_mouse;
 
 };
 #pragma pack(pop) 
