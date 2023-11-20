@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include <cmath>
 
 extern bool catlive;
@@ -13,18 +12,17 @@ extern Attack catattack[AnimalMax];
 extern Attack dogattack[AnimalMax];
 extern Attack bearattack;
 
-//extern vector<Animal*> AniCats;
-//extern vector<Animal*> AniDogs;
-//extern Animal AniBear;
+extern vector<Animal*> AniCats;
+extern vector<Animal*> AniDogs;
+extern Animal AniBear;
 
-Hero::Hero() 
+Hero::Hero(int id) : ID{id}
 {
 	PosX = 0;
 	PosY = 0.5;
 	PosZ = 10.0;
 	HP = 100;
 	firstmap = true;
-
 }
 
 Hero::~Hero()

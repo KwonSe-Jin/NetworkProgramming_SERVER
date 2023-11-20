@@ -37,7 +37,7 @@ constexpr float PI = 3.14159265358979323846f;
 
 //전역은 여기에 선언해주세요.
 extern vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
-
+//using HeroRef = std::shared_ptr<class Hero>;
 extern int AnimalCnt ;
 extern bool catlive;
 extern bool doglive;

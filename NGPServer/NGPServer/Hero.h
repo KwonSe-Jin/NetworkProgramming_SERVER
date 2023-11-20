@@ -1,8 +1,6 @@
 #pragma once
 #include "pch.h"
 
-
-
 //extern CatAttack catattack[AnimCnt];
 //extern DogAttack dogattack[AnimCnt];
 //extern BearAttack bearattack;
@@ -20,6 +18,7 @@ class Hero
 
 
 public:
+	int ID;
 	int HP;
 	float PosX;
 	float PosY;
@@ -27,7 +26,7 @@ public:
 	float lightColorR = 1.0f;
 	float lightColorG = 1.0f;
 	float lightColorB = 1.0f;
-	Hero();
+	Hero(int id);
 	~Hero();
 	void ISW();
 	void ISA();
