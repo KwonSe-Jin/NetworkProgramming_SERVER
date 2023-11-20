@@ -356,9 +356,12 @@ void Hero::setInfo(SC_PLAYER_PACKET* p)
 	PosX = p->Player_pos.x;
 	PosY = p->Player_pos.y;
 	PosZ = p->Player_pos.z;
+	cout << "Hero!!!" << endl;
+	cout << p->Player_pos.x << endl;
+	cout << p->Player_pos.y << endl;
+	cout << p->Player_pos.z << endl;
 
 }
-
 void Hero::initHero()
 {
 	PosX = 0;
