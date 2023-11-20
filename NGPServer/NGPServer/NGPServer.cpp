@@ -1,20 +1,21 @@
 ﻿#include "pch.h"
+
 #include "protocol.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
 
-#include <mutex>
-#include <vector>
 
 
-
+vector<Hero> heroes;
 std::mutex g_m;
-std::queue<std::pair<CS_PLAYER_PACKET*, SOCKET>> playerInput;
+using PlayerInputTuple = std::tuple<CS_PLAYER_PACKET*, Hero, SOCKET>;
+std::queue<PlayerInputTuple> playerInput;
+
 mutex player_m;
 //전역 만든 것 
 int AnimalCnt = 0;
 
-vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
+//vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 
 
  bool catlive=false;
@@ -98,7 +99,7 @@ SC_PLAYER_PACKET processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, Hero& h
 }
 
 mutex heroMutex;
-Hero heroInstance;
+//Hero heroInstance;
 // 게임 논리를 처리할 계산 스레드
 void CalculateThread()
 {
@@ -109,15 +110,16 @@ void CalculateThread()
 		player_m.lock();
 		while (!playerInput.empty())
 		{
-			std::pair<CS_PLAYER_PACKET*, SOCKET> packetInfo = playerInput.front();
+			std::tuple<CS_PLAYER_PACKET*, Hero, SOCKET> packetInfo = playerInput.front();
 			playerInput.pop();
 
-			CS_PLAYER_PACKET* playerInputPacket = packetInfo.first;
-			SOCKET clientSocket = packetInfo.second;
+			CS_PLAYER_PACKET* playerInputPacket = std::get<0>(packetInfo);
+			Hero heroRef = std::get<1>(packetInfo);
+			SOCKET clientSocket = std::get<2>(packetInfo);
 
 			{
 				lock_guard<mutex> lock(heroMutex);
-				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket, heroInstance);
+				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket, heroRef);
 				SendToClient(responsePacket, clientSocket);
 			}
 
@@ -127,7 +129,6 @@ void CalculateThread()
 		player_m.unlock();
 	}
 }
-
 
 void HandleClientSocket(SOCKET clientSocket)
 {
@@ -139,8 +140,13 @@ void HandleClientSocket(SOCKET clientSocket)
 
 	// 나머지 클라이언트 소켓 처리 코드
 
-	char recvBuffer[1000+1];
-	int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
+	Hero hero(LThreadId); // 스마트 포인터 대신 객체 직접 생성
+	{
+		lock_guard<mutex> lock(heroMutex);
+		heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
+	}
+
+
 	char recvBuffer[1000 + 1];
 	int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
 	if (recvLen == SOCKET_ERROR)
@@ -161,12 +167,10 @@ void HandleClientSocket(SOCKET clientSocket)
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 	if (result == SOCKET_ERROR) {
 		std::cout << "Failed to send data" << std::endl;
-
 	}
 
 	while (true)
 	{
-
 		//클라이언트에서 키입력 받기 고정길이 // 가변길이 방식
 
 		char buf[100];
@@ -183,17 +187,14 @@ void HandleClientSocket(SOCKET clientSocket)
 
 		//player_m.lock();
 
-		playerInput.push(std::make_pair(p, clientSocket));
+		playerInput.push(std::make_tuple(p, hero, clientSocket));
 		//player_m.unlock();
 	}
 	// 클라이언트 소켓 종료
 	SocketUtils::Close(clientSocket);
 }
 
-
-
 ThreadManager threadManager;
-
 int main()
 {
 	SocketUtils::Init();
@@ -215,9 +216,6 @@ int main()
 	int addrLen = sizeof(clientAddr);
 	thread calculationThread(CalculateThread);
 
-	Hero Hero1;
-	heroes.push_back(Hero1);
-
 	// Accept
 	while (true)
 	{
@@ -237,7 +235,7 @@ int main()
 				// 스레드에서 클라이언트 소켓 처리 코드를 실행
 				HandleClientSocket(clientSocket);
 			});
-
+		
 	}
 	threadManager.Join();
 	calculationThread.join();

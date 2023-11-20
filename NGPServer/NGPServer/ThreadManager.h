@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pch.h"
-#include "TLS.h"
+//#include "TLS.h"
 
 /*------------------
 	ThreadManager
@@ -23,5 +23,6 @@ private:
 private:
 	mutex			_lock;
 	vector<thread>	_threads;
+	
 };
 

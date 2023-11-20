@@ -1,6 +1,10 @@
 #pragma once
-
-
+#pragma comment(lib, "ws2_32.lib")
+#include "TLS.h"
+#include "Hero.h"
+#include "Attack.h"
+#include "Animal.h"
+#include "Room.h"
 #include <vector>
 #include <list>
 #include <queue>
@@ -15,21 +19,13 @@
 #include <atomic>
 #include <functional>
 #include <iostream>
-using namespace std;
 #include <winsock2.h>
 #include <mswsock.h>
 #include <ws2tcpip.h>
 #include <stdio.h>
 #include <windows.h>
 #include <assert.h>
-#include "TLS.h"
-
-#include "Hero.h"
-#include "Attack.h"
-#include "Animal.h"
-#include "Room.h"
-// Need to link with Ws2_32.lib
-#pragma comment(lib, "ws2_32.lib")
+using namespace std;
 
 constexpr float PI = 3.14159265358979323846f;
 
@@ -41,7 +37,7 @@ constexpr float PI = 3.14159265358979323846f;
 
 //전역은 여기에 선언해주세요.
 extern vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
-
+//using HeroRef = std::shared_ptr<class Hero>;
 extern int AnimalCnt ;
 extern bool catlive;
 extern bool doglive;
@@ -82,31 +78,3 @@ extern void HeroVSBear();
 extern void HeroVSCat();
 
 
-
-
-//// 소켓 함수 오류 출력 후 종료
-void err_quit(const char* msg)
-{
-	LPVOID lpMsgBuf;
-	FormatMessageA(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-		NULL, WSAGetLastError(),
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		(char*)&lpMsgBuf, 0, NULL);
-	MessageBoxA(NULL, (const char*)lpMsgBuf, msg, MB_ICONERROR);
-	LocalFree(lpMsgBuf);
-	exit(1);
-}
-
-// 소켓 함수 오류 출력
-void err_display(const char* msg)
-{
-	LPVOID lpMsgBuf;
-	FormatMessageA(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-		NULL, WSAGetLastError(),
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		(char*)&lpMsgBuf, 0, NULL);
-	printf("[%s] %s\n", msg, (char*)lpMsgBuf);
-	LocalFree(lpMsgBuf);
-}
