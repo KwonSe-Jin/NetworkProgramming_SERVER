@@ -45,35 +45,6 @@ Attack dogattack[AnimalMax];
 Attack bearattack;
 
 
-
-//// 소켓 함수 오류 출력 후 종료
-void err_quit(const char* msg)
-{
-	LPVOID lpMsgBuf;
-	FormatMessageA(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-		NULL, WSAGetLastError(),
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		(char*)&lpMsgBuf, 0, NULL);
-	MessageBoxA(NULL, (const char*)lpMsgBuf, msg, MB_ICONERROR);
-	LocalFree(lpMsgBuf);
-	exit(1);
-}
-
-// 소켓 함수 오류 출력
-void err_display(const char* msg)
-{
-	LPVOID lpMsgBuf;
-	FormatMessageA(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-		NULL, WSAGetLastError(),
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		(char*)&lpMsgBuf, 0, NULL);
-	printf("[%s] %s\n", msg, (char*)lpMsgBuf);
-	LocalFree(lpMsgBuf);
-}
-
-
 void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
 	//SC_PLAYER_PACKET p;
@@ -87,6 +58,47 @@ void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 	}
 }
 
+SC_PLAYER_PACKET processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, Hero& hero) {
+
+	SC_PLAYER_PACKET scPacket;
+	scPacket.packet_type = 1; 
+	scPacket.player_id = csPacket.player_id;
+	hero.damage();
+	scPacket.player_hp = hero.HP;
+	scPacket.status = csPacket.status;
+	scPacket.ready = csPacket.ready;
+
+	if (csPacket.Player_key.is_w) {
+		hero.ISW();
+	}
+
+	if (csPacket.Player_key.is_a) {
+		hero.ISA();
+	}
+
+	if (csPacket.Player_key.is_s) {
+		hero.ISS();
+	}
+
+	if (csPacket.Player_key.is_d) {
+		hero.ISD();
+	}
+
+	
+	scPacket.Player_pos.x = hero.PosX;
+	scPacket.Player_pos.y = hero.PosY; 
+	scPacket.Player_pos.z = hero.PosZ;
+
+
+	//scPacket.Player_light.R = 1.0f; 
+	//scPacket.Player_light.G = 0.5f;
+	//scPacket.Player_light.B = 0.0f;
+
+	return scPacket;
+}
+
+mutex heroMutex;
+Hero heroInstance;
 // 게임 논리를 처리할 계산 스레드
 void CalculateThread()
 {
@@ -97,33 +109,23 @@ void CalculateThread()
 		player_m.lock();
 		while (!playerInput.empty())
 		{
-	/*		CS_PLAYER_PACKET* playerCalculate = playerInput.front();
-			playerInput.pop();*/
-
 			std::pair<CS_PLAYER_PACKET*, SOCKET> packetInfo = playerInput.front();
 			playerInput.pop();
 
-			CS_PLAYER_PACKET* playerCalculate = packetInfo.first;
+			CS_PLAYER_PACKET* playerInputPacket = packetInfo.first;
 			SOCKET clientSocket = packetInfo.second;
 
-			playerCalculate->player_hp = 100;
-			SC_PLAYER_PACKET p;
-			p.player_hp = playerCalculate->player_hp;
+			{
+				lock_guard<mutex> lock(heroMutex);
+				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket, heroInstance);
+				SendToClient(responsePacket, clientSocket);
+			}
 
-
-			SendToClient(p, clientSocket);
-			//std::cout << std::endl;
-			//std::this_thread::sleep_for(std::chrono::seconds{ 1 });
-			//player_m.lock();
-
+			//SendToClient(responsePacket, clientSocket);
+			delete playerInputPacket;
 		}
-
 		player_m.unlock();
-
-
 	}
-
-
 }
 
 
@@ -137,14 +139,14 @@ void HandleClientSocket(SOCKET clientSocket)
 
 	// 나머지 클라이언트 소켓 처리 코드
 
-	char recvBuffer[1000+1];
+	char recvBuffer[1000 + 1];
 	int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
 	if (recvLen == SOCKET_ERROR)
 	{
 		cout << "클라이언트와 연결이 끊김" << endl;
 		return;
 	}
-	
+
 	recvBuffer[recvLen] = '\0';
 
 	cout << "Recv Data = " << recvBuffer << endl;
@@ -185,6 +187,7 @@ void HandleClientSocket(SOCKET clientSocket)
 	// 클라이언트 소켓 종료
 	SocketUtils::Close(clientSocket);
 }
+
 
 
 ThreadManager threadManager;
