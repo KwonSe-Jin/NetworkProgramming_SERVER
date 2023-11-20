@@ -9,7 +9,7 @@
 
 class Hero
 {
-	int HP;
+	
 	bool firstmap;
 	/// <summary>
 	/// 카메라 시작합니다.
@@ -20,6 +20,7 @@ class Hero
 
 
 public:
+	int HP;
 	float PosX;
 	float PosY;
 	float PosZ;
