@@ -1,4 +1,5 @@
 #include "pch.h"
+
 #include <cmath>
 
 extern bool catlive;
