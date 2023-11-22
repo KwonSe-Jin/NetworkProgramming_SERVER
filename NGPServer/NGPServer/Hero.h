@@ -12,8 +12,8 @@ class Hero
 	/// <summary>
 	/// 카메라 시작합니다.
 	/// </summary>
-	float VAngleX = 0;
-	float VAngleY = 0;
+	float VAngleX = 100;
+	float VAngleY = 100;
 
 
 

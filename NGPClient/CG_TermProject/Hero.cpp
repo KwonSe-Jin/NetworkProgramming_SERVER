@@ -31,9 +31,9 @@ Hero::Hero() : Unit(1.f)
 	scaleX = 0.3;
 	scaleY = 0.3;
 	scaleZ = 0.3;
-	PosX = 0;
-	PosY = 0.5;
-	PosZ = 10.0;
+	PosX = 55;
+	PosY = 546;
+	PosZ = 159;
 	HP = 100;
 	firstmap = true;
 
@@ -90,68 +90,68 @@ void Hero::Update()
 	glm::mat4 Scale = glm::scale(Unit, glm::vec3(scaleX, scaleY, scaleZ));
 	glm::mat4 Trans;
 	
-	Trans = glm::translate(Unit, glm::vec3(PosX, PosY, PosZ ));
+	//Trans = glm::translate(Unit, glm::vec3(PosX, PosY, PosZ ));
 
 
-		if (PosX < -1 && firstmap)
-		{
-			PosX += 0.1;
-		}
-		if (PosX > 1 && firstmap)
-		{
-			PosX -= 0.1;
-		}
+	//	if (PosX < -1 && firstmap)
+	//	{
+	//		PosX += 0.1;
+	//	}
+	//	if (PosX > 1 && firstmap)
+	//	{
+	//		PosX -= 0.1;
+	//	}
 
-		if (PosZ > 11 && firstmap)
-		{
-			PosZ -= 0.1;
-		}
+	//	if (PosZ > 11 && firstmap)
+	//	{
+	//		PosZ -= 0.1;
+	//	}
 
-		if (PosZ < -10 && firstmap) {
-			PosX = -100;
-			PosZ = 0;
-			catlive = true;
-			bearlive = false;
-			doglive = false;
+	//	if (PosZ < -10 && firstmap) {
+	//		PosX = -100;
+	//		PosZ = 0;
+	//		catlive = true;
+	//		bearlive = false;
+	//		doglive = false;
 
-			ortho = 5.0;
+	//		ortho = 5.0;
 
-			lightPosX = -100;
-			lightPosY = 15.0;
-			lightPosZ = 0;
+	//		lightPosX = -100;
+	//		lightPosY = 15.0;
+	//		lightPosZ = 0;
 
-			// 캣라운드로 들어갈 때 브금 실행
-			playSound.BasicBGM();
-			firstmap = false;
-		}
-		if (PosZ < -7 &&catlive) {
-			PosX = 100;
-			PosZ = 0;
-			catlive = false;
-			doglive = true;
-			bearlive = false;
+	//		// 캣라운드로 들어갈 때 브금 실행
+	//		playSound.BasicBGM();
+	//		firstmap = false;
+	//	}
+	//	if (PosZ < -7 &&catlive) {
+	//		PosX = 100;
+	//		PosZ = 0;
+	//		catlive = false;
+	//		doglive = true;
+	//		bearlive = false;
 
-			ortho = 5.0;
+	//		ortho = 5.0;
 
-			lightPosX = 100;
-			lightPosY = 15.0;
-			lightPosZ = 0;
+	//		lightPosX = 100;
+	//		lightPosY = 15.0;
+	//		lightPosZ = 0;
 
-		}
-		if (PosZ < -7 && doglive) {
-			PosX = 0;
-			PosZ = -100;
+	//	}
+	//	if (PosZ < -7 && doglive) {
+	//		PosX = 0;
+	//		PosZ = -100;
 
-			doglive = false;
-			catlive = false;
-			bearlive = true;
+	//		doglive = false;
+	//		catlive = false;
+	//		bearlive = true;
 
-			ortho = 5.0;
+	//		ortho = 5.0;
 
-			lightPosX = 0;
-			lightPosY = 15.0;
-			lightPosZ = -100;
-		}
+	//		lightPosX = 0;
+	//		lightPosY = 15.0;
+	//		lightPosZ = -100;
+	//	}
 		
 	glm::mat4 AddTrans = glm::translate(Unit, glm::vec3(0., 1., 0.));
 	Change = Trans * Scale * AddTrans;
@@ -180,32 +180,32 @@ void Hero::location()
 	HeroLocationX = PosX;
 	HeroLocationZ = PosZ;
 }
-
-void Hero::ISW()
-{
-	PosZ -= 0.075 * glm::cos(glm::radians(VAngleY));
-	PosX += 0.075 * glm::sin(glm::radians(VAngleY));
-
-}
-
-void Hero::ISA()
-{
-	PosZ -= 0.075 * glm::sin(glm::radians(VAngleY));
-	PosX -= 0.075 * glm::cos(glm::radians(VAngleY));
-
-}
-
-void Hero::ISS()
-{
-	PosZ += 0.075 * glm::cos(glm::radians(VAngleY));
-	PosX -= 0.075 * glm::sin(glm::radians(VAngleY));
-}
-
-void Hero::ISD()
-{
-	PosZ  += 0.075 * glm::sin(glm::radians(VAngleY));
-	PosX  += 0.075 * glm::cos(glm::radians(VAngleY));
-}
+//
+//void Hero::ISW()
+//{
+//	PosZ -= 0.075 * glm::cos(glm::radians(VAngleY));
+//	PosX += 0.075 * glm::sin(glm::radians(VAngleY));
+//
+//}
+//
+//void Hero::ISA()
+//{
+//	PosZ -= 0.075 * glm::sin(glm::radians(VAngleY));
+//	PosX -= 0.075 * glm::cos(glm::radians(VAngleY));
+//
+//}
+//
+//void Hero::ISS()
+//{
+//	PosZ += 0.075 * glm::cos(glm::radians(VAngleY));
+//	PosX -= 0.075 * glm::sin(glm::radians(VAngleY));
+//}
+//
+//void Hero::ISD()
+//{
+//	PosZ  += 0.075 * glm::sin(glm::radians(VAngleY));
+//	PosX  += 0.075 * glm::cos(glm::radians(VAngleY));
+//}
 
 float Hero::getLeft()
 {
@@ -335,20 +335,20 @@ void Hero::cameraProjection2()
 	glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, &projection[0][0]);
 }
 
-void Hero::VAngleMotion(int x, int y)
-{
-	VAngleY += (x - width / 2) / 12.5;
-
-
-	VAngleX += (y - height / 2) / 12.5;
-	if (VAngleX >= 15.f) {
-		VAngleX = 15.f;
-	}
-	else if (VAngleX <= -15.f) {
-		VAngleX = -15.f;
-	}
-	glutWarpPointer(width / 2, height / 2);
-}
+//void Hero::VAngleMotion(int x, int y)
+//{
+//	VAngleY += (x - width / 2) / 12.5;
+//
+//
+//	VAngleX += (y - height / 2) / 12.5;
+//	if (VAngleX >= 15.f) {
+//		VAngleX = 15.f;
+//	}
+//	else if (VAngleX <= -15.f) {
+//		VAngleX = -15.f;
+//	}
+//	glutWarpPointer(width / 2, height / 2);
+//}
 
 void Hero::setInfo(SC_PLAYER_PACKET* p)
 {

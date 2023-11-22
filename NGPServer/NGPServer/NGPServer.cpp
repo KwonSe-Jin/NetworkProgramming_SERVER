@@ -8,7 +8,7 @@
 
 vector<Hero> heroes;
 std::mutex g_m;
-using PlayerInputTuple = std::tuple<CS_PLAYER_PACKET*, Hero, SOCKET>;
+using PlayerInputTuple = std::tuple<CS_PLAYER_PACKET*, SOCKET>;
 std::queue<PlayerInputTuple> playerInput;
 
 mutex player_m;
@@ -57,45 +57,51 @@ void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 		std::cout << "Failed to send data" << std::endl;
 
 	}
+	
+	cout << "x값 " << p.Player_pos.x << endl;
 
 
 }
 
-SC_PLAYER_PACKET processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, Hero& hero) {
+SC_PLAYER_PACKET& processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket) {
 
 	SC_PLAYER_PACKET scPacket;
 	scPacket.packet_type = 1; 
 	scPacket.player_id = csPacket.player_id;
-	hero.damage();
-	scPacket.player_hp = hero.HP;
+	
+	heroes[0].damage();
+	scPacket.player_hp = heroes[0].HP;
 	scPacket.status = csPacket.status;
 	scPacket.ready = csPacket.ready;
 
+	
 	if (csPacket.Player_key.is_w) {
-		hero.ISW();
+		heroes[0].ISW();
+		
 	}
 
 	if (csPacket.Player_key.is_a) {
-		hero.ISA();
+		heroes[0].ISA();
 	}
 
 	if (csPacket.Player_key.is_s) {
-		hero.ISS();
+		heroes[0].ISS();
 	}
 
 	if (csPacket.Player_key.is_d) {
-		hero.ISD();
+		heroes[0].ISD();
 	}
 
 	
-	scPacket.Player_pos.x = hero.PosX;
-	scPacket.Player_pos.y = hero.PosY; 
-	scPacket.Player_pos.z = hero.PosZ;
+	scPacket.Player_pos.x = heroes[0].PosX;
+	scPacket.Player_pos.y = heroes[0].PosY;
+	scPacket.Player_pos.z = heroes[0].PosZ;
 
 
 	//scPacket.Player_light.R = 1.0f; 
 	//scPacket.Player_light.G = 0.5f;
 	//scPacket.Player_light.B = 0.0f;
+	
 
 	return scPacket;
 }
@@ -113,17 +119,18 @@ void CalculateThread()
 
 		while (!playerInput.empty())
 		{
-			std::tuple<CS_PLAYER_PACKET*, Hero, SOCKET> packetInfo = playerInput.front();
+			std::tuple<CS_PLAYER_PACKET*, SOCKET> packetInfo = playerInput.front();
 			playerInput.pop();
 
 			CS_PLAYER_PACKET* playerInputPacket = std::get<0>(packetInfo);
-			Hero heroRef = std::get<1>(packetInfo);
-			SOCKET clientSocket = std::get<2>(packetInfo);
+			SOCKET clientSocket = std::get<1>(packetInfo);
 
 			{
 				lock_guard<mutex> lock(heroMutex);
-				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket, heroRef);
+				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket);
+				
 				SendToClient(responsePacket, clientSocket);
+				
 			}
 			//SendToClient(responsePacket, clientSocket);
 		}
@@ -146,7 +153,7 @@ void HandleClientSocket(SOCKET clientSocket)
 		lock_guard<mutex> lock(heroMutex);
 		heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
 	}
-
+	cout << LThreadId << endl;
 	cout << heroes[0].ID << endl;
 
 	char recvBuffer[1000 + 1];
@@ -189,7 +196,7 @@ void HandleClientSocket(SOCKET clientSocket)
 
 		//player_m.lock();
 
-		playerInput.push(std::make_tuple(p, hero, clientSocket));
+		playerInput.push(std::make_tuple(p, clientSocket));
 		//player_m.unlock();
 	}
 	// 클라이언트 소켓 종료

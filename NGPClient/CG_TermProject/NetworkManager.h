@@ -103,7 +103,6 @@ public:
             std::cout << p->Player_pos.x << std::endl;
             std::cout << p->Player_pos.y << std::endl;
             std::cout << p->Player_pos.z << std::endl;
-            //if (p->player_id == hero.id)
             makeInfo(p);
             
         }

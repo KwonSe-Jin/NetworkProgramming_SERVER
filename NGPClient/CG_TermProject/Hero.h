@@ -67,10 +67,10 @@ public:
 	int Hero_id = 1;
 	Hero();
 	~Hero();
-	void ISW();
+	/*void ISW();
 	void ISA();
 	void ISS();
-	void ISD();
+	void ISD();*/
 	//void Jump();
 	void damage();
 	void Update();
@@ -93,7 +93,7 @@ public:
 	void cameraProjection();
 	void DrawHP();
 	void cameraProjection2();
-	void VAngleMotion(int x, int y);
+	//void VAngleMotion(int x, int y);
 	void setInfo(SC_PLAYER_PACKET* p);
 
 

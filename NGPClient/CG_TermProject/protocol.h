@@ -20,7 +20,6 @@ struct SC_PLAYER_PACKET
 	int player_hp;
 	bool status = true;
 	bool ready = false;
-	int size; 
 
 	struct Player_pos {
 

@@ -52,9 +52,9 @@ bool isParticle = false;
 bool isBullet = false;
 bool BearLife = true;
 
-float openingCat=0;
-float openingDog=0;
- int i = 0;
+float openingCat = 0;
+float openingDog = 0;
+int i = 0;
 
 bool catopen = true;
 bool dogopen = true;
@@ -62,15 +62,15 @@ bool dogopen = true;
 /// <summary>
 /// 주인공
 /// </summary>
-float HeroMovY=0;
-float MovX=0;
-float MovZ=0;
+float HeroMovY = 0;
+float MovX = 0;
+float MovZ = 0;
 bool catlive = false;
 bool doglive = false;
 bool bearlive = false;
 bool herodead = false;
-float HeroLocationX=0;
-float HeroLocationZ=0;
+float HeroLocationX = 0;
+float HeroLocationZ = 0;
 CatAttack catattack[AnimCnt];
 DogAttack dogattack[AnimCnt];
 BearAttack bearattack;
@@ -139,10 +139,12 @@ GLvoid drawScene()
 	networkManager.recvData();
 
 	//idle 상태!
-	CS_PLAYER_PACKET p;
-	p.Player_key.is_bullet = true;
-	if (!networkManager.SendPlayerData(p)) {
-		std::cout << "패킷보내기 실패" << std::endl;
+	if (!isW || !isA || !isS || !isD) {
+		CS_PLAYER_PACKET p;
+		p.Player_key.is_bullet = true;
+		if (!networkManager.SendPlayerData(p)) {
+			std::cout << "패킷보내기 실패" << std::endl;
+		}
 	}
 
 
@@ -195,7 +197,7 @@ void draw() {
 		hero.lightColorB = 0.5f;
 
 	}
-	
+
 	unsigned int lightPosLocation = glGetUniformLocation(shaderID, "lightPos");      //--- lightPos 
 	glm::vec4 tempv(lightPosX, lightPosY, lightPosZ, 1);
 	glm::mat4 Lightrotate = glm::rotate(glm::mat4(1.f), glm::radians(lightRot), glm::vec3(0, 1, 0));
@@ -322,12 +324,12 @@ void draw() {
 		gunbullet->Draw();
 
 	}
-		if (isParticle) {
-			for (int i = 0; i < 40; ++i) {
-				particle[i]->update();
-				particle[i]->draw();
-			}
+	if (isParticle) {
+		for (int i = 0; i < 40; ++i) {
+			particle[i]->update();
+			particle[i]->draw();
 		}
+	}
 	if (isBullet && BulletLimit == 0) {
 		BulletLimit += 1;
 		gun.push_back(new Gun{ cameraPos.x,cameraPos.y,cameraPos.z, TermGunDir.x,TermGunDir.y,TermGunDir.z });
@@ -654,7 +656,7 @@ void Restartinit()
 		++CatCnt;
 	}
 
-	if (cats.size()!= 6)
+	if (cats.size() != 6)
 	{
 		while (cats.size() < 6)
 		{

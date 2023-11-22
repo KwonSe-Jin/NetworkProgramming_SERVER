@@ -4,19 +4,19 @@ void timer(int value)
 {
 
 	if (isW) {
-		hero.ISW();
+		//hero.ISW();
 	}
 	else if (isA) {
 	
-		hero.ISA();
+		//hero.ISA();
 	}
 	else if (isS) {
 		
-		hero.ISS();
+		//hero.ISS();
 	}
 	else if (isD) {
 	
-		hero.ISD();
+		//hero.ISD();
 	}
 	if (isJump) {
 		//hero.Jump();
