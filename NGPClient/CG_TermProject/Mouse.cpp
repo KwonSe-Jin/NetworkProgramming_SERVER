@@ -5,14 +5,15 @@ extern Sound playSound;
 void get_vangle(float* x, float* y);
 
 extern int global_ID;
-
+int BulletTime=0;
+bool isBulletTime = false;
 int BulletLimit;
 GLvoid Mouse(int button, int state, int x, int y) {
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		if (!herodead) {
+		if (!herodead && !BulletTime) {
 			isBullet = true;
-			
+			isBulletTime = true;
 			CS_PLAYER_PACKET p;
 			get_vangle(&(p.camera.VangleX), &(p.camera.VangleY));
 			p.player_id = global_ID;

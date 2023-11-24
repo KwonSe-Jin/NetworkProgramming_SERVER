@@ -26,7 +26,7 @@ void Gun::Update()
 	BulletCollideBear();
 	BulletCollideDog();
 	BulletCollideCat();
-	startP += 0.1;
+	startP += 0.4;
 	GunDir = glm::vec3(dirX * startP, dirY * startP, dirZ * startP) + glm::vec3(PosX, PosY, PosZ);
 	glm::mat4 Scale = glm::scale(Unit, glm::vec3(0.01, 0.01, 0.01));
 	glm::mat4 Trans = glm::translate(Unit, glm::vec3(GunDir.x, GunDir.y, GunDir.z));
