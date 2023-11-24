@@ -4,8 +4,16 @@
 #include <ws2tcpip.h>
 #include <iostream>
 #include <string>
+#include <iostream>
+#include <thread>
+#include <queue>
+using namespace std;
 #include "protocol.h"
+#include "Header.h"
+extern bool isW, isA, isS, isD;
 
+#define serverIP "127.0.0.1"
+#define serverPort 7777
 
 #pragma comment(lib, "ws2_32.lib")
 void makeInfo(SC_PLAYER_PACKET* p);
@@ -13,8 +21,8 @@ void makeInfo(SC_PLAYER_PACKET* p);
 
 class NetworkManager {
 public:
-    NetworkManager(const std::string& serverIP, int serverPort)
-        : serverIP(serverIP), serverPort(serverPort) {
+    NetworkManager()
+    {
         WSADATA wsaData;
         if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
             std::cout << "WSAStartup failed" << std::endl;
@@ -30,6 +38,7 @@ public:
     }
 
     ~NetworkManager() {
+        std::cout << "끊김?" << std::endl;
         closesocket(clientSocket);
         WSACleanup();
     }
@@ -38,7 +47,7 @@ public:
         sockaddr_in serverAddr;
         serverAddr.sin_family = AF_INET;
         serverAddr.sin_port = htons(serverPort);
-        inet_pton(AF_INET, serverIP.c_str(), &serverAddr.sin_addr);
+        inet_pton(AF_INET, serverIP, &serverAddr.sin_addr);
 
         if (connect(clientSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
             std::cout << "Failed to connect to the server" << std::endl;
@@ -56,13 +65,19 @@ public:
         }
         return true;
     }
-
-    bool SendPlayerData (CS_PLAYER_PACKET& p) {
+    void SendIdlePlayer()
+    {
+        //idle 상태!
+        if (!isW || !isA || !isS || !isD) {
+            CS_PLAYER_PACKET p;
+            p.Player_key.is_bullet = true;
+            if (!SendPlayerData(p)) {
+                std::cout << "패킷보내기 실패" << std::endl;
+            }
+        }
+    }
+    bool SendPlayerData(CS_PLAYER_PACKET& p) {
         // 클라이언트에게 스레드 ID를 보내기 위한 작업
-
-        p.Player_pos.x = 3;
-        p.Player_pos.y = 3;
-        p.Player_pos.z = 3;
 
         int size = sizeof(p);
         send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
@@ -104,18 +119,18 @@ public:
             std::cout << p->Player_pos.y << std::endl;
             std::cout << p->Player_pos.z << std::endl;
             makeInfo(p);
-            
+            std::cout << "들어옴?" << std::endl;
         }
-        break;
+                      break;
         case SC_MONSTER: {
             SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
-       
+
         }
-        break;
+                       break;
         case SC_BULLET: {
             SC_BULLET_PACKET* p = reinterpret_cast<SC_BULLET_PACKET*>(buf);
         }
-                       break;
+                      break;
         default:
             std::cout << "잘못된 데이터" << std::endl;
             break;
@@ -123,7 +138,5 @@ public:
         return false;
     }
 private:
-    std::string serverIP;
-    int serverPort;
     SOCKET clientSocket;
 };

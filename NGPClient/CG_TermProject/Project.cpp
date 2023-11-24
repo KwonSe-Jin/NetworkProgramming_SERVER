@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "KeyboardUP.h"
 #include "Sound.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -17,13 +18,13 @@ vector<glm::vec3> vertex4; //잔디
 vector<glm::vec3> vertex5; //성 
 vector<glm::vec3> vcolor5;
 vector<glm::vec3> vertex6; //왕관
-
+NetworkManager networkManager;
 extern Sound playSound;
 
 void makeCastleColor() {
 	random_device sk;
 	default_random_engine skdre(sk());
-	uniform_real_distribution<float> skurd{0.f, 1.f};
+	uniform_real_distribution<float> skurd{ 0.f, 1.f };
 
 	for (int i = 0; i < vertex5.size() / 2; ++i) {
 		vcolor5.push_back(glm::vec3(skurd(skdre), skurd(skdre), skurd(skdre)));
@@ -105,7 +106,7 @@ GLuint crossVAO, crossVBO;
 
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
-	
+
 
 	if (!networkManager.Connect()) {
 		std::cerr << "Failed to connect to the server" << std::endl;
@@ -118,8 +119,6 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	//	std::cout << "Received from the server: " << receivedData << std::endl;
 	//}
 
-
-
 	// Send data to the server
 	std::string dataToSend;
 	std::cin >> dataToSend;
@@ -128,9 +127,18 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	}
 
 
+	std::thread networkThread([&]() {
+		while (true) {
+			networkManager.SendIdlePlayer();
+			networkManager.recvData();
+		}
+		});
+
+
+
 	start(argc, argv);
-
-
+	// 패킷을 받아오는 스레드
+	networkThread.detach();
 }
 
 void start(int argc, char* argv[])
@@ -270,12 +278,12 @@ void ReadObj(string file, vector<glm::vec3>& vertexInfo)
 		vertexInfo.push_back(vNormal[vnFace[i].z]);
 	}
 
-	
+
 }
 
 void InitBuffer()
 {
-	ReadObj("cube.obj",vertex1);
+	ReadObj("cube.obj", vertex1);
 	//ReadObj("pyramid.obj", &pyramidvertex, &pyramidcolor, &pyramidface);
 
 
@@ -335,7 +343,7 @@ void InitBuffer()
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(sizeof(float) * 3));
 	glEnableVertexAttribArray(1);
 
-	
+
 
 
 	///////////////////////////////////////////////////////////
@@ -360,7 +368,7 @@ void InitBuffer()
 	glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(5);      // 버텍스 속성 배열을 사용하도록 한다.(5번 배열 활성화)
 
-	
+
 	/////////////////////////////////////////////////////////
 	glGenVertexArrays(1, &HeroHPVAO);
 	glGenBuffers(1, &HeroHPVBO);
@@ -426,7 +434,7 @@ void InitTexture()
 			GLubyte* data = stbi_load(filename.c_str(), &ImageWidth, &ImageHeight, &numberOfChannel, 0);
 			glTexImage2D(GL_TEXTURE_2D, 0, 3, ImageWidth, ImageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			stbi_image_free(data);
-			break; 
+			break;
 		}
 
 		case 3: {
@@ -451,11 +459,11 @@ void InitTexture()
 			break;
 		}
 		}
-		
+
 	}
 
 	glGenTextures(3, TreeTexture);
-	for (int i = 0; i <3; ++i) {
+	for (int i = 0; i < 3; ++i) {
 		glBindTexture(GL_TEXTURE_2D, TreeTexture[i]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -481,7 +489,7 @@ void InitTexture()
 		glTexImage2D(GL_TEXTURE_2D, 0, 4, ImageWidth, ImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		stbi_image_free(data);
 	}
-	
+
 	glGenTextures(9, ScoreTexture);
 	for (int i = 0; i < 9; ++i) {
 		glBindTexture(GL_TEXTURE_2D, ScoreTexture[i]);
@@ -579,15 +587,15 @@ void InitTexture()
 		case 2:
 			filename = "Bearroom.png"; //핑크 
 			break;
-		//case 3:
-		//	filename = "Catroomdead.png"; //회색 
-		//	break;
-		//case 4:
-		//	filename = "Dogroomdead.png"; //갈색 
-		//	break;
-		//case 5:
-		//	filename = "Bearroomdead.png"; //핑크 
-		//	break;
+			//case 3:
+			//	filename = "Catroomdead.png"; //회색 
+			//	break;
+			//case 4:
+			//	filename = "Dogroomdead.png"; //갈색 
+			//	break;
+			//case 5:
+			//	filename = "Bearroomdead.png"; //핑크 
+			//	break;
 		}
 		GLubyte* data = stbi_load(filename.c_str(), &ImageWidth, &ImageHeight, &numberOfChannel, 0);
 		glTexImage2D(GL_TEXTURE_2D, 0, 3, ImageWidth, ImageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -607,16 +615,16 @@ void InitTexture()
 		string filename;
 
 		switch (i) {
-	
-			case 0:
-				filename = "Catroomdead.png"; //회색 
-				break;
-			case 1:
-				filename = "Dogroomdead.png"; //갈색 
-				break;
-			case 2:
-				filename = "Bearroomdead.png"; //핑크 
-				break;
+
+		case 0:
+			filename = "Catroomdead.png"; //회색 
+			break;
+		case 1:
+			filename = "Dogroomdead.png"; //갈색 
+			break;
+		case 2:
+			filename = "Bearroomdead.png"; //핑크 
+			break;
 		}
 		GLubyte* data = stbi_load(filename.c_str(), &ImageWidth, &ImageHeight, &numberOfChannel, 0);
 		glTexImage2D(GL_TEXTURE_2D, 0, 3, ImageWidth, ImageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -637,7 +645,7 @@ void InitTexture()
 	glTexImage2D(GL_TEXTURE_2D, 0, 4, ImageWidth, ImageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	stbi_image_free(data);
 
-	
+
 	glGenTextures(2, DoorTexture);
 	for (int i = 0; i < 2; ++i) {
 		glBindTexture(GL_TEXTURE_2D, DoorTexture[i]);

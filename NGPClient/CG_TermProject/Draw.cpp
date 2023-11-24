@@ -120,7 +120,7 @@ float CatEndPosZ;
 
 
 
-NetworkManager networkManager("127.0.0.1", 7777);
+//NetworkManager networkManager("127.0.0.1", 7777);
 
 //random_device rd;
 //default_random_engine dre(rd());
@@ -136,17 +136,6 @@ int t_count;
 
 GLvoid drawScene()
 {
-	networkManager.recvData();
-
-	//idle 상태!
-	if (!isW || !isA || !isS || !isD) {
-		CS_PLAYER_PACKET p;
-		p.Player_key.is_bullet = true;
-		if (!networkManager.SendPlayerData(p)) {
-			std::cout << "패킷보내기 실패" << std::endl;
-		}
-	}
-
 
 	GLuint SelectColor = glGetUniformLocation(shaderID, "SelectColor");
 	glUniform1i(SelectColor, 1);
