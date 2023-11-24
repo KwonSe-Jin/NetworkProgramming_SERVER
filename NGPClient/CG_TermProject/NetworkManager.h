@@ -68,7 +68,7 @@ public:
     void SendIdlePlayer()
     {
         //idle ป๓ลย!
-        if (!isW || !isA || !isS || !isD) {
+        if (!isW && !isA && !isS && !isD) {
             CS_PLAYER_PACKET p;
             p.Player_key.is_bullet = true;
             if (!SendPlayerData(p)) {

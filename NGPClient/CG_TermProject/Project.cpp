@@ -137,7 +137,6 @@ void main(int argc, char** argv) //--- ������ ����ϰ� ��
 
 
 	start(argc, argv);
-	// ��Ŷ�� �޾ƿ��� ������
 	networkThread.detach();
 }
 
@@ -145,7 +144,6 @@ void start(int argc, char* argv[])
 {
 
 	//sndPlaySound(L"����.wav", SND_ASYNC | SND_LOOP);
-	//--- ������ �����ϱ�
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowPosition(0, 0);
