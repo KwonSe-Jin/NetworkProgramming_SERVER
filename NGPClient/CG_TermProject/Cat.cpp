@@ -70,7 +70,7 @@ void Cat::update()
 
 
 		//여기는 고양이 - 주인공 따라오기 알고리즘 
-		hero.location();
+		//hero[].location();
 		float dz = HeroLocationZ - Position.z;
 		float dx = HeroLocationX - Position.x;
 
