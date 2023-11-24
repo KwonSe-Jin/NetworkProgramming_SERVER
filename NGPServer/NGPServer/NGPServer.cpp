@@ -51,6 +51,7 @@ void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 	//SC_PLAYER_PACKET p;
 	p.packet_type = SC_PLAYER;
 	int size = sizeof(p);
+	cout << "p.Player_pos.z"<< p.Player_pos.z << endl;//-2.62533e-27
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 	if (result == SOCKET_ERROR) {
@@ -58,9 +59,6 @@ void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 
 	}
 	
-	cout << "x값 " << p.Player_pos.x << endl;
-
-
 }
 
 SC_PLAYER_PACKET& processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket) {
@@ -97,7 +95,7 @@ SC_PLAYER_PACKET& processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket) {
 	scPacket.Player_pos.y = heroes[0].PosY;
 	scPacket.Player_pos.z = heroes[0].PosZ;
 
-
+	cout << "scPacket.Player_pos.z" << scPacket.Player_pos.z << endl;//10
 	//scPacket.Player_light.R = 1.0f; 
 	//scPacket.Player_light.G = 0.5f;
 	//scPacket.Player_light.B = 0.0f;
@@ -127,8 +125,12 @@ void CalculateThread()
 
 			{
 				lock_guard<mutex> lock(heroMutex);
-				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket);
-				
+				cout << "playerInputPacket->Player_pos.z" << playerInputPacket->Player_pos.z << endl; ///3
+
+				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*(playerInputPacket));
+
+				cout << " responsePacket.Player_pos.z" << responsePacket.Player_pos.z << endl;//-2.62533e-27
+
 				SendToClient(responsePacket, clientSocket);
 				
 			}

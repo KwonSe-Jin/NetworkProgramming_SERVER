@@ -4,7 +4,7 @@ constexpr int SC_MONSTER = 2;
 constexpr int SC_BULLET = 3;
 constexpr int CS_PLAYER = 4;
 
-enum Animal
+enum AnimalNUM
 {
 	CAT,
 	DOG,
@@ -47,14 +47,15 @@ struct SC_PLAYER_PACKET
 		float G;
 		float B;
 	};
-	
+
 	struct camera {
-		
+
 		float VangleX;
 		float VangleY;
 	};
 
 };
+
 
 struct SC_MONSTER_PACKET
 {
@@ -62,11 +63,12 @@ struct SC_MONSTER_PACKET
 	int animal_type;
 	bool status;
 	float direction;
-	int count; // Á×Àº µ¿¹°...!
+	int count;
 	float x;
 	float y;
 	float z;
 };
+
 
 struct SC_BULLET_PACKET
 {
@@ -79,6 +81,7 @@ struct SC_BULLET_PACKET
 	float diry;
 	float dirz;
 };
+
 
 struct CS_PLAYER_PACKET
 {
@@ -103,17 +106,12 @@ struct CS_PLAYER_PACKET
 		bool is_q = false;
 		bool is_space = false;
 		bool is_bullet = false;
-		float dirx = 0 ;
+		float dirx = 0;
 		float diry = 0;
 		float dirz = 0;
 
 	}Player_key;
 
-
-	struct Player_mouse {
-		int x;
-		int y;
-	}Player_mouse;
-
 };
+
 #pragma pack(pop) 

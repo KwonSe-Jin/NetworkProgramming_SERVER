@@ -133,13 +133,12 @@ void makeInfo(SC_PLAYER_PACKET* p)
 
 
 int t_count;
-
 GLvoid drawScene()
 {
 	networkManager.recvData();
 
 	//idle 상태!
-	if (!isW || !isA || !isS || !isD) {
+	if (!isW && !isA && !isS && !isD) {
 		CS_PLAYER_PACKET p;
 		p.Player_key.is_bullet = true;
 		if (!networkManager.SendPlayerData(p)) {
@@ -310,14 +309,14 @@ void draw() {
 
 
 
-	if (catlive)
-		HeroVSCat();
+	//if (catlive)
+	//	HeroVSCat();
 
-	if (doglive)
-		HeroVSDog();
+	//if (doglive)
+	//	HeroVSDog();
 
-	if (bearlive)
-		HeroVSBear();
+	//if (bearlive)
+	//	HeroVSBear();
 
 	for (Gun*& gunbullet : gun) {
 		gunbullet->Update();

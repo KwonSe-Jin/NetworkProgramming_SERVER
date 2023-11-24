@@ -48,7 +48,14 @@ struct SC_PLAYER_PACKET
 		float B;
 	};
 
+	struct camera {
+
+		float VangleX;
+		float VangleY;
+	};
+
 };
+
 
 struct SC_MONSTER_PACKET
 {
@@ -62,6 +69,7 @@ struct SC_MONSTER_PACKET
 	float z;
 };
 
+
 struct SC_BULLET_PACKET
 {
 	int packet_type;
@@ -73,6 +81,7 @@ struct SC_BULLET_PACKET
 	float diry;
 	float dirz;
 };
+
 
 struct CS_PLAYER_PACKET
 {
@@ -104,4 +113,5 @@ struct CS_PLAYER_PACKET
 	}Player_key;
 
 };
+
 #pragma pack(pop) 
