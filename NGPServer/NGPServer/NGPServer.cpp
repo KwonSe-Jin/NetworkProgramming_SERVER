@@ -219,7 +219,7 @@ int main()
 	if (listenSocket == INVALID_SOCKET)
 		return 0;
 
-	//SocketUtils::SetReuseAddress(listenSocket, true);
+	SocketUtils::SetReuseAddress(listenSocket, true);
 
 	if (SocketUtils::BindAnyAddress(listenSocket, 7777) == false)
 		return 0;
@@ -243,7 +243,7 @@ int main()
 			return 0;
 		}
 
-		//SocketUtils::SetTcpNoDelay(clientSocket, true);
+		SocketUtils::SetTcpNoDelay(clientSocket, true);
 
 		cout << "Client Connected!" << endl;
 

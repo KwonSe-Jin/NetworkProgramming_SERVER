@@ -330,7 +330,7 @@ void draw() {
 	}
 
 	auto p = find_if(gun.begin(), gun.end(), [](Gun* guns) {
-		if ((guns->GetPosX()) > 1000 || (guns->GetPosX()) < -1000 || (guns->GetPosZ()) > 1000 || (guns->GetPosZ()) < -1000) {
+		if ((guns->GetPosX()) > 500 || (guns->GetPosX()) < -500 || (guns->GetPosZ()) > 500 || (guns->GetPosZ()) < -500) {
 			return true;
 		}
 		else {

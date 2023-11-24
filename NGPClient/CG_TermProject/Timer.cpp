@@ -43,5 +43,5 @@ void timer(int value)
 
 	world.Update();
 	glutPostRedisplay();
-	glutTimerFunc(14, timer, 1);
+	glutTimerFunc(13, timer, 1);
 }
