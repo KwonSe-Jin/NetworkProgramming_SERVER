@@ -120,7 +120,7 @@ float CatEndPosZ;
 
 
 
-NetworkManager networkManager("127.0.0.1", 7777);
+//NetworkManager networkManager("127.0.0.1", 7777);
 
 //random_device rd;
 //default_random_engine dre(rd());
