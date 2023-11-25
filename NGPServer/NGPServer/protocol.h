@@ -56,6 +56,7 @@ struct SC_MONSTER_PACKET
 {
 	int packet_type;
 	int animal_type;
+	int Monster_id;
 	bool status;
 	float direction;
 	int count;
