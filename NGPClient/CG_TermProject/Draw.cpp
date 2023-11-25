@@ -136,6 +136,14 @@ void makeInfo(SC_PLAYER_PACKET* p)
 	hero[p->player_id].setInfo(p);
 }
 
+void animalInfo(SC_MONSTER_PACKET* p, int i)
+{
+	// to_do 일단 캣으로!!
+	
+	cats[i]->catinfo(p);
+	cats[i]->update();
+	
+}
 
 void get_vangle(float* x, float* y)
 {

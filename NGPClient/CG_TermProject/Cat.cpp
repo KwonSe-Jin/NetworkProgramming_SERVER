@@ -138,8 +138,7 @@ void Cat::update()
 		swordL.keyIn(Position, Direction);
 		swordR.keyIn(Position, Direction);
 
-
-	}
+}
 
 
 
@@ -153,6 +152,15 @@ void Cat::damage()
 {
 	HP -= 10;
 	
+}
+
+void Cat::catinfo(SC_MONSTER_PACKET* p)
+{
+	Direction = p->direction;
+	Position.x = p->x;
+	Position.y = p->y;
+	Position.z = p->z;
+	HP = p->hp;
 }
 
 float Cat::getLeft()
