@@ -62,7 +62,7 @@ void Dog::draw()
 void Dog::update()
 {
 
-	hero.location();
+	//hero.location();
 	float dz = HeroLocationZ - Position.z; //HeroLocationZ전역 
 	float dx = HeroLocationX - Position.x; //HeroLocationZ전역 
 

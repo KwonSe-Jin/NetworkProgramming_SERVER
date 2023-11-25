@@ -7,6 +7,7 @@
 #include <iostream>
 #include <thread>
 #include <queue>
+#include <mutex>
 using namespace std;
 #include "protocol.h"
 #include "Header.h"
@@ -14,6 +15,7 @@ extern bool isW, isA, isS, isD;
 extern bool isBullet;
 
 #define serverIP "127.0.0.1"
+//#define serverIP "127.0.0.1"
 #define serverPort 7777
 
 #pragma comment(lib, "ws2_32.lib")
@@ -125,7 +127,7 @@ public:
         char buf[100];
         int size;
         recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-        std::cout << size << "바이트 받음" << std::endl;
+        //std::cout << size << "바이트 받음" << std::endl;
         recv(clientSocket, buf, size, 0);
 
         switch (buf[0]) {

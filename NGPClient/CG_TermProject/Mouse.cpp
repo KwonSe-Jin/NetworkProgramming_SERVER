@@ -1,19 +1,18 @@
 #include "Mouse.h"
-
 #include "Sound.h"
 extern Sound playSound;
 void get_vangle(float* x, float* y);
 
+
 extern int global_ID;
-int BulletTime=0;
-bool isBulletTime = false;
+int ball_count = 0;
 int BulletLimit;
 GLvoid Mouse(int button, int state, int x, int y) {
 
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		if (!herodead && !BulletTime) {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && ball_count < 100) {
+		if (!herodead) {
 			isBullet = true;
-			isBulletTime = true;
+			cout << ball_count << endl;
 			CS_PLAYER_PACKET p;
 			get_vangle(&(p.camera.VangleX), &(p.camera.VangleY));
 			p.player_id = global_ID;
@@ -21,7 +20,7 @@ GLvoid Mouse(int button, int state, int x, int y) {
 			if (!networkManager.SendPlayerData(p)) {
 				std::cout << "패킷보내기 실패" << std::endl;
 			}
-
+			ball_count++;
 			playSound.GunSound();
 		}
 	}

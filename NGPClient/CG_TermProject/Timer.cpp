@@ -1,19 +1,8 @@
 #include "Timer.h"
 
-
-
 void timer(int value) 
 {
-	if (isBulletTime) {
-		++BulletTime;
-	}
-	if (BulletTime >= 45) {
-		BulletTime=0;
-		isBulletTime = false;
-	}
-	
-	
-	
+
 	if (isW) {
 		//hero.ISW();
 	}
@@ -54,5 +43,5 @@ void timer(int value)
 
 	world.Update();
 	glutPostRedisplay();
-	glutTimerFunc(14, timer, 1);
+	glutTimerFunc(13, timer, 1);
 }

@@ -64,7 +64,7 @@ public:
 	float lightColorR = 1.0f;
 	float lightColorG = 1.0f;
 	float lightColorB = 1.0f;
-	Hero();
+	Hero(int colorID);
 	~Hero();
 	/*void ISW();
 	void ISA();

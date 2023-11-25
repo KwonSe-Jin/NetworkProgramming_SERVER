@@ -7,7 +7,7 @@ GLvoid passiveMotion(int x, int y) {
 	if (!networkManager.SendPlayerData(p)) {
 		std::cout << "패킷보내기 실패" << std::endl;
 	}*/
-	hero.VAngleMotion(x, y);
+	hero[global_ID].VAngleMotion(x, y);
 	
 	glutPostRedisplay();
 }
