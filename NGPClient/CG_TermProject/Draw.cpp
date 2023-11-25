@@ -96,7 +96,12 @@ vector<Cat*> cats{ new Cat, new Cat, new Cat, new Cat, new Cat, new Cat };
 vector<Dog*> dogs{ new Dog, new Dog, new Dog, new Dog, new Dog, new Dog };
 Bear bear;
 
-Hero hero{};
+Hero h0(0);
+Hero h1(1);
+Hero h2(2);
+
+Hero hero[3] = { h0,h1,h2 };
+
 
 World world{};
 Tree tree[400];
@@ -118,7 +123,7 @@ DoorR Catright{ 1 };
 float CatEndPosX;
 float CatEndPosZ;
 
-
+extern int global_ID;
 
 //NetworkManager networkManager("127.0.0.1", 7777);
 
@@ -128,13 +133,13 @@ float CatEndPosZ;
 
 void makeInfo(SC_PLAYER_PACKET* p)
 {
-	hero.setInfo(p);
+	hero[p->player_id].setInfo(p);
 }
 
 
 void get_vangle(float* x, float* y)
 {
-	hero.get_vangle(x, y);
+	hero[global_ID].get_vangle(x, y);
 }
 
 int t_count;
@@ -145,7 +150,7 @@ GLvoid drawScene()
 	GLuint SelectColor = glGetUniformLocation(shaderID, "SelectColor");
 	glUniform1i(SelectColor, 1);
 
-	if (hero.lightColorR < 0.35)
+	if (hero[global_ID].lightColorR < 0.35)
 		glClearColor(0.f, 0.f, 0.f, 1.0f);
 	else
 		glClearColor(1.f, 1.f, 1.f, 1.0f);
@@ -162,11 +167,11 @@ GLvoid drawScene()
 
 	//glm::mat4 projection;
 
-	hero.cameraProjection();
-	hero.camera();
-	draw();
-	hero.DrawHP();
-	hero.cameraProjection2();
+	hero[global_ID].cameraProjection();
+	hero[global_ID].camera();
+	draw();		  
+	hero[global_ID].DrawHP();
+	hero[global_ID].cameraProjection2();
 	//hero.TopView();
 	//draw();
 	glutSwapBuffers();
@@ -181,15 +186,15 @@ void draw() {
 	}
 
 	if (beardead) {
-		hero.lightColorR = 1.0f;
-		hero.lightColorG = 1.0f;
-		hero.lightColorB = 1.0f;
-	}
-	if (herodead) {
-		hero.lightColorR = 0.5f;
-		hero.lightColorG = 0.5f;
-		hero.lightColorB = 0.5f;
-
+		hero[global_ID].lightColorR = 1.0f;
+		hero[global_ID].lightColorG = 1.0f;
+		hero[global_ID].lightColorB = 1.0f;
+	}				  
+	if (herodead) {	   
+		hero[global_ID].lightColorR = 0.5f;
+		hero[global_ID].lightColorG = 0.5f;
+		hero[global_ID].lightColorB = 0.5f;
+			
 	}
 
 	unsigned int lightPosLocation = glGetUniformLocation(shaderID, "lightPos");      //--- lightPos 
@@ -198,7 +203,7 @@ void draw() {
 	tempv = Lightrotate * tempv;
 	glUniform3f(lightPosLocation, tempv.x, tempv.y, tempv.z);
 	unsigned int lightColorLocation = glGetUniformLocation(shaderID, "lightColor");   //--- lightColor 
-	glUniform3f(lightColorLocation, hero.lightColorR, hero.lightColorG, hero.lightColorB);
+	glUniform3f(lightColorLocation, hero[global_ID].lightColorR, hero[global_ID].lightColorG, hero[global_ID].lightColorB);
 	unsigned int aColor = glGetUniformLocation(shaderID, "objectColor");   //--- object Color
 	glUniform4f(aColor, 1, 1., 1., 1.);
 
@@ -299,8 +304,21 @@ void draw() {
 	if (BearLife) {
 		bear.draw();
 	}
-	hero.Update();
-	hero.Draw();
+
+	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
+	{
+
+		hero[i].Update();
+	}
+
+		
+	hero[global_ID].Update();
+
+	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
+	{
+		
+		hero[i].Draw();
+	}
 
 
 
@@ -330,7 +348,7 @@ void draw() {
 	}
 
 	auto p = find_if(gun.begin(), gun.end(), [](Gun* guns) {
-		if ((guns->GetPosX()) > 1000 || (guns->GetPosX()) < -1000 || (guns->GetPosZ()) > 1000 || (guns->GetPosZ()) < -1000) {
+		if ((guns->GetPosX()) > 500 || (guns->GetPosX()) < -500 || (guns->GetPosZ()) > 500 || (guns->GetPosZ()) < -500) {
 			return true;
 		}
 		else {
@@ -564,36 +582,36 @@ void Bearroomtest()
 
 void HeroVSBear()
 {
-	if (HeroVSRoom(hero, bearRoom)) {
+	if (HeroVSRoom(hero[global_ID], bearRoom)) {
 
 
-		if (hero.PosX < bearRoom.PositionX - 5)
-			hero.PosX += 1.0;
-		if (hero.PosX > bearRoom.PositionX + 5)
-			hero.PosX -= 1.0;
-		if (hero.PosZ < bearRoom.PositionZ - 5)
-			hero.PosZ += 1.0;
-		if (hero.PosZ > bearRoom.PositionZ + 5)
-			hero.PosZ -= 1.0;
+		if (hero[global_ID].PosX < bearRoom.PositionX - 5)
+			hero[global_ID].PosX += 1.0;
+		if (hero[global_ID].PosX > bearRoom.PositionX + 5)
+			hero[global_ID].PosX -= 1.0;
+		if (hero[global_ID].PosZ < bearRoom.PositionZ - 5)
+			hero[global_ID].PosZ += 1.0;
+		if (hero[global_ID].PosZ > bearRoom.PositionZ + 5)
+			hero[global_ID].PosZ -= 1.0;
 	}
 }
 
 void HeroVSCat()
 {
-	if (HeroVSRoom(hero, catRoom)) {
+	if (HeroVSRoom(hero[global_ID], catRoom)) {
 
-		if (catdead == 6 && hero.PosX > -101 && hero.PosX < -98 && hero.PosZ < -4.5 && isW) {
-			hero.PosZ -= 0.1;
+		if (catdead == 6 && hero[global_ID].PosX > -101 && hero[global_ID].PosX < -98 && hero[global_ID].PosZ < -4.5 && isW) {
+			hero[global_ID].PosZ -= 0.1;
 		}
 		else {
-			if (hero.PosX < catRoom.PositionX - 5)
-				hero.PosX += 1.0;
-			if (hero.PosX > catRoom.PositionX + 5)
-				hero.PosX -= 1.0;
-			if (hero.PosZ < catRoom.PositionZ - 5)
-				hero.PosZ += 1.0;
-			if (hero.PosZ > catRoom.PositionZ + 5)
-				hero.PosZ -= 1.0;
+			if (hero[global_ID].PosX < catRoom.PositionX - 5)
+				hero[global_ID].PosX += 1.0;
+			if (hero[global_ID].PosX > catRoom.PositionX + 5)
+				hero[global_ID].PosX -= 1.0;
+			if (hero[global_ID].PosZ < catRoom.PositionZ - 5)
+				hero[global_ID].PosZ += 1.0;
+			if (hero[global_ID].PosZ > catRoom.PositionZ + 5)
+				hero[global_ID].PosZ -= 1.0;
 		}
 
 	}
@@ -601,20 +619,20 @@ void HeroVSCat()
 
 void HeroVSDog()
 {
-	if (HeroVSRoom(hero, dogRoom)) {
+	if (HeroVSRoom(hero[global_ID], dogRoom)) {
 
-		if (dogdead == 6 && hero.PosX < +101 && hero.PosX > 98 && hero.PosZ < -4.5 && isW) {
-			hero.PosZ -= 0.1;
+		if (dogdead == 6 && hero[global_ID].PosX < +101 && hero[global_ID].PosX > 98 && hero[global_ID].PosZ < -4.5 && isW) {
+			hero[global_ID].PosZ -= 0.1;
 		}
 		else {
-			if (hero.PosX < dogRoom.PositionX - 5)
-				hero.PosX += 1.0;
-			if (hero.PosX > dogRoom.PositionX + 5)
-				hero.PosX -= 1.0;
-			if (hero.PosZ < dogRoom.PositionZ - 5)
-				hero.PosZ += 1.0;
-			if (hero.PosZ > dogRoom.PositionZ + 5)
-				hero.PosZ -= 1.0;
+			if (hero[global_ID].PosX < dogRoom.PositionX - 5)
+				hero[global_ID].PosX += 1.0;
+			if (hero[global_ID].PosX > dogRoom.PositionX + 5)
+				hero[global_ID].PosX -= 1.0;
+			if (hero[global_ID].PosZ < dogRoom.PositionZ - 5)
+				hero[global_ID].PosZ += 1.0;
+			if (hero[global_ID].PosZ > dogRoom.PositionZ + 5)
+				hero[global_ID].PosZ -= 1.0;
 		}
 
 	}
@@ -705,7 +723,7 @@ void Restartinit()
 	bearattack.initBearAttack();
 	bool jumpUp = true;
 
-	hero.initHero();
+	hero[global_ID].initHero();
 
 
 	///왕관 초기화

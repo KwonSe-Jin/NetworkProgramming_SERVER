@@ -41,7 +41,7 @@ public:
     }
 
     ~NetworkManager() {
-        std::cout << "²÷±è?" << std::endl;
+        std::cout << "ï¿½ï¿½ï¿½ï¿½?" << std::endl;
         closesocket(clientSocket);
         WSACleanup();
     }
@@ -70,19 +70,19 @@ public:
     }
     void SendIdlePlayer()
     {
-        //idle »óÅÂ!
+        //idle ï¿½ï¿½ï¿½ï¿½!
         if (!isW && !isA && !isS && !isD && !isBullet) {
             CS_PLAYER_PACKET p;
             p.player_id = global_ID;
             get_vangle(&(p.camera.VangleX), &(p.camera.VangleY));
             p.Player_key.is_bullet = true;
             if (!SendPlayerData(p)) {
-                std::cout << "ÆÐÅ¶º¸³»±â ½ÇÆÐ" << std::endl;
+                std::cout << "ï¿½ï¿½Å¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½" << std::endl;
             }
         }
     }
     bool SendPlayerData(CS_PLAYER_PACKET& p) {
-        // Å¬¶óÀÌ¾ðÆ®¿¡°Ô ½º·¹µå ID¸¦ º¸³»±â À§ÇÑ ÀÛ¾÷
+        // Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½
 
         int size = sizeof(p);
         send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
@@ -125,7 +125,7 @@ public:
         char buf[100];
         int size;
         recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-        std::cout << size << "¹ÙÀÌÆ® ¹ÞÀ½" << std::endl;
+        //std::cout << size << "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½" << std::endl;
         recv(clientSocket, buf, size, 0);
 
         switch (buf[0]) {
@@ -145,7 +145,7 @@ public:
         }
                       break;
         default:
-            std::cout << "Àß¸øµÈ µ¥ÀÌÅÍ" << std::endl;
+            std::cout << "ï¿½ß¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << std::endl;
             break;
         }
         return false;

@@ -22,12 +22,17 @@ extern float HeroLocationZ;
 //extern BearAttack bearattack;
 //extern bool jumpUp;
 
-Hero::Hero() : Unit(1.f)
+Hero::Hero(int colorID) : Unit(1.f)
 {
 	random_device rd;
 	default_random_engine dre(rd());
 	uniform_real_distribution<float> urd{ 0, 255 };
-	color = glm::vec3(255 / 255., 255 / 255., 255 / 255.);
+	if (colorID == 0)
+		color = glm::vec3(1.0f, 1.0f, 1.0f);
+	else if (colorID == 1)
+		color = glm::vec3(1.0f, 0.0f, 0.0f);
+	else if (colorID == 2)
+		color = glm::vec3(0.0f, 1.0f, 0.0f);
 	scaleX = 0.3;
 	scaleY = 0.3;
 	scaleZ = 0.3;
@@ -37,7 +42,6 @@ Hero::Hero() : Unit(1.f)
 	HP = 100;
 	firstmap = true;
 }
-
 Hero::~Hero()
 {
 	
@@ -85,7 +89,7 @@ int Hero::InfoHP() {
 void Hero::Update()
 { 
 
-	damage();
+	//damage();
 	glm::mat4 Scale = glm::scale(Unit, glm::vec3(scaleX, scaleY, scaleZ));
 	glm::mat4 Trans;
 	

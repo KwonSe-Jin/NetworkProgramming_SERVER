@@ -1,8 +1,18 @@
 #include "Timer.h"
 
+extern bool is_ballfire;
+extern int balltimer;
+
 void timer(int value) 
 {
+	if (is_ballfire) {
+		++balltimer;
+	}
 
+	if (balltimer>=50) {
+		is_ballfire = false;
+		balltimer = 0;
+	}
 	if (isW) {
 		//hero.ISW();
 	}
@@ -43,5 +53,5 @@ void timer(int value)
 
 	world.Update();
 	glutPostRedisplay();
-	glutTimerFunc(14, timer, 1);
+	glutTimerFunc(13, timer, 1);
 }

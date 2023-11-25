@@ -50,7 +50,7 @@ void Bear::draw()
 
 void Bear::update()
 {
-	hero.location();
+	//hero.location();
 	float dz = HeroLocationZ - Position.z;
 	float dx = HeroLocationX - Position.x;
 

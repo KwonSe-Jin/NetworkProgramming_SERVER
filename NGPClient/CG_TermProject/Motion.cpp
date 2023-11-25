@@ -5,9 +5,9 @@ GLvoid passiveMotion(int x, int y) {
 	/*CS_PLAYER_PACKET p;
 	p.Player_key.is_bullet = true;
 	if (!networkManager.SendPlayerData(p)) {
-		std::cout << "ÆÐÅ¶º¸³»±â ½ÇÆÐ" << std::endl;
+		std::cout << "ï¿½ï¿½Å¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½" << std::endl;
 	}*/
-	hero.VAngleMotion(x, y);
+	hero[global_ID].VAngleMotion(x, y);
 	
 	glutPostRedisplay();
 }

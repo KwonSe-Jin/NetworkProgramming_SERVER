@@ -1,26 +1,30 @@
 #include "Mouse.h"
-
 #include "Sound.h"
 extern Sound playSound;
 void get_vangle(float* x, float* y);
 
-extern int global_ID;
 
+extern int global_ID;
+int ball_count = 0;
 int BulletLimit;
+
+bool is_ballfire = false;
+int balltimer = 0;
 GLvoid Mouse(int button, int state, int x, int y) {
 
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		if (!herodead) {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && ball_count < 100) {
+		if (!herodead && !balltimer) {
 			isBullet = true;
-			
+			is_ballfire = true;
+			cout << ball_count << endl;
 			CS_PLAYER_PACKET p;
 			get_vangle(&(p.camera.VangleX), &(p.camera.VangleY));
 			p.player_id = global_ID;
 			p.Player_key.is_bullet = true;
 			if (!networkManager.SendPlayerData(p)) {
-				std::cout << "ÆÐÅ¶º¸³»±â ½ÇÆÐ" << std::endl;
+				std::cout << "ï¿½ï¿½Å¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½" << std::endl;
 			}
-
+			ball_count++;
 			playSound.GunSound();
 		}
 	}

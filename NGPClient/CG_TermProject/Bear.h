@@ -11,7 +11,7 @@
 #include "sword.h"
 #include "Hero.h"
 
-extern Hero hero;
+extern Hero hero[3];
 
 class Bear
 {

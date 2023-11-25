@@ -78,7 +78,7 @@ void Room::Draw()
 				glDrawArrays(GL_TRIANGLES, i * 6, 6);
 			}
 			else {
-				glBindTexture(GL_TEXTURE_2D, ScoreTexture[hero.InfoHP() - 2]);
+				glBindTexture(GL_TEXTURE_2D, ScoreTexture[hero[global_ID].InfoHP() - 2]);
 				glDrawArrays(GL_TRIANGLES, i * 6, 6);
 			}
 		}
