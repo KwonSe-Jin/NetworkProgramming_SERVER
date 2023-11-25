@@ -96,9 +96,11 @@ vector<Cat*> cats{ new Cat, new Cat, new Cat, new Cat, new Cat, new Cat };
 vector<Dog*> dogs{ new Dog, new Dog, new Dog, new Dog, new Dog, new Dog };
 Bear bear;
 
-Hero h;
+Hero h0(0);
+Hero h1(1);
+Hero h2(2);
 
-Hero hero[3] = { h,h,h };
+Hero hero[3] = { h0,h1,h2 };
 
 
 World world{};
@@ -303,9 +305,15 @@ void draw() {
 		bear.draw();
 	}
 
-	
-		hero[global_ID].Update();
-	
+	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
+	{
+
+		hero[i].Update();
+	}
+
+		
+	hero[global_ID].Update();
+
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
 		

@@ -133,7 +133,7 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	std::thread networkThread([&]() {
 		while (true) {
 
-			networkManager.SendIdlePlayer();
+			//networkManager.SendIdlePlayer();
 			networkManager.recvData();
 		}
 		});
