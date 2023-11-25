@@ -67,36 +67,36 @@ void Animal::update()
 	closelineX = HeroLocationX - PosX;
 	closelineZ = HeroLocationZ - PosZ;
 
-	if ((catlive && !herodead && AnimalType == Cat) || (catlive && !herodead && AnimalType == Dog) ||
+	if ((catlive && !herodead && AnimalType == Cat) || (doglive && !herodead && AnimalType == Dog) ||
 		(bearlive && !herodead && AnimalType == Bear)) {
 
 		if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
 
 			if (closelineX >= 0.5) {
 				closelineX -= 0.01;
-				PosZ += 0.01;
+				PosX += 0.1;
 			}
 			if (closelineX < -0.5) {
 				closelineX += 0.01;
-				PosX -= 0.01;
+				PosX -= 0.1;
 			}
 		}
 
 		if (!(closelineZ <= 0.5 && closelineZ >= -0.5)) {
 			if (closelineZ > 0.5) {
 				closelineZ -= 0.01;
-				PosZ += 0.01;
+				PosZ += 0.1;
 			}
 			if (closelineZ < -0.5) {
 				closelineZ += 0.01;
-				PosZ -= 0.01;
+				PosZ -= 0.1;
 			}
 
 		}
 
 	}
 
-	if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
+	/*if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
 		if (AnimalType == Cat) {
 			AnimalCrushHero = true;
 			catattack[Index].Activate = true;
@@ -126,7 +126,7 @@ void Animal::update()
 			AnimalCrushHero = false;
 			bearattack.Activate = false;
 		}
-	}
+	}*/
 
 }
 

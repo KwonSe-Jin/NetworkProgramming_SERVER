@@ -138,8 +138,7 @@ void Cat::update()
 		swordL.keyIn(Position, Direction);
 		swordR.keyIn(Position, Direction);
 
-
-	}
+}
 
 
 
