@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-
+#include "Collision.h"
 #include "protocol.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
@@ -133,7 +133,16 @@ void CalculateThread()
          
             {
                 SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket);
-                cout << "playerInputPacket->player_id" << playerInputPacket->player_id << endl;
+                heroes[playerInputPacket->player_id].Update();
+                /*cout << "playerInputPacket->player_id" << playerInputPacket->player_id << endl;*/
+                if (catlive)
+                    HeroVSCat();
+
+                if (doglive)
+                    HeroVSDog();
+
+                if (bearlive)
+                    HeroVSBear();
 
                 for (int i = 0; i < clientsocketes.size(); ++i) {
                     SendToClient(responsePacket, clientsocketes[i]);

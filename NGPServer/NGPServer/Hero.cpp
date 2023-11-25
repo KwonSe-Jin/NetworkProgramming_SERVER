@@ -19,7 +19,7 @@ extern Animal AniBear;
 Hero::Hero(int id) : ID{id}
 {
 	PosX = 0;
-	PosY = 0.5;
+	PosY = -1.0;
 	PosZ = 10.0;
 	HP = 100;
 	firstmap = true;
