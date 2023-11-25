@@ -136,6 +136,13 @@ void makeInfo(SC_PLAYER_PACKET* p)
 	hero[p->player_id].setInfo(p);
 }
 
+void animalInfo(SC_MONSTER_PACKET* p, int i)
+{
+	// to_do 일단 캣으로!!
+	
+	cats[i]->catinfo(p);
+	
+}
 
 void get_vangle(float* x, float* y)
 {
@@ -289,17 +296,17 @@ void draw() {
 	AnimalCollideDog();
 	DogAndRoomCollision();
 
-	//for (int i = 0; i < cats.size(); ++i) {
-	//	cats[i]->update();
-	//}
+	for (int i = 0; i < cats.size(); ++i) {
+		cats[i]->update();
+	}
 
-	//for (int i = 0; i < dogs.size(); ++i) {
-	//	dogs[i]->update();
-	//}
+	for (int i = 0; i < dogs.size(); ++i) {
+		dogs[i]->update();
+	}
 
-	//if (BearLife) {
-	//	bear.update();
-	//}
+	if (BearLife) {
+		bear.update();
+	}
 
 
 	for (int i = 0; i < cats.size(); ++i) {

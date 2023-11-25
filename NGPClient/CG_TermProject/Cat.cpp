@@ -155,6 +155,15 @@ void Cat::damage()
 	
 }
 
+void Cat::catinfo(SC_MONSTER_PACKET* p)
+{
+	Direction = p->direction;
+	Position.x = p->x;
+	Position.y = p->y;
+	Position.z = p->z;
+	HP = p->hp;
+}
+
 float Cat::getLeft()
 {
 	return Position.x - 0.12f;

@@ -57,7 +57,7 @@ public:
 	void draw();
 	void update();
 	void damage();
-
+	void catinfo(SC_MONSTER_PACKET* p);
 	float getLeft();
 	float getRight();
 	float getBehind();

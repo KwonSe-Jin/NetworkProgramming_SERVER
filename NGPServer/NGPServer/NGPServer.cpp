@@ -157,6 +157,10 @@ void processmonsterPacket(Animal ani) {
 	monsters[ani.Index].y = ani.PosY;
 	monsters[ani.Index].z = ani.PosZ;
 
+	cout << "=====" << ani.Index << "====" << endl;
+	cout << monsters[ani.Index].x << endl;
+	cout << monsters[ani.Index].y << endl;
+	cout << monsters[ani.Index].z << endl;
 }
 
 
@@ -197,6 +201,7 @@ void CalculateThread()
 				}
 
 				for (int i = 0; i < clientsocketes.size(); ++i) {
+
 					SC_MONSTER_Send(clientsocketes[i]);
 				}
 

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <iostream>
+#include <cstring>
 #include <thread>
 #include <queue>
 #include <mutex>
@@ -19,6 +20,8 @@ extern bool isBullet;
 
 #pragma comment(lib, "ws2_32.lib")
 void makeInfo(SC_PLAYER_PACKET* p);
+void animalInfo(SC_MONSTER_PACKET* p, int i);
+
 void get_vangle(float* x, float* y);
 
 extern int global_ID;
@@ -126,24 +129,33 @@ public:
         char buf[500];
         int size;
         recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-        //std::cout << size << "바이트 받음" << std::endl;
         recv(clientSocket, buf, size, 0);
         switch (buf[0]) {
         case SC_PLAYER: {
             SC_PLAYER_PACKET* p = reinterpret_cast<SC_PLAYER_PACKET*>(buf);
             makeInfo(p);
-
         }
         break;
         case SC_MONSTER: {
-            SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
+            std::cout << size << "바이트 받음" << std::endl;
+            for (int i = 0; i < 6; ++i) {
+                char anibuf[32];
+                std::memcpy(&anibuf, &buf[i * 32], 32);
+                SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(anibuf);
+                animalInfo(p, i);
+                cout << "=====" << i << "====" << endl;
+
+                cout << p->x << endl;
+                cout << p->y << endl;
+                cout << p->z << endl;
+            }
+            break;
 
         }
-                       break;
         case SC_BULLET: {
             SC_BULLET_PACKET* p = reinterpret_cast<SC_BULLET_PACKET*>(buf);
         }
-                      break;
+        break;
         default:
             std::cout << "잘못된 데이터" << std::endl;
             break;
