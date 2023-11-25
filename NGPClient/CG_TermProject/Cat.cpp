@@ -71,7 +71,7 @@ void Cat::update()
 
 		//여기는 고양이 - 주인공 따라오기 알고리즘 
 		//hero[].location();
-		float dz = HeroLocationZ - Position.z;
+		/*float dz = HeroLocationZ - Position.z;
 		float dx = HeroLocationX - Position.x;
 
 		Direction = atan2(dx, dz);
@@ -115,7 +115,7 @@ void Cat::update()
 		else {
 			CatCrushHero = false;
 			catattack[Index].Activate = false;
-		}
+		}*/
 
 
 		nose.keyIn(Position, Direction);
@@ -138,10 +138,9 @@ void Cat::update()
 		swordL.keyIn(Position, Direction);
 		swordR.keyIn(Position, Direction);
 
-	
-
 
 	}
+
 
 
 Cat::~Cat()

@@ -124,19 +124,18 @@ public:
 
 
     bool recvData() {
-        char buf[100];
+        char buf[500];
         int size;
         recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
         //std::cout << size << "바이트 받음" << std::endl;
         recv(clientSocket, buf, size, 0);
-
         switch (buf[0]) {
         case SC_PLAYER: {
             SC_PLAYER_PACKET* p = reinterpret_cast<SC_PLAYER_PACKET*>(buf);
             makeInfo(p);
 
         }
-                      break;
+        break;
         case SC_MONSTER: {
             SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
 

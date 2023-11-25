@@ -210,8 +210,6 @@ void draw() {
 	world.Draw();
 
 
-
-
 	glEnable(GL_BLEND); //투명 객체 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -291,6 +289,17 @@ void draw() {
 	AnimalCollideDog();
 	DogAndRoomCollision();
 
+	//for (int i = 0; i < cats.size(); ++i) {
+	//	cats[i]->update();
+	//}
+
+	//for (int i = 0; i < dogs.size(); ++i) {
+	//	dogs[i]->update();
+	//}
+
+	//if (BearLife) {
+	//	bear.update();
+	//}
 
 
 	for (int i = 0; i < cats.size(); ++i) {

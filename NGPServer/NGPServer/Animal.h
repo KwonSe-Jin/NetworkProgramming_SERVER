@@ -13,18 +13,18 @@ class Animal
 	float closelineZ;
 
 	//glm::vec3 Position;
-	float Direction;
 	bool AnimalCrushHero;
 
-	int HP;
 	int Attack;
-	int Index = 0;
 
 
-	int AnimalType;
 
 
 public:
+	float Direction;
+	int HP;
+	int AnimalType;
+	int Index = 0;
 	float PosX = 0;
 	float PosY = 0;
 	float PosZ = 0;
