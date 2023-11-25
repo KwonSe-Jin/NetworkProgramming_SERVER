@@ -11,5 +11,7 @@ extern Bear bear;
 extern World world;
 extern Hero hero;
 void timer(int value);
+extern int BulletTime;
+extern bool isBulletTime;
 
 

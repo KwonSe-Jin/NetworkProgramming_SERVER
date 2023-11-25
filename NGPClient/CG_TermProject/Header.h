@@ -133,3 +133,7 @@ extern NetworkManager networkManager;
 extern int DogCnt ;
 extern int CatCnt ;
 extern int global_ID;
+
+extern int BulletTime;
+
+extern bool isBulletTime;

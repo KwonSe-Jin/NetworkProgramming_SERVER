@@ -1,8 +1,19 @@
 #include "Timer.h"
 
+
+
 void timer(int value) 
 {
-
+	if (isBulletTime) {
+		++BulletTime;
+	}
+	if (BulletTime >= 45) {
+		BulletTime=0;
+		isBulletTime = false;
+	}
+	
+	
+	
 	if (isW) {
 		//hero.ISW();
 	}

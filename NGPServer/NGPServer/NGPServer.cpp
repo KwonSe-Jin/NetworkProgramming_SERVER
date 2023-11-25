@@ -7,6 +7,7 @@
 int HeroID = 0;
 
 vector<Hero> heroes;
+vector<SOCKET> clientsocketes;
 std::mutex g_m;
 using PlayerInputTuple = std::tuple<CS_PLAYER_PACKET*, SOCKET>;
 std::queue<PlayerInputTuple> playerInput;
@@ -18,27 +19,27 @@ int AnimalCnt = 0;
 //vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 
 
- bool catlive=false;
- bool doglive = false;
- bool bearlive = false;
- bool herodead = false;
+bool catlive = false;
+bool doglive = false;
+bool bearlive = false;
+bool herodead = false;
 
- float HeroLocationX=0;
- float HeroLocationZ=0;
-
-
- int catdead{};
- int dogdead{};
- int beardead{};
-
- Room catRoom{ Cat };
- Room dogRoom{ Dog };
- Room bearRoom{ Bear };
+float HeroLocationX = 0;
+float HeroLocationZ = 0;
 
 
- vector<Animal*> AniCats{ new Animal(Cat,0), new Animal(Cat,1),new Animal(Cat,2), new Animal(Cat,3),new Animal(Cat,4),new Animal(Cat,5) };
- vector<Animal*> AniDogs{ new Animal(Dog,0), new Animal(Dog,1),new Animal(Dog,2), new Animal(Dog,3),new Animal(Dog,4),new Animal(Dog,5) };
- Animal AniBear(Bear,0);
+int catdead{};
+int dogdead{};
+int beardead{};
+
+Room catRoom{ Cat };
+Room dogRoom{ Dog };
+Room bearRoom{ Bear };
+
+
+vector<Animal*> AniCats{ new Animal(Cat,0), new Animal(Cat,1),new Animal(Cat,2), new Animal(Cat,3),new Animal(Cat,4),new Animal(Cat,5) };
+vector<Animal*> AniDogs{ new Animal(Dog,0), new Animal(Dog,1),new Animal(Dog,2), new Animal(Dog,3),new Animal(Dog,4),new Animal(Dog,5) };
+Animal AniBear(Bear, 0);
 
 
 Attack catattack[AnimalMax];
@@ -49,15 +50,15 @@ Attack bearattack;
 void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
 	//SC_PLAYER_PACKET p;
+
 	p.packet_type = SC_PLAYER;
 	int size = sizeof(p);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 	if (result == SOCKET_ERROR) {
 		std::cout << "Failed to send data" << std::endl;
-
 	}
-	
+
 	//cout << "x값 " << p.Player_pos.x << endl;
 
 
@@ -66,22 +67,22 @@ void SendToClient(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 SC_PLAYER_PACKET& processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket) {
 
 	SC_PLAYER_PACKET scPacket;
-	scPacket.packet_type = 1; 
+	scPacket.packet_type = 1;
 	scPacket.player_id = csPacket.player_id;
-	
+
 	heroes[scPacket.player_id].damage();
 	scPacket.player_hp = heroes[scPacket.player_id].HP;
 	scPacket.status = csPacket.status;
 	scPacket.ready = csPacket.ready;
-	heroes[scPacket.player_id ].VAngleX = csPacket.camera.VangleX;
-	heroes[scPacket.player_id ].VAngleY = csPacket.camera.VangleY;
+	heroes[scPacket.player_id].VAngleX = csPacket.camera.VangleX;
+	heroes[scPacket.player_id].VAngleY = csPacket.camera.VangleY;
 	/*cout << heroes[scPacket.player_id ].VAngleX << endl;
 	cout << heroes[scPacket.player_id ].VAngleY << endl;*/
 
 	if (csPacket.Player_key.is_w) {
 
 		heroes[scPacket.player_id].ISW();
-		
+
 	}
 
 	if (csPacket.Player_key.is_a) {
@@ -96,16 +97,16 @@ SC_PLAYER_PACKET& processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket) {
 		heroes[scPacket.player_id].ISD();
 	}
 
-	
-	scPacket.Player_pos.x = heroes[scPacket.player_id ].PosX;
-	scPacket.Player_pos.y = heroes[scPacket.player_id ].PosY;
-	scPacket.Player_pos.z = heroes[scPacket.player_id ].PosZ;
+
+	scPacket.Player_pos.x = heroes[scPacket.player_id].PosX;
+	scPacket.Player_pos.y = heroes[scPacket.player_id].PosY;
+	scPacket.Player_pos.z = heroes[scPacket.player_id].PosZ;
 
 
 	//scPacket.Player_light.R = 1.0f; 
 	//scPacket.Player_light.G = 0.5f;
 	//scPacket.Player_light.B = 0.0f;
-	
+
 
 	return scPacket;
 }
@@ -132,11 +133,30 @@ void CalculateThread()
 			{
 				lock_guard<mutex> lock(heroMutex);
 				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket);
-				
+				/*  for (int i = 0; i < heroes.size(); ++i) {
+					  SendToClient(responsePacket, clientsocketes[i]);
+				  }*/
 				SendToClient(responsePacket, clientSocket);
+				//cout << "playerInputPacket->player_id" << playerInputPacket->player_id <<endl;
+				//SC_PLAYER_PACKET broadcastPacket;
+				cout << "playerInputPacket->player_id" << playerInputPacket->player_id << endl;
+
+				for (int i = 0; i < heroes.size(); ++i) {
+					if (i != playerInputPacket->player_id) {
+						responsePacket.player_id = i;
+						responsePacket.Player_pos.x = heroes[i].PosX;
+						responsePacket.Player_pos.y = heroes[i].PosY;
+						responsePacket.Player_pos.z = heroes[i].PosZ;
+						SendToClient(responsePacket, clientsocketes[playerInputPacket->player_id]);
+
+					}
+				}
 				
+
+
 			}
-			//SendToClient(responsePacket, clientSocket);
+			
+
 		}
 		player_m.unlock();
 	}
@@ -201,10 +221,9 @@ void HandleClientSocket(SOCKET clientSocket)
 		}
 		CS_PLAYER_PACKET* p = reinterpret_cast<CS_PLAYER_PACKET*>(buf);
 
-		//player_m.lock();
-
+		player_m.lock();
 		playerInput.push(std::make_tuple(p, clientSocket));
-		//player_m.unlock();
+		player_m.unlock();
 	}
 	// 클라이언트 소켓 종료
 	SocketUtils::Close(clientSocket);
@@ -243,8 +262,8 @@ int main()
 			return 0;
 		}
 
-		//SocketUtils::SetTcpNoDelay(clientSocket, true);
-
+		SocketUtils::SetTcpNoDelay(clientSocket, true);
+		clientsocketes.emplace_back(clientSocket);
 		cout << "Client Connected!" << endl;
 
 		// 클라이언트 별로 스레드 시작
@@ -253,7 +272,7 @@ int main()
 				// 스레드에서 클라이언트 소켓 처리 코드를 실행
 				HandleClientSocket(clientSocket);
 			});
-		
+
 	}
 	threadManager.Join();
 	calculationThread.join();
