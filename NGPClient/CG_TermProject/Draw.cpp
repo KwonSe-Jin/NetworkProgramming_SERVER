@@ -305,27 +305,23 @@ void draw() {
 		bear.draw();
 	}
 
-	//for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
-	//{
-
-	//	hero[global_ID].Update();
-	//}
-	//
-		
-	//hero[global_ID].Update();
-
-	for (int i = 0; i < 2; ++i) // to_do 두명일 때는?!?!?!!
+	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
+
 		hero[i].Update();
-		//hero[i].Draw();
 	}
 
+		
+	hero[global_ID].Update();
 
-	for (int i = 0; i < 2; ++i) // to_do 두명일 때는?!?!?!!
+	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
-		//hero[i].Update();
+		
 		hero[i].Draw();
 	}
+
+
+
 	if (catlive)
 		HeroVSCat();
 

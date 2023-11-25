@@ -27,11 +27,11 @@ Hero::Hero(int colorID) : Unit(1.f)
 	random_device rd;
 	default_random_engine dre(rd());
 	uniform_real_distribution<float> urd{ 0, 255 };
-	if (colorID == 0) 
+	if (colorID == 0)
 		color = glm::vec3(1.0f, 1.0f, 1.0f);
-	else if(colorID == 1)
+	else if (colorID == 1)
 		color = glm::vec3(1.0f, 0.0f, 0.0f);
-	else if(colorID == 2)
+	else if (colorID == 2)
 		color = glm::vec3(0.0f, 1.0f, 0.0f);
 	scaleX = 0.3;
 	scaleY = 0.3;
@@ -42,7 +42,6 @@ Hero::Hero(int colorID) : Unit(1.f)
 	HP = 100;
 	firstmap = true;
 }
-
 Hero::~Hero()
 {
 
@@ -93,7 +92,8 @@ void Hero::Update()
 	//damage();
 	glm::mat4 Scale = glm::scale(Unit, glm::vec3(scaleX, scaleY, scaleZ));
 	glm::mat4 Trans;
-	Trans = glm::translate(Unit, glm::vec3(PosX, PosY, PosZ));
+	
+	Trans = glm::translate(Unit, glm::vec3(PosX, PosY, PosZ ));
 
 
 	//	if (PosX < -1 && firstmap)
