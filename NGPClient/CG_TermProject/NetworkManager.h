@@ -143,11 +143,7 @@ public:
                 std::memcpy(&anibuf, &buf[i * 32], 32);
                 SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(anibuf);
                 animalInfo(p, i);
-                cout << "=====" << i << "====" << endl;
 
-                cout << p->x << endl;
-                cout << p->y << endl;
-                cout << p->z << endl;
             }
             break;
 

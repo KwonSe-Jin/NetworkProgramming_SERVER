@@ -112,9 +112,6 @@ SC_PLAYER_PACKET& processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket) {
 
 
 
-
-
-
 	//scPacket.Player_light.R = 1.0f; 
 	//scPacket.Player_light.G = 0.5f;
 	//scPacket.Player_light.B = 0.0f;
@@ -124,7 +121,7 @@ SC_PLAYER_PACKET& processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket) {
 }
 
 
-void processmonsterPacket(Animal ani) {
+void processmonsterPacket(Animal& ani) {
 
 	//SC_MONSTER_PACKET scPacket;
 	monsters[ani.Index].packet_type = 2;
@@ -157,10 +154,7 @@ void processmonsterPacket(Animal ani) {
 	monsters[ani.Index].y = ani.PosY;
 	monsters[ani.Index].z = ani.PosZ;
 
-	cout << "=====" << ani.Index << "====" << endl;
-	cout << monsters[ani.Index].x << endl;
-	cout << monsters[ani.Index].y << endl;
-	cout << monsters[ani.Index].z << endl;
+
 }
 
 

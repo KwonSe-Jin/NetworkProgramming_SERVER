@@ -141,6 +141,7 @@ void animalInfo(SC_MONSTER_PACKET* p, int i)
 	// to_do 일단 캣으로!!
 	
 	cats[i]->catinfo(p);
+	cats[i]->update();
 	
 }
 
@@ -296,17 +297,17 @@ void draw() {
 	AnimalCollideDog();
 	DogAndRoomCollision();
 
-	for (int i = 0; i < cats.size(); ++i) {
-		cats[i]->update();
-	}
+	//for (int i = 0; i < cats.size(); ++i) {
+	//	cats[i]->update();
+	//}
 
-	for (int i = 0; i < dogs.size(); ++i) {
-		dogs[i]->update();
-	}
+	//for (int i = 0; i < dogs.size(); ++i) {
+	//	dogs[i]->update();
+	//}
 
-	if (BearLife) {
-		bear.update();
-	}
+	//if (BearLife) {
+	//	bear.update();
+	//}
 
 
 	for (int i = 0; i < cats.size(); ++i) {

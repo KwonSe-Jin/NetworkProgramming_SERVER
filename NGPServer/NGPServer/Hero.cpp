@@ -119,6 +119,7 @@ void Hero::Update()
 
 void Hero::location()
 {
+
 	HeroLocationX = PosX;
 	HeroLocationZ = PosZ;
 }
