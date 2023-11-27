@@ -7,10 +7,10 @@
 
 class Hero
 {
-	
+
 	bool firstmap;
 	/// <summary>
-	/// Ä«¸Þ¶ó ½ÃÀÛÇÕ´Ï´Ù.
+	/// Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 	/// </summary>
 
 
@@ -18,6 +18,12 @@ class Hero
 
 public:
 	bool _flag = true;
+
+	bool catlive;
+	bool doglive;
+	bool bearlive;
+	bool herodead;
+
 	int ID;
 	int HP;
 	float PosX;
@@ -50,6 +56,6 @@ public:
 	/*friend void HeroVSDog();
 	friend void HeroVSBear();
 	friend void HeroVSCat();*/
-	///////////////Ä«¸Þ¶ó ½ÃÀÛÇÕ´Ï´Ù.///////////////
+	///////////////Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.///////////////
 
 };

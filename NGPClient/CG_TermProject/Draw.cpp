@@ -329,8 +329,9 @@ void draw() {
 
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
-		
-		hero[i].Draw();
+		if (i != global_ID && hero[i].Hero_ID!=-1) {
+			hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
+		}
 	}
 
 

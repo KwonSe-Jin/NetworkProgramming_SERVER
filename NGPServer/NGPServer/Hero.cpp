@@ -1,10 +1,10 @@
 #include "pch.h"
 #include <cmath>
-
-extern bool catlive;
-extern bool doglive;
-extern bool bearlive;
-extern bool herodead;
+//
+extern bool  g_catlive;
+extern bool g_doglive;
+extern bool g_bearlive;
+//extern bool herodead;
 extern float HeroLocationX;
 extern float HeroLocationZ;
 
@@ -16,13 +16,31 @@ extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;
 extern Animal AniBear;
 
-Hero::Hero(int id) : ID{id}
+Hero::Hero(int id) : ID{ id }
 {
-	PosX = 0;
-	PosY = 0.5;
-	PosZ = 10.0;
+	if (id == 0) {
+		PosX = 0;
+		PosY = -1.0;
+		PosZ = 10.0;
+	}
+	else if(id==1)
+	{
+		PosX = 3;
+		PosY = -1.0;
+		PosZ = 10.0;
+	}
+	else if (id == 2) 
+	{
+		PosX = -3;
+		PosY = -1.0;
+		PosZ = 10.0;
+	}
 	HP = 100;
 	firstmap = true;
+	catlive = false;
+	doglive = false;
+	bearlive = false;
+	herodead = false;
 }
 
 Hero::~Hero()
@@ -92,7 +110,7 @@ void Hero::Update()
 	}
 
 
-	if (PosZ < -10 && firstmap) {
+	if (PosZ < -10 && firstmap|| g_catlive&&firstmap) { //�����̹� ���� 
 		PosX = -100;
 		PosZ = 0;
 		catlive = true;
@@ -100,7 +118,7 @@ void Hero::Update()
 		doglive = false;
 		firstmap = false;
 	}
-	if (PosZ < -7 && catlive) {
+	if (PosZ < -7 && catlive|| g_doglive && catlive) { //�������� ���� 
 		PosX = 100;
 		PosZ = 0;
 		catlive = false;
@@ -108,10 +126,9 @@ void Hero::Update()
 		bearlive = false;
 
 	}
-	if (PosZ < -7 && doglive) {
+	if (PosZ < -7 && doglive|| g_bearlive&& doglive) { //�� �� ���� 
 		PosX = 0;
 		PosZ = -100;
-
 		doglive = false;
 		catlive = false;
 		bearlive = true;
@@ -136,10 +153,8 @@ void Hero::isQuit()
 void Hero::ISW()
 {
 	float radians = VAngleY * PI / 180.0f;
-
 	PosZ -= 0.2 * cos(radians);
 	PosX += 0.2 * sin(radians);
-
 }
 
 void Hero::ISA()
@@ -154,8 +169,8 @@ void Hero::ISA()
 void Hero::ISS()
 {
 	float radians = VAngleY * PI / 180.0f;
-	PosZ += 0.2 *cos(radians);
-	PosX -= 0.2 *sin(radians);
+	PosZ += 0.2 * cos(radians);
+	PosX -= 0.2 * sin(radians);
 }
 
 void Hero::ISD()

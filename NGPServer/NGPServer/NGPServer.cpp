@@ -18,10 +18,10 @@ int AnimalCnt = 0;
 //vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 
 
-bool catlive = false;
-bool doglive = false;
-bool bearlive = false;
-bool herodead = false;
+bool g_catlive = false;
+bool g_doglive = false;
+bool g_bearlive = false;
+bool g_herodead = false;
 
 float HeroLocationX = 0;
 float HeroLocationZ = 0;
@@ -134,18 +134,18 @@ void processmonsterPacket(Animal& ani) {
 
     ani.update();
 
-    if (catlive) {
-        AnimalCollideCat();
-        Catroomtest();
-    }
-    if (doglive)
-    {
-        AnimalCollideDog();
-        DogAndRoomCollision();
-    }
-    if (bearlive) {
-        BearAndRoomCollision();
-    }
+	if (g_catlive) {
+		AnimalCollideCat();
+		Catroomtest();
+	}
+	if (g_doglive)
+	{
+		AnimalCollideDog();
+		DogAndRoomCollision();
+	}
+	if (g_bearlive) {
+		BearAndRoomCollision();
+	}
 
 
 
@@ -166,19 +166,77 @@ void CalculateThread()
     {
         //todo
 
-        g_m.lock();
+		g_m.lock();
+	/*	if (g_catlive) {
+			catlive = true;
+			doglive = false;
+			bearlive = false;
+		}
+		else if (g_doglive) {
+			catlive = false;
+			doglive = true;
+			bearlive = false;
+		}
+		else if (g_bearlive) {
+			catlive = false;
+			doglive = false;
+			bearlive = true;
+		}*/
+		
+		for (int i = 0; i < heroes.size(); ++i) {
+			if (heroes[i].catlive) { // 한명이라도 들어간 순간? 
+				g_catlive = true;
+				g_doglive = false;
+				g_bearlive = false;
+			}
+			else if (heroes[i].doglive) {
+				g_catlive = false;
+				g_doglive = true;
+				g_bearlive = false;
+			}
+			else if (heroes[i].bearlive) {
+				g_catlive = false;
+				g_doglive = true;
+				g_bearlive = false;
+			}
+		}
 
-        if ((heroes.size() && catlive) || (heroes.size() && doglive) || (heroes.size() && bearlive))
-        {
 
-            if (catlive)
-                HeroVSCat();
 
-            if (doglive)
-                HeroVSDog();
+		if ((heroes.size()&& g_catlive)|| (heroes.size() && g_doglive)|| (heroes.size() && g_bearlive)) {
+			if (g_catlive)
+				HeroVSCat();
 
-            if (bearlive)
-                HeroVSBear();
+			if (g_doglive)
+				HeroVSDog();
+
+			if (g_bearlive)
+				HeroVSBear();
+
+			for (int i = 0; i < 6; ++i) {
+				processmonsterPacket(*AniCats[i]);
+			}
+
+			for (int i = 0; i < clientsocketes.size(); ++i) {
+
+				SC_MONSTER_Send(clientsocketes[i]);
+			}
+		}
+		while (!playerInput.empty())
+		{
+			CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
+			playerInput.pop();
+
+			{
+				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket);
+				heroes[playerInputPacket->player_id].Update();
+				/*cout << "playerInputPacket->player_id" << playerInputPacket->player_id << endl;*/
+
+				for (int i = 0; i < clientsocketes.size(); ++i) {
+					SC_PLAYER_Send(responsePacket, clientsocketes[i]);
+				}
+
+				//to_do 보내기
 
 
             for (int i = 0; i < 6; ++i) {

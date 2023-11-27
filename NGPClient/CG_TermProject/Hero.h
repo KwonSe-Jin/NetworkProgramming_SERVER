@@ -25,7 +25,7 @@ class Hero
 	float PosZ;
 	bool firstmap;
 /// <summary>
-/// Ä«¸Þ¶ó ½ÃÀÛÇÕ´Ï´Ù.
+/// Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 /// </summary>
 	bool first = true;
 	bool second = true;
@@ -61,9 +61,10 @@ class Hero
 
 
 public:
-	float lightColorR = 1.0;
-	float lightColorG = 1.0;
-	float lightColorB = 1.0;
+	int Hero_ID = -1;
+	float lightColorR = 1.0f;
+	float lightColorG = 1.0f;
+	float lightColorB = 1.0f;
 	Hero(int colorID);
 	~Hero();
 	/*void ISW();
@@ -85,7 +86,7 @@ public:
 	friend void HeroVSDog();
 	friend void HeroVSBear();
 	friend void HeroVSCat();
-	///////////////Ä«¸Þ¶ó ½ÃÀÛÇÕ´Ï´Ù.///////////////
+	///////////////Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.///////////////
 	void camera();
 	void TopView();
 	void camera3D();

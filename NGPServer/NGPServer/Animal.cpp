@@ -2,11 +2,17 @@
 #include <numeric>
 #include <limits>
 #include <random>
-extern vector<Hero> heroes; //ÁÖÀÎ°ø º¤ÅÍ ÀÏ´Ü ¸¸µé¾î³õÀ½ ³ªÁß¿¡ ¸ÊÀ¸·Î ¼öÁ¤ ÈÄ ÁÖ¼® Áö¿öÁÖ¼¼¿ä. 
+extern vector<Hero> heroes; //ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½. 
 
 extern Attack catattack[AnimalMax];
 extern Attack dogattack[AnimalMax];
 extern Attack bearattack;
+
+extern bool g_catlive;
+extern bool g_doglive;
+extern bool g_bearlive;
+extern bool g_herodead;
+
 extern int AnimalCnt;
 
 
@@ -23,7 +29,7 @@ Animal::Animal(int type, int id) : AnimalType(type),Index(id)
 		PosZ = urdZ(dre);
 		HP = 20;
 		Attack = 10;	
-		if (AnimalCnt == AnimalMax) { // °í¾çÀÌ´Â 6¸¶¸®·Î ÁöÁ¤Çß°í, 6¸¶¸® ¸ðµÎ IDºÎ¿©°¡ µÈ °æ¿ì Àü¿ª IDºÎ¿©ÇØÁÖ´Â °÷À» 0À¸·Î ÃÊ±âÈ­ÇÑ´Ù.
+		if (AnimalCnt == AnimalMax) { // ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ 6ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß°ï¿½, 6ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ IDï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ IDï¿½Î¿ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ï¿½Ñ´ï¿½.
 			AnimalCnt = 0;
 		}
 
@@ -36,7 +42,7 @@ Animal::Animal(int type, int id) : AnimalType(type),Index(id)
 		PosZ = urdZ(dre);
 		HP = 40;
 		Attack = 20;
-		if (AnimalCnt == AnimalMax) { // °í¾çÀÌ´Â 6¸¶¸®·Î ÁöÁ¤Çß°í, 6¸¶¸® ¸ðµÎ IDºÎ¿©°¡ µÈ °æ¿ì Àü¿ª IDºÎ¿©ÇØÁÖ´Â °÷À» 0À¸·Î ÃÊ±âÈ­ÇÑ´Ù.
+		if (AnimalCnt == AnimalMax) { // ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ 6ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß°ï¿½, 6ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ IDï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ IDï¿½Î¿ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ï¿½Ñ´ï¿½.
 			AnimalCnt = 0;
 		}
 	}
@@ -61,7 +67,7 @@ float Animal::calculateDistance(float targetX, float targetZ)
 
 void Animal::update()
 {
-	float closestDistance = 3.40282e+38;  // ÃÖ´ë°ªÀ¸·Î ÃÊ±âÈ­
+	float closestDistance = 3.40282e+38;  // ï¿½Ö´ë°ªï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
 	int closestHeroIndex = -1;
 
 	for (int i = 0; i < heroes.size(); ++i) {
@@ -72,11 +78,11 @@ void Animal::update()
 		}
 	}
 
-	// closestHeroIndex°¡ °¡Àå °¡±î¿î ÇÃ·¹ÀÌ¾îÀÇ ÀÎµ¦½º
+	// closestHeroIndexï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
 
-	// ³ª¸ÓÁö ÄÚµå´Â º¯°æ ¾øÀ½...
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½...
 	heroes[closestHeroIndex].location();
-	// ³ª¸ÓÁö ÄÚµå...
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½...
 	//-----------------------
 	float dz = HeroLocationZ - PosZ;
 	float dx = HeroLocationX - PosX;
@@ -86,8 +92,8 @@ void Animal::update()
 	closelineX = HeroLocationX - PosX;
 	closelineZ = HeroLocationZ - PosZ;
 
-	if ((catlive && !herodead && AnimalType == Cat) || (doglive && !herodead && AnimalType == Dog) ||
-		(bearlive && !herodead && AnimalType == Bear)) {
+	if ((g_catlive && !g_herodead && AnimalType == Cat) || (g_doglive && !g_herodead && AnimalType == Dog) ||
+		(g_bearlive && !g_herodead && AnimalType == Bear)) {
 
 		if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
 
