@@ -167,22 +167,7 @@ void CalculateThread()
         //todo
 
 		g_m.lock();
-	/*	if (g_catlive) {
-			catlive = true;
-			doglive = false;
-			bearlive = false;
-		}
-		else if (g_doglive) {
-			catlive = false;
-			doglive = true;
-			bearlive = false;
-		}
-		else if (g_bearlive) {
-			catlive = false;
-			doglive = false;
-			bearlive = true;
-		}*/
-		
+
 		for (int i = 0; i < heroes.size(); ++i) {
 			if (heroes[i].catlive) { // 한명이라도 들어간 순간? 
 				g_catlive = true;
@@ -200,7 +185,6 @@ void CalculateThread()
 				g_bearlive = false;
 			}
 		}
-
 
 
 		if ((heroes.size()&& g_catlive)|| (heroes.size() && g_doglive)|| (heroes.size() && g_bearlive)) {
@@ -222,34 +206,8 @@ void CalculateThread()
 				SC_MONSTER_Send(clientsocketes[i]);
 			}
 		}
-		while (!playerInput.empty())
-		{
-			CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
-			playerInput.pop();
-
-			{
-				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket);
-				heroes[playerInputPacket->player_id].Update();
-				/*cout << "playerInputPacket->player_id" << playerInputPacket->player_id << endl;*/
-
-				for (int i = 0; i < clientsocketes.size(); ++i) {
-					SC_PLAYER_Send(responsePacket, clientsocketes[i]);
-				}
-
-				//to_do 보내기
-
-
-            for (int i = 0; i < 6; ++i) {
-                processmonsterPacket(*AniCats[i]);
-            }
-
-            for (int i = 0; i < clientsocketes.size(); ++i) {
-
-                SC_MONSTER_Send(clientsocketes[i]);
-            }
-
-        }
-        if(heroes.size())
+		
+        if(heroes.size() && heroes.size() == HeroID)
         {
             SC_PLAYER_PACKET responsePacket;
 

@@ -244,7 +244,7 @@ void Hero::get_vangle(float* x, float* y)
 void Hero::camera()
 {
 
-	cameraPos = glm::vec3(PosX, PosY - 1.0, PosZ);
+	cameraPos = glm::vec3(PosX, PosY +0.5, PosZ);
 
 
 	glm::mat4 VAngleY_Rot = glm::rotate(glm::mat4(1.0f), glm::radians(-VAngleY), glm::vec3(0.0, 1.0, 0.0));
