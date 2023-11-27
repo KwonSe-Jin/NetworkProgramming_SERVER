@@ -128,6 +128,8 @@ public:
     bool recvData() {
         char buf[500];
         int size;
+        //std::cout << size << "바이트 받음" << std::endl;
+
         recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
         recv(clientSocket, buf, size, 0);
         switch (buf[0]) {
@@ -137,7 +139,6 @@ public:
         }
         break;
         case SC_MONSTER: {
-            std::cout << size << "바이트 받음" << std::endl;
             for (int i = 0; i < 6; ++i) {
                 char anibuf[32];
                 std::memcpy(&anibuf, &buf[i * 32], 32);

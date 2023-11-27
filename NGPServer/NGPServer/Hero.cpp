@@ -68,9 +68,13 @@ int Hero::InfoHP() {
 
 void Hero::Update()
 {
-
 	damage();
-
+	if (HP < 0)
+	{
+		lightColorR = 0.5f;
+		lightColorG = 0.5f;
+		lightColorB = 0.5f;
+	}
 	
 
 	if (PosX < -1 && firstmap)

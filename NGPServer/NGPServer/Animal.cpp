@@ -95,7 +95,7 @@ void Animal::update()
 
 	}
 
-	/*if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
+	if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
 		if (AnimalType == Cat) {
 			AnimalCrushHero = true;
 			catattack[Index].Activate = true;
@@ -125,7 +125,7 @@ void Animal::update()
 			AnimalCrushHero = false;
 			bearattack.Activate = false;
 		}
-	}*/
+	}
 
 }
 

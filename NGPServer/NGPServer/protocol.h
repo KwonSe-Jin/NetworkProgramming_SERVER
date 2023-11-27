@@ -46,7 +46,7 @@ struct SC_PLAYER_PACKET
 		float R;
 		float G;
 		float B;
-	};
+	}Player_light;
 
 
 

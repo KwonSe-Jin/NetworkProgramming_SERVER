@@ -365,7 +365,12 @@ void Hero::setInfo(SC_PLAYER_PACKET* p)
 	PosX = p->Player_pos.x;
 	PosY = p->Player_pos.y;
 	PosZ = p->Player_pos.z;
+	lightColorR = p->Player_light.R;
+	lightColorG = p->Player_light.G;
+	lightColorB = p->Player_light.B;
 	
+
+
 
 }
 void Hero::initHero()

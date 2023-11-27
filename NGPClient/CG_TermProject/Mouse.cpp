@@ -16,7 +16,7 @@ GLvoid Mouse(int button, int state, int x, int y) {
 		if (!herodead && !balltimer) {
 			isBullet = true;
 			is_ballfire = true;
-			cout << ball_count << endl;
+			//cout << ball_count << endl;
 			CS_PLAYER_PACKET p;
 			get_vangle(&(p.camera.VangleX), &(p.camera.VangleY));
 			p.player_id = global_ID;

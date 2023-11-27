@@ -36,7 +36,7 @@ class Hero
 	float carAddZ{ 10 };
 	float VAngleX=0;
 	float VAngleY=0;
-	
+
 
 	float cameraJump{};
 
@@ -61,9 +61,9 @@ class Hero
 
 
 public:
-	float lightColorR = 1.0f;
-	float lightColorG = 1.0f;
-	float lightColorB = 1.0f;
+	float lightColorR = 1.0;
+	float lightColorG = 1.0;
+	float lightColorB = 1.0;
 	Hero(int colorID);
 	~Hero();
 	/*void ISW();

@@ -161,7 +161,7 @@ GLvoid drawScene()
 	if (hero[global_ID].lightColorR < 0.35)
 		glClearColor(0.f, 0.f, 0.f, 1.0f);
 	else
-		glClearColor(1.f, 1.f, 1.f, 1.0f);
+		glClearColor(1.0, 1.0,1.0,1.0f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
@@ -216,8 +216,7 @@ void draw() {
 	glUniform4f(aColor, 1, 1., 1., 1.);
 
 	world.Draw();
-
-
+	
 	glEnable(GL_BLEND); //투명 객체 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

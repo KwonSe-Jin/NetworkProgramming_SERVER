@@ -50,12 +50,11 @@ SC_MONSTER_PACKET monsters[6];
 
 void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
-    p.packet_type = SC_PLAYER;
     int size = sizeof(p);
     send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
     int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
     if (result == SOCKET_ERROR) {
-        std::cout << "Failed to send data" << std::endl;
+        //std::cout << "Failed to send data" << std::endl;
     }
 
 }
@@ -66,57 +65,61 @@ void SC_MONSTER_Send(SOCKET clientSocket)
     send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
     int result = send(clientSocket, reinterpret_cast<char*>(&monsters), sizeof(monsters), 0);
     if (result == SOCKET_ERROR) {
-        std::cout << "Failed to send data" << std::endl;
+        //std::cout << "Failed to send data" << std::endl;
     }
 }
 
-SC_PLAYER_PACKET& processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket) {
+void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET & responsePacket) {
 
-    SC_PLAYER_PACKET scPacket;
-    scPacket.packet_type = 1;
-    scPacket.player_id = csPacket.player_id;
+   
+   
 
     //heroes[scPacket.player_id].damage();
-    scPacket.player_hp = heroes[scPacket.player_id].HP;
-    scPacket.status = csPacket.status;
-    scPacket.ready = csPacket.ready;
-    heroes[scPacket.player_id].VAngleX = csPacket.camera.VangleX;
-    heroes[scPacket.player_id].VAngleY = csPacket.camera.VangleY;
+    responsePacket.status = csPacket.status;
+    responsePacket.ready = csPacket.ready;
+    heroes[responsePacket.player_id].VAngleX = csPacket.camera.VangleX;
+    heroes[responsePacket.player_id].VAngleY = csPacket.camera.VangleY;
     /*cout << heroes[scPacket.player_id ].VAngleX << endl;
     cout << heroes[scPacket.player_id ].VAngleY << endl;*/
 
     if (csPacket.Player_key.is_w) {
-
-        heroes[scPacket.player_id].ISW();
-
+        heroes[responsePacket.player_id].ISW();
     }
 
 
     if (csPacket.Player_key.is_a) {
-        heroes[scPacket.player_id].ISA();
+        heroes[responsePacket.player_id].ISA();
     }
 
     if (csPacket.Player_key.is_s) {
-        heroes[scPacket.player_id].ISS();
+        heroes[responsePacket.player_id].ISS();
     }
 
     if (csPacket.Player_key.is_d) {
-        heroes[scPacket.player_id].ISD();
+        heroes[responsePacket.player_id].ISD();
     }
+
+
+}
+
+void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
+{
+    scPacket.packet_type = SC_PLAYER;
+    scPacket.player_id = i;
+    scPacket.player_hp = heroes[scPacket.player_id].HP;
 
 
     scPacket.Player_pos.x = heroes[scPacket.player_id].PosX;
     scPacket.Player_pos.y = heroes[scPacket.player_id].PosY;
     scPacket.Player_pos.z = heroes[scPacket.player_id].PosZ;
 
+    scPacket.Player_light.R = heroes[scPacket.player_id].lightColorR;
+    scPacket.Player_light.G = heroes[scPacket.player_id].lightColorG;
+    scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
 
-
-    //scPacket.Player_light.R = 1.0f; 
-    //scPacket.Player_light.G = 0.5f;
-    //scPacket.Player_light.B = 0.0f;
-
-
-    return scPacket;
+    //cout << scPacket.Player_light.R << endl;
+    //cout << scPacket.Player_light.G << endl;
+    //cout << scPacket.Player_light.B << endl;
 }
 
 
@@ -170,6 +173,7 @@ void CalculateThread()
 
         if (heroes.size())
         {
+
             if (catlive)
                 HeroVSCat();
 
@@ -178,7 +182,6 @@ void CalculateThread()
 
             if (bearlive)
                 HeroVSBear();
-
 
             for (int i = 0; i < 6; ++i) {
                 processmonsterPacket(*AniCats[i]);
@@ -190,22 +193,28 @@ void CalculateThread()
             }
 
 
-        }
-        while (!playerInput.empty())
-        {
-            CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
-            playerInput.pop();
+            SC_PLAYER_PACKET responsePacket;
+
+            if (!playerInput.empty())
             {
-                SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket);
-                heroes[playerInputPacket->player_id].Update();
-                /*cout << "playerInputPacket->player_id" << playerInputPacket->player_id << endl;*/
-               
-                for (int i = 0; i < clientsocketes.size(); ++i) {
-                    SC_PLAYER_Send(responsePacket, clientsocketes[i]);
-                }
-                //to_do 보내기
+                CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
+                playerInput.pop();
+
+                processCSPlayerPacket(*playerInputPacket, responsePacket);
+
+            }
+
+            for (int i = 0; i < clientsocketes.size(); ++i)
+            {
+                heroes[i].Update();
+                Posandlight(responsePacket, i);
+            }
+           
+            for (int i = 0; i < clientsocketes.size(); ++i) {
+                SC_PLAYER_Send(responsePacket, clientsocketes[i]);
             }
         }
+
         this_thread::sleep_for(0.5ms);
         g_m.unlock();
 

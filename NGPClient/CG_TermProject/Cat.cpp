@@ -110,7 +110,8 @@ void Cat::update()
 		if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
 			CatCrushHero = true;
 			catattack[Index].Activate = true;
-			++catattack[Index].AttackCount;
+			++catattack[Index].
+			;
 		}
 		else {
 			CatCrushHero = false;
