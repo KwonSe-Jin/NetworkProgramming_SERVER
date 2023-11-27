@@ -2,7 +2,7 @@
 #include <numeric>
 #include <limits>
 #include <random>
-extern vector<Hero> heroes; //���ΰ� ���� �ϴ� �������� ���߿� ������ ���� �� �ּ� �����ּ���. 
+extern vector<Hero> heroes; 
 
 extern Attack catattack[AnimalMax];
 extern Attack dogattack[AnimalMax];
@@ -29,7 +29,7 @@ Animal::Animal(int type, int id) : AnimalType(type),Index(id)
 		PosZ = urdZ(dre);
 		HP = 20;
 		Attack = 10;	
-		if (AnimalCnt == AnimalMax) { // �����̴� 6������ �����߰�, 6���� ��� ID�ο��� �� ��� ���� ID�ο����ִ� ���� 0���� �ʱ�ȭ�Ѵ�.
+		if (AnimalCnt == AnimalMax) { 
 			AnimalCnt = 0;
 		}
 
@@ -42,7 +42,7 @@ Animal::Animal(int type, int id) : AnimalType(type),Index(id)
 		PosZ = urdZ(dre);
 		HP = 40;
 		Attack = 20;
-		if (AnimalCnt == AnimalMax) { // �����̴� 6������ �����߰�, 6���� ��� ID�ο��� �� ��� ���� ID�ο����ִ� ���� 0���� �ʱ�ȭ�Ѵ�.
+		if (AnimalCnt == AnimalMax) {
 			AnimalCnt = 0;
 		}
 	}
@@ -67,7 +67,7 @@ float Animal::calculateDistance(float targetX, float targetZ)
 
 void Animal::update()
 {
-	float closestDistance = 3.40282e+38;  // �ִ밪���� �ʱ�ȭ
+	float closestDistance = 3.40282e+38; 
 	int closestHeroIndex = -1;
 
 	for (int i = 0; i < heroes.size(); ++i) {
@@ -78,12 +78,8 @@ void Animal::update()
 		}
 	}
 
-	// closestHeroIndex�� ���� ����� �÷��̾��� �ε���
-
-	// ������ �ڵ�� ���� ����...
 	heroes[closestHeroIndex].location();
-	// ������ �ڵ�...
-	//-----------------------
+
 	float dz = HeroLocationZ - PosZ;
 	float dx = HeroLocationX - PosX;
 
