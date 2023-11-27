@@ -40,9 +40,9 @@ vector<Animal*> AniCats{ new Animal(Cat,0), new Animal(Cat,1),new Animal(Cat,2),
 vector<Animal*> AniDogs{ new Animal(Dog,0), new Animal(Dog,1),new Animal(Dog,2), new Animal(Dog,3),new Animal(Dog,4),new Animal(Dog,5) };
 Animal AniBear(Bear, 0);
 
-Attack catattack[AnimalMax];
-Attack dogattack[AnimalMax];
-Attack bearattack;
+//Attack catattack[AnimalMax];
+//Attack dogattack[AnimalMax];
+//Attack bearattack;
 
 SC_MONSTER_PACKET monsters[6];
 

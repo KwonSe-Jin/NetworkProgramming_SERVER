@@ -8,9 +8,9 @@ extern bool g_bearlive;
 extern float HeroLocationX;
 extern float HeroLocationZ;
 
-extern Attack catattack[AnimalMax];
-extern Attack dogattack[AnimalMax];
-extern Attack bearattack;
+//extern Attack catattack[AnimalMax];
+//extern Attack dogattack[AnimalMax];
+//extern Attack bearattack;
 
 extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;
