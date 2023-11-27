@@ -171,31 +171,30 @@ void CalculateThread()
 
         g_m.lock();
 
-        if (heroes.size())
-        {
-            if (heroes.size() > 0)
-            {
-                if (catlive)
-                    HeroVSCat();
+		if ((heroes.size() && catlive) || (heroes.size() && doglive) || (heroes.size() && bearlive))
+		{
 
-                if (doglive)
-                    HeroVSDog();
+			if (catlive)
+				HeroVSCat();
 
-                if (bearlive)
-                    HeroVSBear();
+			if (doglive)
+				HeroVSDog();
+
+			if (bearlive)
+				HeroVSBear();
 
 
-                for (int i = 0; i < 6; ++i) {
-                    processmonsterPacket(*AniCats[i]);
-                }
+			for (int i = 0; i < 6; ++i) {
+				processmonsterPacket(*AniCats[i]);
+			}
 
-                for (int i = 0; i < clientsocketes.size(); ++i) {
+			for (int i = 0; i < clientsocketes.size(); ++i) {
 
-                    SC_MONSTER_Send(clientsocketes[i]);
-                }
-            }
+				SC_MONSTER_Send(clientsocketes[i]);
+			}
 
-        }
+
+		}
         while (!playerInput.empty())
         {
             CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
@@ -207,7 +206,7 @@ void CalculateThread()
                 
                 if (heroes[playerInputPacket->player_id]._flag){
                         SC_PLAYER_Send(responsePacket, clientsocketes[playerInputPacket->player_id]);
-                        ::closesocket(clientsocketes[playerInputPacket->player_id]);
+                        //::closesocket(clientsocketes[playerInputPacket->player_id]);
 
                 }
                 for (int i = 0; i < clientsocketes.size(); ++i) {

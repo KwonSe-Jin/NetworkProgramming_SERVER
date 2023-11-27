@@ -1,5 +1,6 @@
 #include "pch.h"
-
+#include <numeric>
+#include <limits>
 #include <random>
 extern vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 
@@ -51,13 +52,32 @@ Animal::Animal(int type, int id) : AnimalType(type),Index(id)
 
 
 }
-
+float Animal::calculateDistance(float targetX, float targetZ)
+{
+    float dz = targetZ - PosZ;
+    float dx = targetX - PosX;
+    return sqrt(dz * dz + dx * dx);
+}
 
 void Animal::update()
 {
+	float closestDistance = 3.40282e+38;  // 최대값으로 초기화
+	int closestHeroIndex = -1;
 
-	//여기는 동물 - 주인공 따라오기 알고리즘 가장 가까운 애로 수정이 필요합니다. 
-	heroes[0].location();
+	for (int i = 0; i < heroes.size(); ++i) {
+		float distance = calculateDistance(heroes[i].getPosX(), heroes[i].getPosZ());
+		if (distance < closestDistance) {
+			closestDistance = distance;
+			closestHeroIndex = i;
+		}
+	}
+
+	// closestHeroIndex가 가장 가까운 플레이어의 인덱스
+
+	// 나머지 코드는 변경 없음...
+	heroes[closestHeroIndex].location();
+	// 나머지 코드...
+	//-----------------------
 	float dz = HeroLocationZ - PosZ;
 	float dx = HeroLocationX - PosX;
 

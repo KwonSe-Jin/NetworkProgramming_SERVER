@@ -33,7 +33,7 @@ public:
 
 	void update();
 	void damage();
-
+	float calculateDistance(float targetX, float targetZ);;
 	float getLeft();
 	float getRight();
 	float getBehind();

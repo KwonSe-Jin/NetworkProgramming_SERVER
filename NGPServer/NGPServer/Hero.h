@@ -45,7 +45,8 @@ public:
 	float getFront();
 	//void VAngleMotion(int x, int y);
 	void initHero();
-
+	float getPosX() const { return PosX; }
+	float getPosZ() const { return PosZ; }
 	/*friend void HeroVSDog();
 	friend void HeroVSBear();
 	friend void HeroVSCat();*/
