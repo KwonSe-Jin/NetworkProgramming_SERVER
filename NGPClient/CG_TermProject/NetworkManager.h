@@ -16,6 +16,7 @@ extern bool isW, isA, isS, isD;
 extern bool isBullet;
 
 #define serverIP "127.0.0.1"
+//#define serverIP "127.0.0.1"
 #define serverPort 7777
 
 #pragma comment(lib, "ws2_32.lib")

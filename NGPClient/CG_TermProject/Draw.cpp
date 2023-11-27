@@ -329,20 +329,20 @@ void draw() {
 
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
-		if(i!=global_ID)
-			hero[i].Draw();
+		
+		hero[i].Draw();
 	}
 
 
 
-	//if (catlive)
-	//	HeroVSCat();
+	if (catlive)
+		HeroVSCat();
 
-	//if (doglive)
-	//	HeroVSDog();
+	if (doglive)
+		HeroVSDog();
 
-	//if (bearlive)
-	//	HeroVSBear();
+	if (bearlive)
+		HeroVSBear();
 
 	for (Gun*& gunbullet : gun) {
 		gunbullet->Update();

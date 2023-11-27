@@ -96,6 +96,9 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET & 
         heroes[responsePacket.player_id].ISD();
     }
 
+    if (csPacket.Player_key.is_q) {
+        heroes[scPacket.player_id].isQuit();
+    }
 
 }
 
@@ -166,26 +169,27 @@ void CalculateThread()
 
         g_m.lock();
 
-        if (heroes.size())
-        {
+		if ((heroes.size() && catlive) || (heroes.size() && doglive) || (heroes.size() && bearlive))
+		{
 
-            if (catlive)
-                HeroVSCat();
+			if (catlive)
+				HeroVSCat();
 
-            if (doglive)
-                HeroVSDog();
+			if (doglive)
+				HeroVSDog();
 
-            if (bearlive)
-                HeroVSBear();
+			if (bearlive)
+				HeroVSBear();
 
-            for (int i = 0; i < 6; ++i) {
-                processmonsterPacket(*AniCats[i]);
-            }
 
-            for (int i = 0; i < clientsocketes.size(); ++i) {
+			for (int i = 0; i < 6; ++i) {
+				processmonsterPacket(*AniCats[i]);
+			}
 
-                SC_MONSTER_Send(clientsocketes[i]);
-            }
+			for (int i = 0; i < clientsocketes.size(); ++i) {
+
+				SC_MONSTER_Send(clientsocketes[i]);
+			}
 
 
             SC_PLAYER_PACKET responsePacket;

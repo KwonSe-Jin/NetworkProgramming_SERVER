@@ -11,7 +11,7 @@ extern Sound playSound;
 //extern float MovX;
 //extern float MovZ;
 extern bool catlive;
-extern bool doglive ;
+extern bool doglive;
 extern bool bearlive;
 extern bool herodead;
 
@@ -44,50 +44,50 @@ Hero::Hero(int colorID) : Unit(1.f)
 }
 Hero::~Hero()
 {
-	
+
 }
 
 void Hero::damage()
 {
 
-	HP = 100;
-	lightColorG = 1.0;
-	lightColorB = 1.0;
-	for (int i = 0; i < 6; ++i) {
-		HP -= (catattack[i].AttackCount) * 10 / 24;
-		lightColorG -= catattack[i].AttackCount * 0.1f/24.;
-		lightColorB -= catattack[i].AttackCount * 0.1f/24.;
+	//HP = 100;
+	//lightColorG = 1.0;
+	//lightColorB = 1.0;
+	//for (int i = 0; i < 6; ++i) {
+	//	HP -= (catattack[i].AttackCount) * 10 / 24;
+	//	lightColorG -= catattack[i].AttackCount * 0.1f/24.;
+	//	lightColorB -= catattack[i].AttackCount * 0.1f/24.;
 
-		HP -= (dogattack[i].AttackCount) * 20 / 24;
-		lightColorG -= dogattack[i].AttackCount * 0.2f / 24.;
-		lightColorB -= dogattack[i].AttackCount * 0.2f / 24.;
-	}
-
-
-	HP -= (bearattack.AttackCount) * 30 / 24;
-	lightColorG -= bearattack.AttackCount * 0.3f / 24.;
-	lightColorB -= bearattack.AttackCount * 0.3f / 24.;
+	//	HP -= (dogattack[i].AttackCount) * 20 / 24;
+	//	lightColorG -= dogattack[i].AttackCount * 0.2f / 24.;
+	//	lightColorB -= dogattack[i].AttackCount * 0.2f / 24.;
+	//}
 
 
-	if (lightColorG < 0.1) {
-		herodead = true;
-		lightColorB = 0.1;
-		lightColorG = 0.1;
-		lightColorR = 0.1;
+	//HP -= (bearattack.AttackCount) * 30 / 24;
+	//lightColorG -= bearattack.AttackCount * 0.3f / 24.;
+	//lightColorB -= bearattack.AttackCount * 0.3f / 24.;
 
-		// Á×À¸¸é »ç¿îµå ¸ØÃã
-		playSound.stopBGM();
-	}
+
+	//if (lightColorG < 0.1) {
+	//	herodead = true;
+	//	lightColorB = 0.1;
+	//	lightColorG = 0.1;
+	//	lightColorR = 0.1;
+
+	//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	//	playSound.stopBGM();
+	//}
 }
 
 
 
 int Hero::InfoHP() {
-	return HP/10;
+	return HP / 10;
 }
 
 void Hero::Update()
-{ 
+{
 
 	//damage();
 	glm::mat4 Scale = glm::scale(Unit, glm::vec3(scaleX, scaleY, scaleZ));
@@ -123,7 +123,7 @@ void Hero::Update()
 	//		lightPosY = 15.0;
 	//		lightPosZ = 0;
 
-	//		// Ä¹¶ó¿îµå·Î µé¾î°¥ ¶§ ºê±Ý ½ÇÇà
+	//		// Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½î°¥ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	//		playSound.BasicBGM();
 	//		firstmap = false;
 	//	}
@@ -155,7 +155,7 @@ void Hero::Update()
 	//		lightPosY = 15.0;
 	//		lightPosZ = -100;
 	//	}
-		
+
 	glm::mat4 AddTrans = glm::translate(Unit, glm::vec3(0., 1., 0.));
 	Change = Trans * Scale * AddTrans;
 }
@@ -170,7 +170,7 @@ void Hero::Draw()
 	glUniform1i(SelectColor, 1);
 
 	GLuint aColor = glGetUniformLocation(shaderID, "objectColor");
-	glUniform4f(aColor, color.r, color.g, color.b,1.0);
+	glUniform4f(aColor, color.r, color.g, color.b, 1.0);
 	GLuint modelLocation = glGetUniformLocation(shaderID, "modelTransform");
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(Change));
 	glDrawArrays(GL_TRIANGLES, 0, vertex1.size() * 3);
@@ -230,7 +230,7 @@ float Hero::getFront()
 	return PosZ + 0.12f;
 }
 
-void Hero::get_vangle(float*x, float* y)
+void Hero::get_vangle(float* x, float* y)
 {
 	*x = VAngleX;
 	*y = VAngleY;
@@ -247,7 +247,7 @@ void Hero::get_vangle(float*x, float* y)
 void Hero::camera()
 {
 
-	cameraPos = glm::vec3(PosX, PosY+0.5, PosZ);
+	cameraPos = glm::vec3(PosX, PosY - 1.0, PosZ);
 
 
 	glm::mat4 VAngleY_Rot = glm::rotate(glm::mat4(1.0f), glm::radians(-VAngleY), glm::vec3(0.0, 1.0, 0.0));
@@ -263,7 +263,7 @@ void Hero::camera()
 	glm::mat4 view = glm::lookAt(cameraPos, cameraDirection, cameraUp);
 
 
-	//ÀÌ°Å ¿©±â¼­ ÃÑ¾Ë ¹ß»ç ¹æÇâ °è»êÇÏ·Á°í.... ÇÑ°ÅÀÓ 
+	//ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½â¼­ ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½.... ï¿½Ñ°ï¿½ï¿½ï¿½ 
 	TermGunDir = normalize(cameraDirection - cameraPos);
 
 	/////////////////////////////////////////////////////////////////////
@@ -278,7 +278,7 @@ void Hero::camera()
 
 void Hero::TopView()
 {
-	glm::vec3 cameraPos = glm::vec3(PosX, PosY+0.5, PosZ);
+	glm::vec3 cameraPos = glm::vec3(PosX, PosY + 0.5, PosZ);
 	glm::vec3 cameraDirection = glm::vec3(PosX, 0.0, PosZ);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::mat4 view = glm::mat4(1.0f);
@@ -315,7 +315,7 @@ void Hero::cameraProjection()
 
 void Hero::DrawHP()
 {
-	for (int i = 0; i <HP/10; ++i) {
+	for (int i = 0; i < HP / 10; ++i) {
 		glm::mat4 Change;
 		Change = Unit;
 		GLuint projectionTransform = glGetUniformLocation(shaderID, "projectionTransform");
@@ -387,11 +387,11 @@ void Hero::initHero()
 	lightColorB = 1.0f;
 
 
-	 VAngleX = 0;
-	 VAngleY = 0;
-	 firstmap = true;
+	VAngleX = 0;
+	VAngleY = 0;
+	firstmap = true;
 
-	 ortho = 12.0;
+	ortho = 12.0;
 
 
 }

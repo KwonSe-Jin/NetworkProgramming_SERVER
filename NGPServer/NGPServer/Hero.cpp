@@ -19,7 +19,7 @@ extern Animal AniBear;
 Hero::Hero(int id) : ID{id}
 {
 	PosX = 0;
-	PosY = -1.0;
+	PosY = 0.5;
 	PosZ = 10.0;
 	HP = 100;
 	firstmap = true;
@@ -126,6 +126,11 @@ void Hero::location()
 
 	HeroLocationX = PosX;
 	HeroLocationZ = PosZ;
+}
+
+void Hero::isQuit()
+{
+	_flag = false;
 }
 
 void Hero::ISW()
