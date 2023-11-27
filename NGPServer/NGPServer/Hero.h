@@ -17,6 +17,7 @@ class Hero
 
 
 public:
+	bool _flag = true;
 	int ID;
 	int HP;
 	float PosX;
@@ -37,6 +38,7 @@ public:
 	void Update();
 	int InfoHP();
 	void location();
+	void isQuit();
 	float getLeft();
 	float getRight();
 	float getBehind();

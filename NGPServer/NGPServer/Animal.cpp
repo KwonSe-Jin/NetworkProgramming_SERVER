@@ -56,7 +56,6 @@ Animal::Animal(int type, int id) : AnimalType(type),Index(id)
 void Animal::update()
 {
 
-
 	//여기는 동물 - 주인공 따라오기 알고리즘 가장 가까운 애로 수정이 필요합니다. 
 	heroes[0].location();
 	float dz = HeroLocationZ - PosZ;
@@ -74,22 +73,22 @@ void Animal::update()
 
 			if (closelineX >= 0.5) {
 				closelineX -= 0.01;
-				PosX += 0.1;
+				PosX += 0.01;
 			}
 			if (closelineX < -0.5) {
 				closelineX += 0.01;
-				PosX -= 0.1;
+				PosX -= 0.01;
 			}
 		}
 
 		if (!(closelineZ <= 0.5 && closelineZ >= -0.5)) {
 			if (closelineZ > 0.5) {
 				closelineZ -= 0.01;
-				PosZ += 0.1;
+				PosZ += 0.01;
 			}
 			if (closelineZ < -0.5) {
 				closelineZ += 0.01;
-				PosZ -= 0.1;
+				PosZ -= 0.01;
 			}
 
 		}

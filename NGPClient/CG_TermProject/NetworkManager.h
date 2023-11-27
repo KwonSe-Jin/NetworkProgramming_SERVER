@@ -154,7 +154,7 @@ public:
         }
         break;
         default:
-            std::cout << "肋给等 单捞磐" << std::endl;
+            std::cout << WSAGetLastError()<<"肋给等 单捞磐" << std::endl;
             break;
         }
         return false;

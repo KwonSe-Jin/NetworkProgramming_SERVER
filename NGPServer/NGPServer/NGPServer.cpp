@@ -104,6 +104,9 @@ SC_PLAYER_PACKET& processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket) {
         heroes[scPacket.player_id].ISD();
     }
 
+    if (csPacket.Player_key.is_q) {
+        heroes[scPacket.player_id].isQuit();
+    }
 
     scPacket.Player_pos.x = heroes[scPacket.player_id].PosX;
     scPacket.Player_pos.y = heroes[scPacket.player_id].PosY;
@@ -170,25 +173,27 @@ void CalculateThread()
 
         if (heroes.size())
         {
-            if (catlive)
-                HeroVSCat();
+            if (heroes.size() > 0)
+            {
+                if (catlive)
+                    HeroVSCat();
 
-            if (doglive)
-                HeroVSDog();
+                if (doglive)
+                    HeroVSDog();
 
-            if (bearlive)
-                HeroVSBear();
+                if (bearlive)
+                    HeroVSBear();
 
 
-            for (int i = 0; i < 6; ++i) {
-                processmonsterPacket(*AniCats[i]);
+                for (int i = 0; i < 6; ++i) {
+                    processmonsterPacket(*AniCats[i]);
+                }
+
+                for (int i = 0; i < clientsocketes.size(); ++i) {
+
+                    SC_MONSTER_Send(clientsocketes[i]);
+                }
             }
-
-            for (int i = 0; i < clientsocketes.size(); ++i) {
-
-                SC_MONSTER_Send(clientsocketes[i]);
-            }
-
 
         }
         while (!playerInput.empty())
@@ -199,9 +204,15 @@ void CalculateThread()
                 SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket);
                 heroes[playerInputPacket->player_id].Update();
                 /*cout << "playerInputPacket->player_id" << playerInputPacket->player_id << endl;*/
+                
+                if (heroes[playerInputPacket->player_id]._flag){
+                        SC_PLAYER_Send(responsePacket, clientsocketes[playerInputPacket->player_id]);
+                        ::closesocket(clientsocketes[playerInputPacket->player_id]);
 
+                }
                 for (int i = 0; i < clientsocketes.size(); ++i) {
-                    SC_PLAYER_Send(responsePacket, clientsocketes[i]);
+                    if (i != playerInputPacket->player_id)
+                        SC_PLAYER_Send(responsePacket, clientsocketes[i]);
                 }
                 //to_do 보내기
             }

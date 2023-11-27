@@ -50,7 +50,9 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 	case 'q':
 	case 'Q':
 		p.Player_key.is_q = true;
-		
+		if (!networkManager.SendPlayerData(p)) {
+			std::cout << "패킷보내기 실패" << std::endl;
+		}
 		glutLeaveMainLoop();
 		break;
 	case 'r':

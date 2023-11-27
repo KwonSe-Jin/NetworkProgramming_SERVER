@@ -124,6 +124,11 @@ void Hero::location()
 	HeroLocationZ = PosZ;
 }
 
+void Hero::isQuit()
+{
+	_flag = false;
+}
+
 void Hero::ISW()
 {
 	float radians = VAngleY * PI / 180.0f;
