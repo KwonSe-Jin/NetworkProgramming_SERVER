@@ -19,10 +19,10 @@ int AnimalCnt = 0;
 //vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 
 
-bool catlive = false;
-bool doglive = false;
-bool bearlive = false;
-bool herodead = false;
+bool g_catlive = false;
+bool g_doglive = false;
+bool g_bearlive = false;
+bool g_herodead = false;
 
 float HeroLocationX = 0;
 float HeroLocationZ = 0;
@@ -135,16 +135,16 @@ void processmonsterPacket(Animal& ani) {
 
 	ani.update();
 
-	if (catlive) {
+	if (g_catlive) {
 		AnimalCollideCat();
 		Catroomtest();
 	}
-	if (doglive)
+	if (g_doglive)
 	{
 		AnimalCollideDog();
 		DogAndRoomCollision();
 	}
-	if (bearlive) {
+	if (g_bearlive) {
 		BearAndRoomCollision();
 	}
 
@@ -153,7 +153,6 @@ void processmonsterPacket(Animal& ani) {
 	monsters[ani.Index].x = ani.PosX;
 	monsters[ani.Index].y = ani.PosY;
 	monsters[ani.Index].z = ani.PosZ;
-
 
 }
 
@@ -168,14 +167,50 @@ void CalculateThread()
 		//todo
 
 		g_m.lock();
-		if (heroes.size()) {
-			if (catlive)
+	/*	if (g_catlive) {
+			catlive = true;
+			doglive = false;
+			bearlive = false;
+		}
+		else if (g_doglive) {
+			catlive = false;
+			doglive = true;
+			bearlive = false;
+		}
+		else if (g_bearlive) {
+			catlive = false;
+			doglive = false;
+			bearlive = true;
+		}*/
+		
+		for (int i = 0; i < heroes.size(); ++i) {
+			if (heroes[i].catlive) { // 한명이라도 들어간 순간? 
+				g_catlive = true;
+				g_doglive = false;
+				g_bearlive = false;
+			}
+			else if (heroes[i].doglive) {
+				g_catlive = false;
+				g_doglive = true;
+				g_bearlive = false;
+			}
+			else if (heroes[i].bearlive) {
+				g_catlive = false;
+				g_doglive = true;
+				g_bearlive = false;
+			}
+		}
+
+
+
+		if ((heroes.size()&& g_catlive)|| (heroes.size() && g_doglive)|| (heroes.size() && g_bearlive)) {
+			if (g_catlive)
 				HeroVSCat();
 
-			if (doglive)
+			if (g_doglive)
 				HeroVSDog();
 
-			if (bearlive)
+			if (g_bearlive)
 				HeroVSBear();
 
 			for (int i = 0; i < 6; ++i) {

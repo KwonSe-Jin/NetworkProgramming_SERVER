@@ -6,6 +6,12 @@ extern vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 
 extern Attack catattack[AnimalMax];
 extern Attack dogattack[AnimalMax];
 extern Attack bearattack;
+
+extern bool g_catlive;
+extern bool g_doglive;
+extern bool g_bearlive;
+extern bool g_herodead;
+
 extern int AnimalCnt;
 
 
@@ -67,8 +73,8 @@ void Animal::update()
 	closelineX = HeroLocationX - PosX;
 	closelineZ = HeroLocationZ - PosZ;
 
-	if ((catlive && !herodead && AnimalType == Cat) || (doglive && !herodead && AnimalType == Dog) ||
-		(bearlive && !herodead && AnimalType == Bear)) {
+	if ((g_catlive && !g_herodead && AnimalType == Cat) || (g_doglive && !g_herodead && AnimalType == Dog) ||
+		(g_bearlive && !g_herodead && AnimalType == Bear)) {
 
 		if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
 

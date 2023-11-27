@@ -7,7 +7,7 @@
 
 class Hero
 {
-	
+
 	bool firstmap;
 	/// <summary>
 	/// 카메라 시작합니다.
@@ -17,6 +17,12 @@ class Hero
 
 
 public:
+
+	bool catlive;
+	bool doglive;
+	bool bearlive;
+	bool herodead;
+
 	int ID;
 	int HP;
 	float PosX;

@@ -36,9 +36,6 @@ Hero::Hero(int colorID) : Unit(1.f)
 	scaleX = 0.3;
 	scaleY = 0.3;
 	scaleZ = 0.3;
-	PosX = 55;
-	PosY = 546;
-	PosZ = 159;
 	HP = 100;
 	firstmap = true;
 }
@@ -361,6 +358,7 @@ void Hero::VAngleMotion(int x, int y)
 
 void Hero::setInfo(SC_PLAYER_PACKET* p)
 {
+	Hero_ID = p->player_id;
 	HP = p->player_hp;
 	PosX = p->Player_pos.x;
 	PosY = p->Player_pos.y;

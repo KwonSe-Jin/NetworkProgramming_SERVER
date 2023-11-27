@@ -61,6 +61,7 @@ class Hero
 
 
 public:
+	int Hero_ID = -1;
 	float lightColorR = 1.0f;
 	float lightColorG = 1.0f;
 	float lightColorB = 1.0f;

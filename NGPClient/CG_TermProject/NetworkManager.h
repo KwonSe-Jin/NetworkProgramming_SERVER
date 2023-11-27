@@ -137,7 +137,7 @@ public:
         }
         break;
         case SC_MONSTER: {
-            std::cout << size << "바이트 받음" << std::endl;
+         /*   std::cout << size << "바이트 받음" << std::endl;*/
             for (int i = 0; i < 6; ++i) {
                 char anibuf[32];
                 std::memcpy(&anibuf, &buf[i * 32], 32);
