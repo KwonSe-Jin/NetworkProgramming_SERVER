@@ -6,7 +6,6 @@
 #include "Collision.h"
 
 int HeroID = 0;
-
 vector<Hero> heroes;
 vector<SOCKET> clientsocketes;
 std::mutex g_m;
@@ -71,7 +70,7 @@ void SC_MONSTER_Send(SOCKET clientSocket)
 
 void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET & responsePacket) {
 
-   
+    responsePacket.player_id = csPacket.player_id;
     responsePacket.status = csPacket.status;
     responsePacket.ready = csPacket.ready;
     heroes[responsePacket.player_id].VAngleX = csPacket.camera.VangleX;
@@ -97,7 +96,7 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET & 
     }
 
     if (csPacket.Player_key.is_q) {
-        heroes[scPacket.player_id].isQuit();
+        heroes[csPacket.player_id].isQuit();
     }
 
 }
@@ -169,52 +168,53 @@ void CalculateThread()
 
         g_m.lock();
 
-		if ((heroes.size() && catlive) || (heroes.size() && doglive) || (heroes.size() && bearlive))
-		{
+        if ((heroes.size() && catlive) || (heroes.size() && doglive) || (heroes.size() && bearlive))
+        {
 
-			if (catlive)
-				HeroVSCat();
+            if (catlive)
+                HeroVSCat();
 
-			if (doglive)
-				HeroVSDog();
+            if (doglive)
+                HeroVSDog();
 
-			if (bearlive)
-				HeroVSBear();
-
-
-			for (int i = 0; i < 6; ++i) {
-				processmonsterPacket(*AniCats[i]);
-			}
-
-			for (int i = 0; i < clientsocketes.size(); ++i) {
-
-				SC_MONSTER_Send(clientsocketes[i]);
-			}
+            if (bearlive)
+                HeroVSBear();
 
 
+            for (int i = 0; i < 6; ++i) {
+                processmonsterPacket(*AniCats[i]);
+            }
+
+            for (int i = 0; i < clientsocketes.size(); ++i) {
+
+                SC_MONSTER_Send(clientsocketes[i]);
+            }
+
+        }
+        if(heroes.size())
+        {
             SC_PLAYER_PACKET responsePacket;
 
-            //클라이언트 입력
             if (!playerInput.empty())
             {
                 CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
                 playerInput.pop();
-
                 processCSPlayerPacket(*playerInputPacket, responsePacket);
-
             }
 
-            for (int i = 0; i < clientsocketes.size(); ++i)
+            for (int i = 0; i < heroes.size(); ++i)
             {
                 heroes[i].Update();
+                //클라이언트 입력
+                
                 Posandlight(responsePacket, i);
+                for (int j = 0; j < heroes.size(); ++j)
+                    SC_PLAYER_Send(responsePacket, clientsocketes[j]);
             }
            
-            for (int i = 0; i < clientsocketes.size(); ++i) {
-                SC_PLAYER_Send(responsePacket, clientsocketes[i]);
-            }
+           
+        
         }
-
         this_thread::sleep_for(0.5ms);
         g_m.unlock();
 
