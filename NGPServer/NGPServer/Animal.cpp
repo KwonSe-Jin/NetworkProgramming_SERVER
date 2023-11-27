@@ -71,11 +71,14 @@ void Animal::update()
 	int closestHeroIndex = -1;
 
 	for (int i = 0; i < heroes.size(); ++i) {
-		float distance = calculateDistance(heroes[i].getPosX(), heroes[i].getPosZ());
-		if (distance < closestDistance) {
-			closestDistance = distance;
-			closestHeroIndex = i;
+		if (heroes[i]._flag) {
+			float distance = calculateDistance(heroes[i].getPosX(), heroes[i].getPosZ());
+			if (distance < closestDistance) {
+				closestDistance = distance;
+				closestHeroIndex = i;
+			}
 		}
+		
 	}
 
 	// closestHeroIndex�� ���� ����� �÷��̾��� �ε���
@@ -121,7 +124,7 @@ void Animal::update()
 
 	}
 
-	/*if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
+	if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
 		if (AnimalType == Cat) {
 			AnimalCrushHero = true;
 			catattack[Index].Activate = true;
@@ -151,7 +154,7 @@ void Animal::update()
 			AnimalCrushHero = false;
 			bearattack.Activate = false;
 		}
-	}*/
+	}
 
 }
 

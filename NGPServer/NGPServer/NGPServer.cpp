@@ -107,6 +107,8 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
     scPacket.player_id = i;
     scPacket.player_hp = heroes[scPacket.player_id].HP;
 
+    if (!heroes[scPacket.player_id]._flag)
+        scPacket.status = false;
 
     scPacket.Player_pos.x = heroes[scPacket.player_id].PosX;
     scPacket.Player_pos.y = heroes[scPacket.player_id].PosY;
@@ -115,8 +117,6 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
     scPacket.Player_light.R = heroes[scPacket.player_id].lightColorR;
     scPacket.Player_light.G = heroes[scPacket.player_id].lightColorG;
     scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
-
-
 }
 
 
@@ -125,7 +125,11 @@ void processmonsterPacket(Animal& ani) {
     //SC_MONSTER_PACKET scPacket;
     monsters[ani.Index].packet_type = 2;
     monsters[ani.Index].Monster_id = ani.Index;
-    monsters[ani.Index].animal_type = ani.AnimalType;
+    if(g_catlive)
+        monsters[ani.Index].animal_type = CAT;
+    else if (g_doglive)
+        monsters[ani.Index].animal_type = Dog;
+
     monsters[ani.Index].direction = ani.Direction;
     //heroes[scPacket.player_id].damage();
     monsters[ani.Index].hp = ani.HP;
@@ -147,12 +151,9 @@ void processmonsterPacket(Animal& ani) {
 		BearAndRoomCollision();
 	}
 
-
-
     monsters[ani.Index].x = ani.PosX;
     monsters[ani.Index].y = ani.PosY;
     monsters[ani.Index].z = ani.PosZ;
-
 
 }
 
