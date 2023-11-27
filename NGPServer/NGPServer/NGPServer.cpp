@@ -50,7 +50,6 @@ SC_MONSTER_PACKET monsters[6];
 
 void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
-
 	p.packet_type = SC_PLAYER;
 	int size = sizeof(p);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
@@ -198,12 +197,8 @@ void CalculateThread()
 
 					SC_MONSTER_Send(clientsocketes[i]);
 				}
-
 				//to_do 보내기
-
-
 			}
-
 		}
 		g_m.unlock();
 
@@ -297,7 +292,7 @@ int main()
 	SOCKADDR_IN clientAddr;
 	int addrLen = sizeof(clientAddr);
 	thread calculationThread(CalculateThread);
-
+	//thread MonsterThrea(MonsterThread);
 
 	// Accept
 	while (true)
@@ -322,6 +317,7 @@ int main()
 	}
 	threadManager.Join();
 	calculationThread.join();
+	//MonsterThrea.join();
 
 
 	SocketUtils::Close(listenSocket);
