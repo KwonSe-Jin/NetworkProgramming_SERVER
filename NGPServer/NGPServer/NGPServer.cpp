@@ -72,9 +72,6 @@ void SC_MONSTER_Send(SOCKET clientSocket)
 void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET & responsePacket) {
 
    
-   
-
-    //heroes[scPacket.player_id].damage();
     responsePacket.status = csPacket.status;
     responsePacket.ready = csPacket.ready;
     heroes[responsePacket.player_id].VAngleX = csPacket.camera.VangleX;
@@ -117,9 +114,7 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
     scPacket.Player_light.G = heroes[scPacket.player_id].lightColorG;
     scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
 
-    //cout << scPacket.Player_light.R << endl;
-    //cout << scPacket.Player_light.G << endl;
-    //cout << scPacket.Player_light.B << endl;
+
 }
 
 
@@ -195,6 +190,7 @@ void CalculateThread()
 
             SC_PLAYER_PACKET responsePacket;
 
+            //클라이언트 입력
             if (!playerInput.empty())
             {
                 CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
@@ -320,6 +316,7 @@ int main()
         }
 
         SocketUtils::SetTcpNoDelay(clientSocket, true);
+        
         clientsocketes.emplace_back(clientSocket);
         cout << "Client Connected!" << endl;
 

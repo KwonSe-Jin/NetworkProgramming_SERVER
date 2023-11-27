@@ -224,10 +224,7 @@ void draw() {
 	for (int i = 0; i < 400; ++i) {
 		tree[i].Draw();
 		tree[i].Update();
-
 	}
-
-
 
 
 	for (int i = 0; i < 600; ++i) {
