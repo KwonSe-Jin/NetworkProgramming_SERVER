@@ -74,22 +74,22 @@ void Animal::update()
 
 			if (closelineX >= 0.5) {
 				closelineX -= 0.01;
-				PosX += 0.1;
+				PosX += 0.01;
 			}
 			if (closelineX < -0.5) {
 				closelineX += 0.01;
-				PosX -= 0.1;
+				PosX -= 0.01;
 			}
 		}
 
 		if (!(closelineZ <= 0.5 && closelineZ >= -0.5)) {
 			if (closelineZ > 0.5) {
 				closelineZ -= 0.01;
-				PosZ += 0.1;
+				PosZ += 0.01;
 			}
 			if (closelineZ < -0.5) {
 				closelineZ += 0.01;
-				PosZ -= 0.1;
+				PosZ -= 0.01;
 			}
 
 		}

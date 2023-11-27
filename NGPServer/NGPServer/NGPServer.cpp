@@ -61,9 +61,9 @@ void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 
 }
 
-void SC_MONSTER_Send( SOCKET clientSocket)
+void SC_MONSTER_Send(SOCKET clientSocket)
 {
-	int size = sizeof(SC_MONSTER_PACKET)*6;
+	int size = sizeof(SC_MONSTER_PACKET) * 6;
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&monsters), sizeof(monsters), 0);
 	if (result == SOCKET_ERROR) {
@@ -168,6 +168,25 @@ void CalculateThread()
 		//todo
 
 		g_m.lock();
+		if (heroes.size()) {
+			if (catlive)
+				HeroVSCat();
+
+			if (doglive)
+				HeroVSDog();
+
+			if (bearlive)
+				HeroVSBear();
+
+			for (int i = 0; i < 6; ++i) {
+				processmonsterPacket(*AniCats[i]);
+			}
+
+			for (int i = 0; i < clientsocketes.size(); ++i) {
+
+				SC_MONSTER_Send(clientsocketes[i]);
+			}
+		}
 		while (!playerInput.empty())
 		{
 			CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
@@ -175,28 +194,11 @@ void CalculateThread()
 
 			{
 				SC_PLAYER_PACKET responsePacket = processCSPlayerPacket(*playerInputPacket);
-  				heroes[playerInputPacket->player_id].Update();
-                /*cout << "playerInputPacket->player_id" << playerInputPacket->player_id << endl;*/
-                if (catlive)
-                    HeroVSCat();
-
-                if (doglive)
-                    HeroVSDog();
-
-                if (bearlive)
-                    HeroVSBear();
+				heroes[playerInputPacket->player_id].Update();
+				/*cout << "playerInputPacket->player_id" << playerInputPacket->player_id << endl;*/
 
 				for (int i = 0; i < clientsocketes.size(); ++i) {
 					SC_PLAYER_Send(responsePacket, clientsocketes[i]);
-				}
-
-				for (int i = 0; i < 6; ++i) {
-					processmonsterPacket(*AniCats[i]);
-				}
-
-				for (int i = 0; i < clientsocketes.size(); ++i) {
-
-					SC_MONSTER_Send(clientsocketes[i]);
 				}
 
 				//to_do 보내기
@@ -205,6 +207,7 @@ void CalculateThread()
 			}
 
 		}
+		this_thread::sleep_for(0.5ms);
 		g_m.unlock();
 
 	}
