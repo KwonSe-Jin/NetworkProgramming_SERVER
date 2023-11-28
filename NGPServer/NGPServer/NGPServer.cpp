@@ -121,6 +121,9 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 
     if (!heroes[scPacket.player_id]._flag)
         scPacket.status = false;
+    else {
+        scPacket.status = true;
+    }
 
     scPacket.Player_pos.x = heroes[scPacket.player_id].PosX;
     scPacket.Player_pos.y = heroes[scPacket.player_id].PosY;

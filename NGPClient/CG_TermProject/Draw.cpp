@@ -149,12 +149,12 @@ void animalInfo(SC_MONSTER_PACKET* p, int i)
 		dogs[i]->doginfo(p);
 		dogs[i]->update();
 	}
-	else if(p->animal_type == BEAR)
-	{	
+	else if (p->animal_type == BEAR)
+	{
 		bear.bearinfo(p);
 		bear.update();
 	}
-	
+
 }
 
 void get_vangleandStatus(float* x, float* y, bool* status)
@@ -173,7 +173,7 @@ GLvoid drawScene()
 	if (hero[global_ID].lightColorR < 0.35)
 		glClearColor(0.f, 0.f, 0.f, 1.0f);
 	else
-		glClearColor(1.0, 1.0,1.0,1.0f);
+		glClearColor(1.0, 1.0, 1.0, 1.0f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
@@ -189,7 +189,7 @@ GLvoid drawScene()
 
 	hero[global_ID].cameraProjection();
 	hero[global_ID].camera();
-	draw();		  
+	draw();
 	hero[global_ID].DrawHP();
 	hero[global_ID].cameraProjection2();
 	//hero.TopView();
@@ -209,12 +209,12 @@ void draw() {
 		hero[global_ID].lightColorR = 1.0f;
 		hero[global_ID].lightColorG = 1.0f;
 		hero[global_ID].lightColorB = 1.0f;
-	}				  
-	if (herodead) {	   
+	}
+	if (herodead) {
 		hero[global_ID].lightColorR = 0.5f;
 		hero[global_ID].lightColorG = 0.5f;
 		hero[global_ID].lightColorB = 0.5f;
-			
+
 	}
 
 	unsigned int lightPosLocation = glGetUniformLocation(shaderID, "lightPos");      //--- lightPos 
@@ -228,7 +228,7 @@ void draw() {
 	glUniform4f(aColor, 1, 1., 1., 1.);
 
 	world.Draw();
-	
+
 	glEnable(GL_BLEND); //투명 객체 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -334,16 +334,15 @@ void draw() {
 		hero[i].Update();
 	}
 
-		
+
 	hero[global_ID].Update();
 
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
-		
-		if (i != global_ID && hero[i].Hero_ID!=-1  ) {
-			
-			if(hero[i].status && i != global_ID)
-				hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
+		if (i == 0 || i == 1)
+			cout << "ID : " << i << " status = " << hero[i].status << endl;
+		if (i != global_ID && hero[i].Hero_ID != -1 && hero[i].status) {
+			hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
 		}
 	}
 

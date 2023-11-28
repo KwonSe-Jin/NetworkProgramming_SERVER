@@ -23,13 +23,13 @@ Hero::Hero(int id) : ID{ id }
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
-	else if(id==1)
+	else if (id == 1)
 	{
 		PosX = 3;
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
-	else if (id == 2) 
+	else if (id == 2)
 	{
 		PosX = -3;
 		PosY = -1.0;
@@ -94,7 +94,7 @@ void Hero::Update()
 		lightColorB = 0.5f;
 		_flag = false;
 	}
-	
+
 
 	if (PosX < -1 && firstmap)
 	{
@@ -111,25 +111,58 @@ void Hero::Update()
 	}
 
 
-	if (PosZ < -10 && firstmap|| g_catlive&&firstmap) { //�����̹� ���� 
-		PosX = -100;
-		PosZ = 0;
+	if (PosZ < -10 && firstmap || g_catlive && firstmap) {
+		if (ID == 0) {
+			PosX = -100;
+			PosZ = 0;
+		}
+		else if (ID == 1) {
+			PosX = -97;
+			PosZ = 0;
+
+		}
+		else if (ID == 2) {
+			PosX = -103;
+			PosZ = 0;
+		}
+	
 		catlive = true;
 		bearlive = false;
 		doglive = false;
 		firstmap = false;
 	}
-	if (PosZ < -7 && catlive|| g_doglive && catlive) { //�������� ���� 
-		PosX = 100;
-		PosZ = 0;
+	if (PosZ < -7 && catlive || g_doglive && catlive) {
+		if (ID == 0) {
+			PosX = 100;
+			PosZ = 0;
+		}
+		else if (ID == 1) {
+			PosX = 97;
+			PosZ = 0;
+
+		}
+		else if (ID == 2) {
+			PosX = 103;
+			PosZ = 0;
+		}
 		catlive = false;
 		doglive = true;
 		bearlive = false;
 
 	}
-	if (PosZ < -7 && doglive|| g_bearlive&& doglive) { //�� �� ���� 
-		PosX = 0;
-		PosZ = -100;
+	if (PosZ < -7 && doglive || g_bearlive && doglive) {
+		if (ID == 0) {
+			PosX = 0;
+			PosZ = -100;
+		}
+		else if (ID == 1) {
+			PosX = 3;
+			PosZ = -100;
+		}
+		else if (ID == 2) {
+			PosX = -3;
+			PosZ = -100;
+		}
 		doglive = false;
 		catlive = false;
 		bearlive = true;
