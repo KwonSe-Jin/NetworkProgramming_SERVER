@@ -13,7 +13,7 @@ public:
 	Attack bearattack;
 
 	bool _flag = true;
-
+	bool _readyflag = false;
 	bool catlive;
 	bool doglive;
 	bool bearlive;
@@ -35,6 +35,7 @@ public:
 	void ISA();
 	void ISS();
 	void ISD();
+	void ISR();
 	void damage();
 	void Update();
 	int InfoHP();

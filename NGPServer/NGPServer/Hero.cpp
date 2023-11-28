@@ -7,7 +7,7 @@ extern bool g_bearlive;
 //extern bool herodead;
 extern float HeroLocationX;
 extern float HeroLocationZ;
-
+extern int readycount;
 //extern Attack catattack[AnimalMax];
 //extern Attack dogattack[AnimalMax];
 //extern Attack bearattack;
@@ -218,7 +218,11 @@ void Hero::ISD()
 	PosZ += 0.2 * sin(radians);
 	PosX += 0.2 * cos(radians);
 }
-
+void Hero::ISR()
+{
+	readycount++;
+	_readyflag = true;
+}
 float Hero::getLeft()
 {
 	return PosX - 0.12f;

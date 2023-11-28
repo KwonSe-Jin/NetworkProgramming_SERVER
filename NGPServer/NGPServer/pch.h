@@ -60,7 +60,7 @@ extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;
 extern Animal AniBear;
 
-
+extern int readycount;
 
 
 extern Room catRoom;

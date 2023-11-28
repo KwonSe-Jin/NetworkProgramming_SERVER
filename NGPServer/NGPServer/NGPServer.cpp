@@ -14,7 +14,7 @@ queue<CS_PLAYER_PACKET*> playerInput;
 mutex player_m;
 //전역 만든 것 
 int AnimalCnt = 0;
-
+extern int readycount = 0;
 //vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 
 
@@ -105,6 +105,12 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& r
 		if (csPacket.Player_key.is_d) {
 			heroes[responsePacket.player_id].ISD();
 		}
+		if (csPacket.ready) {
+			if (heroes[responsePacket.player_id]._readyflag == false)
+				heroes[responsePacket.player_id].ISR();
+			cout << readycount << endl;
+		}
+
 
 		if (csPacket.Player_key.is_q) {
 			heroes[csPacket.player_id].isQuit();
