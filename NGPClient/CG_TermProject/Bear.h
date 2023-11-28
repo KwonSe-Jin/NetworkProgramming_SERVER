@@ -46,7 +46,7 @@ public:
 
 	void draw();
 	void update();
-
+	void bearinfo(SC_MONSTER_PACKET* p);
 	float getLeft();
 	float getRight();
 	float getBehind();

@@ -139,9 +139,21 @@ void makeInfo(SC_PLAYER_PACKET* p)
 void animalInfo(SC_MONSTER_PACKET* p, int i)
 {
 	// to_do 일단 캣으로!!
-	
-	cats[i]->catinfo(p);
-	cats[i]->update();
+	if (p->animal_type == CAT)
+	{
+		cats[i]->catinfo(p);
+		cats[i]->update();
+	}
+	else if (p->animal_type == DOG)
+	{
+		dogs[i]->doginfo(p);
+		dogs[i]->update();
+	}
+	else if(p->animal_type == BEAR)
+	{	
+		bear.bearinfo(p);
+		bear.update();
+	}
 	
 }
 
@@ -286,12 +298,11 @@ void draw() {
 
 
 
+	//AnimalCollideCat();
+	//CatAndRoomCollision();
 
-	AnimalCollideCat();
-	CatAndRoomCollision();
-
-	AnimalCollideDog();
-	DogAndRoomCollision();
+	//AnimalCollideDog();
+	//DogAndRoomCollision();
 
 	//for (int i = 0; i < cats.size(); ++i) {
 	//	cats[i]->update();
@@ -320,7 +331,6 @@ void draw() {
 
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
-
 		hero[i].Update();
 	}
 
@@ -337,14 +347,14 @@ void draw() {
 
 
 
-	if (catlive)
+	/*if (catlive)
 		HeroVSCat();
 
 	if (doglive)
 		HeroVSDog();
 
 	if (bearlive)
-		HeroVSBear();
+		HeroVSBear();*/
 
 	for (Gun*& gunbullet : gun) {
 		gunbullet->Update();

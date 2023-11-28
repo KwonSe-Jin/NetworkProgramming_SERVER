@@ -63,49 +63,49 @@ void Dog::update()
 {
 
 	//hero.location();
-	float dz = HeroLocationZ - Position.z; //HeroLocationZ傈开 
-	float dx = HeroLocationX - Position.x; //HeroLocationZ傈开 
+	//float dz = HeroLocationZ - Position.z; //HeroLocationZ傈开 
+	//float dx = HeroLocationX - Position.x; //HeroLocationZ傈开 
 
-	Direction = atan2(dx, dz);
+	//Direction = atan2(dx, dz);
 
-	closelineX = HeroLocationX - Position.x;
-	closelineZ = HeroLocationZ - Position.z;
+	//closelineX = HeroLocationX - Position.x;
+	//closelineZ = HeroLocationZ - Position.z;
 
 
-	if (doglive && !herodead) {
+	//if (doglive && !herodead) {
 
-		if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
+	//	if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
 
-			if (closelineX >= 0.5) {
-				closelineX -= 0.01;
-				Position.x += 0.01;
-			}
-			if (closelineX < -0.5) {
-				closelineX += 0.01;
-				Position.x -= 0.01;
-			}
-		}
+	//		if (closelineX >= 0.5) {
+	//			closelineX -= 0.01;
+	//			Position.x += 0.01;
+	//		}
+	//		if (closelineX < -0.5) {
+	//			closelineX += 0.01;
+	//			Position.x -= 0.01;
+	//		}
+	//	}
 
-		if (!(closelineZ <= 0.5 && closelineZ >= -0.5)) {
-			if (closelineZ > 0.5) {
-				closelineZ -= 0.01;
-				Position.z += 0.01;
-			}
-			if (closelineZ < -0.5) {
-				closelineZ += 0.01;
-				Position.z -= 0.01;
-			}
+	//	if (!(closelineZ <= 0.5 && closelineZ >= -0.5)) {
+	//		if (closelineZ > 0.5) {
+	//			closelineZ -= 0.01;
+	//			Position.z += 0.01;
+	//		}
+	//		if (closelineZ < -0.5) {
+	//			closelineZ += 0.01;
+	//			Position.z -= 0.01;
+	//		}
 
-		}
-	}
+	//	}
+	//}
 
-	if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
-		dogattack[Index].Activate = true;
-		++dogattack[Index].AttackCount;
-	}
-	else {
-		dogattack[Index].Activate = false;
-	}
+	//if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
+	//	dogattack[Index].Activate = true;
+	//	++dogattack[Index].AttackCount;
+	//}
+	//else {
+	//	dogattack[Index].Activate = false;
+	//}
 
 
 	nose.keyIn(Position, Direction);
@@ -125,6 +125,15 @@ void Dog::update()
 	swordR.keyIn(Position, Direction);
 
 
+}
+
+void Dog::doginfo(SC_MONSTER_PACKET* p)
+{
+	Direction = p->direction;
+	Position.x = p->x;
+	Position.y = p->y;
+	Position.z = p->z;
+	HP = p->hp;
 }
 
 Dog::~Dog()

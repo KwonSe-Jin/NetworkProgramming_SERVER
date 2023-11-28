@@ -45,7 +45,7 @@ Animal AniBear(Bear, 0);
 //Attack bearattack;
 
 SC_MONSTER_PACKET monsters[6];
-
+SC_MONSTER_PACKET BossBear;
 
 void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
@@ -63,6 +63,16 @@ void SC_MONSTER_Send(SOCKET clientSocket)
     int size = sizeof(SC_MONSTER_PACKET) * 6;
     send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
     int result = send(clientSocket, reinterpret_cast<char*>(&monsters), sizeof(monsters), 0);
+    if (result == SOCKET_ERROR) {
+        //std::cout << "Failed to send data" << std::endl;
+    }
+}
+
+void SC_BOSSBEAR_Send(SOCKET clientSocket)
+{
+    int size = sizeof(SC_MONSTER_PACKET);
+    send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+    int result = send(clientSocket, reinterpret_cast<char*>(&BossBear), sizeof(BossBear), 0);
     if (result == SOCKET_ERROR) {
         //std::cout << "Failed to send data" << std::endl;
     }
@@ -117,24 +127,26 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
     scPacket.Player_light.R = heroes[scPacket.player_id].lightColorR;
     scPacket.Player_light.G = heroes[scPacket.player_id].lightColorG;
     scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
-}
+
+ /*   cout << "플레이어 좌표" << endl;
+    cout << scPacket.Player_pos.x << endl;
+    cout << scPacket.Player_pos.y << endl;
+    cout << scPacket.Player_pos.z << endl;*/
+} 
 
 
 void processmonsterPacket(Animal& ani) {
 
-    //SC_MONSTER_PACKET scPacket;
     monsters[ani.Index].packet_type = 2;
     monsters[ani.Index].Monster_id = ani.Index;
     if(g_catlive)
         monsters[ani.Index].animal_type = CAT;
     else if (g_doglive)
-        monsters[ani.Index].animal_type = Dog;
+        monsters[ani.Index].animal_type = DOG;
 
     monsters[ani.Index].direction = ani.Direction;
-    //heroes[scPacket.player_id].damage();
     monsters[ani.Index].hp = ani.HP;
-    /*cout << heroes[scPacket.player_id ].VAngleX << endl;
-    cout << heroes[scPacket.player_id ].VAngleY << endl;*/
+  
 
     ani.update();
 
@@ -176,36 +188,68 @@ void CalculateThread()
 				g_bearlive = false;
 			}
 			else if (heroes[i].doglive) {
+
 				g_catlive = false;
 				g_doglive = true;
 				g_bearlive = false;
 			}
 			else if (heroes[i].bearlive) {
 				g_catlive = false;
-				g_doglive = true;
-				g_bearlive = false;
+				g_doglive = false;
+				g_bearlive = true;
 			}
 		}
 
 
 		if ((heroes.size()&& g_catlive)|| (heroes.size() && g_doglive)|| (heroes.size() && g_bearlive)) {
-			if (g_catlive)
-				HeroVSCat();
+            if (g_catlive)
+            {
+                HeroVSCat();
+                for (int i = 0; i < 6; ++i) {
+                    processmonsterPacket(*AniCats[i]);
+                }
+                for (int i = 0; i < heroes.size(); ++i) {
 
-			if (g_doglive)
-				HeroVSDog();
+                    SC_MONSTER_Send(clientsocketes[i]);
+                }
+            }
 
-			if (g_bearlive)
-				HeroVSBear();
+            if (g_doglive)
+            {
+                HeroVSDog();
+                for (int i = 0; i < 6; ++i) {
+                    processmonsterPacket(*AniDogs[i]);
+                }
+                for (int i = 0; i < heroes.size(); ++i) {
 
-			for (int i = 0; i < 6; ++i) {
-				processmonsterPacket(*AniCats[i]);
-			}
+                    SC_MONSTER_Send(clientsocketes[i]);
+                }
+            }
 
-			for (int i = 0; i < clientsocketes.size(); ++i) {
+            if (g_bearlive)
+            {
+                HeroVSBear();
+                BossBear.packet_type = 2;
+                BossBear.animal_type = BEAR;
 
-				SC_MONSTER_Send(clientsocketes[i]);
-			}
+               
+                BossBear.direction = AniBear.Direction;
+                BossBear.hp = AniBear.HP;
+
+
+                AniBear.update();
+
+                BearAndRoomCollision();
+
+                BossBear.x = AniBear.PosX;
+                BossBear.y = AniBear.PosY;
+                BossBear.z = AniBear.PosZ;
+                for (int i = 0; i < heroes.size(); ++i) {
+                    SC_BOSSBEAR_Send(clientsocketes[i]);
+                }
+            }
+
+			
 		}
 		
         if(heroes.size() && heroes.size() == HeroID)
