@@ -5,16 +5,16 @@ bool isJump;
 extern bool RestartPress ;
 extern NetworkManager networkManager;
 
-void get_vangle(float* x, float* y);
+void get_vangleandStatus(float* x, float* y, bool* status);
 
 int global_ID = -1;
 
 GLvoid Keyboard(unsigned char key, int x, int y)
 {
 	CS_PLAYER_PACKET p;
-	get_vangle(&(p.camera.VangleX), &(p.camera.VangleY));
+	get_vangleandStatus(&(p.camera.VangleX), &(p.camera.VangleY), &(p.status));
 	p.player_id = global_ID;
-
+	cout << p.status << endl;
 
 	//p.player_id = Th
 	switch (key) {

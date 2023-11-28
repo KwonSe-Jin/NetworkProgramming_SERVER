@@ -83,7 +83,7 @@ public:
 	float getRight();
 	float getBehind();
 	float getFront();
-	void get_vangle(float* x, float* y);
+	void get_Info(float* x, float* y, bool* status);
 	
 	friend void HeroVSDog();
 	friend void HeroVSBear();

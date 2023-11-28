@@ -92,6 +92,7 @@ void Hero::Update()
 		lightColorR = 0.5f;
 		lightColorG = 0.5f;
 		lightColorB = 0.5f;
+		_flag = false;
 	}
 	
 
