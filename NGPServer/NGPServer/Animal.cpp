@@ -2,7 +2,7 @@
 #include <numeric>
 #include <limits>
 #include <random>
-extern vector<Hero> heroes; //   ΰ        ϴ              ߿                  ּ       ּ   . 
+extern vector<Hero> heroes; //���ΰ� ���� �ϴ� �������� ���߿� ������ ���� �� �ּ� �����ּ���. 
 
 //extern Attack catattack[AnimalMax];
 //extern Attack dogattack[AnimalMax];
@@ -29,7 +29,7 @@ Animal::Animal(int type, int id) : AnimalType(type), Index(id)
         PosZ = urdZ(dre);
         HP = 20;
         Attack = 10;
-        if (AnimalCnt == AnimalMax) { //      ̴  6            ߰ , 6         ID ο                ID ο    ִ       0      ʱ ȭ Ѵ .
+        if (AnimalCnt == AnimalMax) { // �����̴� 6������ �����߰�, 6���� ��� ID�ο��� �� ��� ���� ID�ο����ִ� ���� 0���� �ʱ�ȭ�Ѵ�.
             AnimalCnt = 0;
         }
 
@@ -42,7 +42,7 @@ Animal::Animal(int type, int id) : AnimalType(type), Index(id)
         PosZ = urdZ(dre);
         HP = 40;
         Attack = 20;
-        if (AnimalCnt == AnimalMax) { //      ̴  6            ߰ , 6         ID ο                ID ο    ִ       0      ʱ ȭ Ѵ .
+        if (AnimalCnt == AnimalMax) { // �����̴� 6������ �����߰�, 6���� ��� ID�ο��� �� ��� ���� ID�ο����ִ� ���� 0���� �ʱ�ȭ�Ѵ�.
             AnimalCnt = 0;
         }
     }
@@ -85,11 +85,10 @@ void Animal::update()
     float dz = HeroLocationZ - PosZ;
     float dx = HeroLocationX - PosX;
 
-	closelineX = HeroLocationX - PosX;
-	closelineZ = HeroLocationZ - PosZ;
-	//병합때매
-	if ((g_catlive && !g_herodead && AnimalType == Cat) || (g_doglive && !g_herodead && AnimalType == Dog) ||
-		(g_bearlive && !g_herodead && AnimalType == Bear)) {
+    Direction = atan2(dx, dz);
+
+    closelineX = HeroLocationX - PosX;
+    closelineZ = HeroLocationZ - PosZ;
 
     if ((g_catlive && heroes[closestHeroIndex]._flag && AnimalType == Cat) || (g_doglive && heroes[closestHeroIndex]._flag && AnimalType == Dog) ||
         (g_bearlive && heroes[closestHeroIndex]._flag && AnimalType == Bear)) {
