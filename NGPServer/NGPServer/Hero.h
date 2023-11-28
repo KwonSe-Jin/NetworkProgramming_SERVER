@@ -1,22 +1,16 @@
 #pragma once
 #include "pch.h"
-
-//extern CatAttack catattack[AnimCnt];
-//extern DogAttack dogattack[AnimCnt];
-//extern BearAttack bearattack;
+#include "Attack.h"
 
 class Hero
 {
-
 	bool firstmap;
-	/// <summary>
-	/// ī�޶� �����մϴ�.
-	/// </summary>
-
-
-
 
 public:
+	Attack catattack[6];
+	Attack dogattack[6];
+	Attack bearattack;
+
 	bool _flag = true;
 
 	bool catlive;

@@ -25,15 +25,15 @@
 #include <stdio.h>
 #include <windows.h>
 #include <assert.h>
+
 using namespace std;
 
 constexpr float PI = 3.14159265358979323846f;
+#define AnimalMax 6
 
 #define Cat 1
 #define Dog 2
 #define Bear 3
-
-#define AnimalMax 6
 
 //전역은 여기에 선언해주세요.
 extern vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
@@ -52,9 +52,9 @@ extern float HeroLocationX;
 extern float HeroLocationZ;
 
 
-extern Attack CatAttack[6];
-extern Attack DogAttack[6];
-extern Attack BearAttack;
+//extern Attack CatAttack[6];
+//extern Attack DogAttack[6];
+//extern Attack BearAttack;
 
 extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;

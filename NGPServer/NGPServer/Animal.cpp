@@ -4,9 +4,9 @@
 #include <random>
 extern vector<Hero> heroes; 
 
-extern Attack catattack[AnimalMax];
-extern Attack dogattack[AnimalMax];
-extern Attack bearattack;
+//extern Attack catattack[AnimalMax];
+//extern Attack dogattack[AnimalMax];
+//extern Attack bearattack;
 
 extern bool g_catlive;
 extern bool g_doglive;
@@ -79,7 +79,10 @@ void Animal::update()
 	}
 
 	heroes[closestHeroIndex].location();
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 	float dz = HeroLocationZ - PosZ;
 	float dx = HeroLocationX - PosX;
 
@@ -117,37 +120,37 @@ void Animal::update()
 
 	}
 
-	/*if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
+	if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
 		if (AnimalType == Cat) {
 			AnimalCrushHero = true;
-			catattack[Index].Activate = true;
-			++catattack[Index].AttackCount;
+			heroes[closestHeroIndex].catattack[Index].Activate = true;
+			++heroes[closestHeroIndex].catattack[Index].AttackCount;
 		}
 		if (AnimalType == Dog) {
 			AnimalCrushHero = true;
-			dogattack[Index].Activate = true;
-			++dogattack[Index].AttackCount;
+			heroes[closestHeroIndex].dogattack[Index].Activate = true;
+			++heroes[closestHeroIndex].dogattack[Index].AttackCount;
 		}
 		if (AnimalType == Bear) {
 			AnimalCrushHero = true;
-			bearattack.Activate = true;
-			++(bearattack.AttackCount);
+			heroes[closestHeroIndex].bearattack.Activate = true;
+			++(heroes[closestHeroIndex].bearattack.AttackCount);
 		}
 	}
 	else {
 		if (AnimalType == Cat) {
 			AnimalCrushHero = false;
-			catattack[Index].Activate = false;
+			heroes[closestHeroIndex].catattack[Index].Activate = false;
 		}
 		if (AnimalType == Dog) {
 			AnimalCrushHero = false;
-			dogattack[Index].Activate = false;
+			heroes[closestHeroIndex].dogattack[Index].Activate = false;
 		}
 		if (AnimalType == Bear) {
 			AnimalCrushHero = false;
-			bearattack.Activate = false;
+			heroes[closestHeroIndex].bearattack.Activate = false;
 		}
-	}*/
+	}
 
 }
 
