@@ -214,11 +214,11 @@ void CalculateThread()
 					processmonsterPacket(*AniCats[i]);
 				}
 				for (int i = 0; i < heroes.size(); ++i) {
-
-					SC_MONSTER_Send(clientsocketes[i]);
+					if (!heroes[i].is_q)
+						SC_MONSTER_Send(clientsocketes[i]);
 				}
 			}
-
+			
 			if (g_doglive)
 			{
 				HeroVSDog();
@@ -226,7 +226,7 @@ void CalculateThread()
 					processmonsterPacket(*AniDogs[i]);
 				}
 				for (int i = 0; i < heroes.size(); ++i) {
-
+					if (!heroes[i].is_q)
 					SC_MONSTER_Send(clientsocketes[i]);
 				}
 			}
@@ -250,6 +250,7 @@ void CalculateThread()
 				BossBear.y = AniBear.PosY;
 				BossBear.z = AniBear.PosZ;
 				for (int i = 0; i < heroes.size(); ++i) {
+					if (!heroes[i].is_q)
 					SC_BOSSBEAR_Send(clientsocketes[i]);
 				}
 			}
@@ -269,12 +270,16 @@ void CalculateThread()
 
 			for (int i = 0; i < heroes.size(); ++i)
 			{
-				heroes[i].Update();
-				//클라이언트 입력
+				if (!heroes[i].is_q) {
+					heroes[i].Update();
+					//클라이언트 입력
 
-				Posandlight(responsePacket, i);
-				for (int j = 0; j < heroes.size(); ++j)
-					SC_PLAYER_Send(responsePacket, clientsocketes[j]);
+					Posandlight(responsePacket, i);
+					for (int j = 0; j < heroes.size(); ++j)
+						if (!heroes[j].is_q) {
+							SC_PLAYER_Send(responsePacket, clientsocketes[j]);
+						}
+				}
 			}
 
 		}
@@ -293,6 +298,8 @@ void HandleClientSocket(SOCKET clientSocket)
 	//send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 
 	// 나머지 클라이언트 소켓 처리 코드
+	
+	// ?? h -> 공석 0번 
 
 	Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
 	{

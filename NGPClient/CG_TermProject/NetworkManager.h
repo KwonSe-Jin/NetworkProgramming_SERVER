@@ -129,7 +129,6 @@ public:
     bool recvData() {
         char buf[500];
         int size;
-        //std::cout << size << "����Ʈ ����" << std::endl;
 
         recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
         recv(clientSocket, buf, size, 0);

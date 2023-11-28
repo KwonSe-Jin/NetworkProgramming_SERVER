@@ -7,6 +7,7 @@ class Hero
 	bool firstmap;
 
 public:
+	bool is_q;
 	Attack catattack[6];
 	Attack dogattack[6];
 	Attack bearattack;

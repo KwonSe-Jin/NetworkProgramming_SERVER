@@ -36,6 +36,8 @@ Hero::Hero(int id) : ID{ id }
 		PosZ = 10.0;
 	}
 	HP = 100;
+	is_q=false;
+
 	firstmap = true;
 	catlive = false;
 	doglive = false;
@@ -181,7 +183,9 @@ void Hero::location()
 
 void Hero::isQuit()
 {
+	is_q = true;
 	_flag = false;
+
 }
 
 void Hero::ISW()
