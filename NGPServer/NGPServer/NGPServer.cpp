@@ -4,6 +4,7 @@
 #include "ThreadManager.h"
 #include "SocketUtils.h"
 #include "Collision.h"
+int readycount = 0;
 
 int HeroID = 0;
 vector<Hero> heroes;
@@ -89,26 +90,31 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& r
     cout << heroes[scPacket.player_id ].VAngleY << endl;*/
 
     if (responsePacket.status) {
-		if (csPacket.Player_key.is_w) {
-			heroes[responsePacket.player_id].ISW();
-		}
+        if (csPacket.Player_key.is_w) {
+            heroes[responsePacket.player_id].ISW();
+        }
 
 
-		if (csPacket.Player_key.is_a) {
-			heroes[responsePacket.player_id].ISA();
-		}
+        if (csPacket.Player_key.is_a) {
+            heroes[responsePacket.player_id].ISA();
+        }
 
-		if (csPacket.Player_key.is_s) {
-			heroes[responsePacket.player_id].ISS();
-		}
+        if (csPacket.Player_key.is_s) {
+            heroes[responsePacket.player_id].ISS();
+        }
 
-		if (csPacket.Player_key.is_d) {
-			heroes[responsePacket.player_id].ISD();
-		}
+        if (csPacket.Player_key.is_d) {
+            heroes[responsePacket.player_id].ISD();
+        }
+        if (csPacket.ready) {
+            if (heroes[responsePacket.player_id]._readyflag == false)
+                heroes[responsePacket.player_id].ISR();
+            cout << readycount << endl;
+        }
 
-		if (csPacket.Player_key.is_q) {
-			heroes[csPacket.player_id].isQuit();
-		}
+        if (csPacket.Player_key.is_q) {
+            heroes[csPacket.player_id].isQuit();
+        }
     }
 
 }
@@ -130,40 +136,40 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
     scPacket.Player_light.G = heroes[scPacket.player_id].lightColorG;
     scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
 
- /*   cout << "플레이어 좌표" << endl;
-    cout << scPacket.Player_pos.x << endl;
-    cout << scPacket.Player_pos.y << endl;
-    cout << scPacket.Player_pos.z << endl;*/
-} 
+    /*   cout << "플레이어 좌표" << endl;
+       cout << scPacket.Player_pos.x << endl;
+       cout << scPacket.Player_pos.y << endl;
+       cout << scPacket.Player_pos.z << endl;*/
+}
 
 
 void processmonsterPacket(Animal& ani) {
 
     monsters[ani.Index].packet_type = 2;
     monsters[ani.Index].Monster_id = ani.Index;
-    if(g_catlive)
+    if (g_catlive)
         monsters[ani.Index].animal_type = CAT;
     else if (g_doglive)
         monsters[ani.Index].animal_type = DOG;
 
     monsters[ani.Index].direction = ani.Direction;
     monsters[ani.Index].hp = ani.HP;
-  
+
 
     ani.update();
 
-	if (g_catlive) {
-		AnimalCollideCat();
-		Catroomtest();
-	}
-	if (g_doglive)
-	{
-		AnimalCollideDog();
-		DogAndRoomCollision();
-	}
-	if (g_bearlive) {
-		BearAndRoomCollision();
-	}
+    if (g_catlive) {
+        AnimalCollideCat();
+        Catroomtest();
+    }
+    if (g_doglive)
+    {
+        AnimalCollideDog();
+        DogAndRoomCollision();
+    }
+    if (g_bearlive) {
+        BearAndRoomCollision();
+    }
 
     monsters[ani.Index].x = ani.PosX;
     monsters[ani.Index].y = ani.PosY;
@@ -181,29 +187,29 @@ void CalculateThread()
     {
         //todo
 
-		g_m.lock();
+        g_m.lock();
 
-		for (int i = 0; i < heroes.size(); ++i) {
-			if (heroes[i].catlive) { // 한명이라도 들어간 순간? 
-				g_catlive = true;
-				g_doglive = false;
-				g_bearlive = false;
-			}
-			else if (heroes[i].doglive) {
+        for (int i = 0; i < heroes.size(); ++i) {
+            if (heroes[i].catlive) { // 한명이라도 들어간 순간? 
+                g_catlive = true;
+                g_doglive = false;
+                g_bearlive = false;
+            }
+            else if (heroes[i].doglive) {
 
-				g_catlive = false;
-				g_doglive = true;
-				g_bearlive = false;
-			}
-			else if (heroes[i].bearlive) {
-				g_catlive = false;
-				g_doglive = false;
-				g_bearlive = true;
-			}
-		}
+                g_catlive = false;
+                g_doglive = true;
+                g_bearlive = false;
+            }
+            else if (heroes[i].bearlive) {
+                g_catlive = false;
+                g_doglive = false;
+                g_bearlive = true;
+            }
+        }
 
 
-		if ((heroes.size()&& g_catlive)|| (heroes.size() && g_doglive)|| (heroes.size() && g_bearlive)) {
+        if ((heroes.size() && g_catlive) || (heroes.size() && g_doglive) || (heroes.size() && g_bearlive)) {
             if (g_catlive)
             {
                 HeroVSCat();
@@ -234,7 +240,7 @@ void CalculateThread()
                 BossBear.packet_type = 2;
                 BossBear.animal_type = BEAR;
 
-               
+
                 BossBear.direction = AniBear.Direction;
                 BossBear.hp = AniBear.HP;
 
@@ -251,9 +257,9 @@ void CalculateThread()
                 }
             }
 
-		}
-		
-        if(heroes.size() && heroes.size() == HeroID)
+        }
+
+        if (heroes.size() && heroes.size() == HeroID)
         {
             SC_PLAYER_PACKET responsePacket;
 
@@ -268,12 +274,12 @@ void CalculateThread()
             {
                 heroes[i].Update();
                 //클라이언트 입력
-                
+
                 Posandlight(responsePacket, i);
                 for (int j = 0; j < heroes.size(); ++j)
                     SC_PLAYER_Send(responsePacket, clientsocketes[j]);
             }
-           
+
         }
         this_thread::sleep_for(0.5ms);
         g_m.unlock();
@@ -297,7 +303,7 @@ void HandleClientSocket(SOCKET clientSocket)
         heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
     }
     //여기서 ID를 클라에게 보내주기
-    SC_PLAYER_PACKET p;
+    //SC_PLAYER_PACKET p;
 
     // 클라이언트에게 스레드 ID를 보내기 위한 작업
     int player_id = HeroID;
@@ -322,7 +328,7 @@ void HandleClientSocket(SOCKET clientSocket)
     cout << "Recv Data = " << recvBuffer << endl;
     cout << "Recv Data len = " << recvLen << endl;
 
-
+    //readycount++;
     while (true)
     {
         //클라이언트에서 키입력 받기 고정길이 // 가변길이 방식
@@ -380,7 +386,7 @@ int main()
         }
 
         SocketUtils::SetTcpNoDelay(clientSocket, true);
-        
+
         clientsocketes.emplace_back(clientSocket);
         cout << "Client Connected!" << endl;
 

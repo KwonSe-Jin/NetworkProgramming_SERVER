@@ -1,6 +1,8 @@
 #include "pch.h"
 #include <cmath>
 //
+extern int readycount;
+
 extern bool  g_catlive;
 extern bool g_doglive;
 extern bool g_bearlive;
@@ -23,13 +25,13 @@ Hero::Hero(int id) : ID{ id }
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
-	else if(id==1)
+	else if (id == 1)
 	{
 		PosX = 3;
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
-	else if (id == 2) 
+	else if (id == 2)
 	{
 		PosX = -3;
 		PosY = -1.0;
@@ -47,6 +49,8 @@ Hero::~Hero()
 {
 
 }
+
+
 
 void Hero::damage()
 {
@@ -94,7 +98,7 @@ void Hero::Update()
 		lightColorB = 0.5f;
 		_flag = false;
 	}
-	
+
 
 	if (PosX < -1 && firstmap)
 	{
@@ -111,7 +115,7 @@ void Hero::Update()
 	}
 
 
-	if (PosZ < -10 && firstmap|| g_catlive&&firstmap) { //�����̹� ���� 
+	if (PosZ < -10 && firstmap && (readycount == 3) || g_catlive && firstmap) {
 		PosX = -100;
 		PosZ = 0;
 		catlive = true;
@@ -119,7 +123,7 @@ void Hero::Update()
 		doglive = false;
 		firstmap = false;
 	}
-	if (PosZ < -7 && catlive|| g_doglive && catlive) { //�������� ���� 
+	if (PosZ < -7 && catlive || g_doglive && catlive) {
 		PosX = 100;
 		PosZ = 0;
 		catlive = false;
@@ -127,7 +131,7 @@ void Hero::Update()
 		bearlive = false;
 
 	}
-	if (PosZ < -7 && doglive|| g_bearlive&& doglive) { //�� �� ���� 
+	if (PosZ < -7 && doglive || g_bearlive && doglive) {
 		PosX = 0;
 		PosZ = -100;
 		doglive = false;
@@ -180,6 +184,11 @@ void Hero::ISD()
 
 	PosZ += 0.2 * sin(radians);
 	PosX += 0.2 * cos(radians);
+}
+void Hero::ISR()
+{
+	readycount++;
+	_readyflag = true;
 }
 
 float Hero::getLeft()
