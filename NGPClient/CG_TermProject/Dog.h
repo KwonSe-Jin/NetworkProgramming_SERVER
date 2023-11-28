@@ -51,7 +51,7 @@ public:
 	int Index = 0;
 	void draw();
 	void update();
-
+	void doginfo(SC_MONSTER_PACKET* p);
 	float getLeft();
 	float getRight();
 	float getBehind();

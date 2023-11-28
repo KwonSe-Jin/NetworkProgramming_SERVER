@@ -140,14 +140,24 @@ public:
         }
         break;
         case SC_MONSTER: {
-         /*   std::cout << size << "����Ʈ ����" << std::endl;*/
-            for (int i = 0; i < 6; ++i) {
-                char anibuf[32];
-                std::memcpy(&anibuf, &buf[i * 32], 32);
-                SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(anibuf);
+            if (size == 32)
+            {
+                SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
+                int i = 0;
                 animalInfo(p, i);
 
             }
+            else {
+                for (int i = 0; i < 6; ++i) {
+                    char anibuf[32];
+                    std::memcpy(&anibuf, &buf[i * 32], 32);
+                    SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(anibuf);
+                    animalInfo(p, i);
+
+                }
+            }
+
+            
             break;
 
         }

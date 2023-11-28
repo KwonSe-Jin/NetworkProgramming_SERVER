@@ -71,11 +71,14 @@ void Animal::update()
 	int closestHeroIndex = -1;
 
 	for (int i = 0; i < heroes.size(); ++i) {
-		float distance = calculateDistance(heroes[i].getPosX(), heroes[i].getPosZ());
-		if (distance < closestDistance) {
-			closestDistance = distance;
-			closestHeroIndex = i;
+		if (heroes[i]._flag) {
+			float distance = calculateDistance(heroes[i].getPosX(), heroes[i].getPosZ());
+			if (distance < closestDistance) {
+				closestDistance = distance;
+				closestHeroIndex = i;
+			}
 		}
+		
 	}
 
 	heroes[closestHeroIndex].location();

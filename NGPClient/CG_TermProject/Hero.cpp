@@ -38,6 +38,8 @@ Hero::Hero(int colorID) : Unit(1.f)
 	scaleZ = 0.3;
 	HP = 100;
 	firstmap = true;
+	status = true;
+	
 }
 Hero::~Hero()
 {
@@ -234,10 +236,6 @@ void Hero::get_vangle(float* x, float* y)
 }
 
 
-
-
-
-
 ///////////////////camera part///////////////////
 
 
@@ -358,6 +356,7 @@ void Hero::VAngleMotion(int x, int y)
 
 void Hero::setInfo(SC_PLAYER_PACKET* p)
 {
+	status = p->status;
 	Hero_ID = p->player_id;
 	HP = p->player_hp;
 	PosX = p->Player_pos.x;
