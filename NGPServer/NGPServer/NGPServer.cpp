@@ -110,7 +110,6 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& r
 			heroes[csPacket.player_id].isQuit();
 		}
     }
-    cout << responsePacket.status << endl;
 
 }
 

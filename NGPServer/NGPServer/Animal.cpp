@@ -85,11 +85,10 @@ void Animal::update()
     float dz = HeroLocationZ - PosZ;
     float dx = HeroLocationX - PosX;
 
-	closelineX = HeroLocationX - PosX;
-	closelineZ = HeroLocationZ - PosZ;
-	//병합때매
-	if ((g_catlive && !g_herodead && AnimalType == Cat) || (g_doglive && !g_herodead && AnimalType == Dog) ||
-		(g_bearlive && !g_herodead && AnimalType == Bear)) {
+    Direction = atan2(dx, dz);
+
+    closelineX = HeroLocationX - PosX;
+    closelineZ = HeroLocationZ - PosZ;
 
     if ((g_catlive && heroes[closestHeroIndex]._flag && AnimalType == Cat) || (g_doglive && heroes[closestHeroIndex]._flag && AnimalType == Dog) ||
         (g_bearlive && heroes[closestHeroIndex]._flag && AnimalType == Bear)) {
@@ -152,38 +151,6 @@ void Animal::update()
         }
     }
 
-        if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
-            if (AnimalType == Cat) {
-                AnimalCrushHero = true;
-                heroes[closestHeroIndex].catattack[Index].Activate = true;
-                ++heroes[closestHeroIndex].catattack[Index].AttackCount;
-            }
-            if (AnimalType == Dog) {
-                AnimalCrushHero = true;
-                heroes[closestHeroIndex].dogattack[Index].Activate = true;
-                ++heroes[closestHeroIndex].dogattack[Index].AttackCount;
-            }
-            if (AnimalType == Bear) {
-                AnimalCrushHero = true;
-                heroes[closestHeroIndex].bearattack.Activate = true;
-                ++(heroes[closestHeroIndex].bearattack.AttackCount);
-            }
-        }
-        else {
-            if (AnimalType == Cat) {
-                AnimalCrushHero = false;
-                heroes[closestHeroIndex].catattack[Index].Activate = false;
-            }
-            if (AnimalType == Dog) {
-                AnimalCrushHero = false;
-                heroes[closestHeroIndex].dogattack[Index].Activate = false;
-            }
-            if (AnimalType == Bear) {
-                AnimalCrushHero = false;
-                heroes[closestHeroIndex].bearattack.Activate = false;
-            }
-        }
-    }
 }
 
 

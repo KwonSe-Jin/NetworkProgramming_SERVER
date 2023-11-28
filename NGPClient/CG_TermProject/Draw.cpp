@@ -38,6 +38,7 @@ bool isCollideBear(Bear r1, Gun r2);
 int catdead{};
 int dogdead{};
 int beardead{};
+
 int HerogetHP = 10;
 
 float lightPosX = 0.0;
@@ -339,8 +340,10 @@ void draw() {
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
 		
-		if (i != global_ID && hero[i].Hero_ID!=-1 && hero[i].status) {
-			hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
+		if (i != global_ID && hero[i].Hero_ID!=-1  ) {
+			
+			if(hero[i].status && i != global_ID)
+				hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
 		}
 	}
 
