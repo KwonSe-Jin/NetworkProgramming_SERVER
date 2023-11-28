@@ -5,6 +5,7 @@
 #include "SocketUtils.h"
 #include "Collision.h"
 
+
 int HeroID = 0;
 vector<Hero> heroes;
 vector<SOCKET> clientsocketes;
@@ -39,6 +40,7 @@ Room bearRoom{ Bear };
 vector<Animal*> AniCats{ new Animal(Cat,0), new Animal(Cat,1),new Animal(Cat,2), new Animal(Cat,3),new Animal(Cat,4),new Animal(Cat,5) };
 vector<Animal*> AniDogs{ new Animal(Dog,0), new Animal(Dog,1),new Animal(Dog,2), new Animal(Dog,3),new Animal(Dog,4),new Animal(Dog,5) };
 Animal AniBear(Bear, 0);
+vector<Gun*> gun;
 
 //Attack catattack[AnimalMax];
 //Attack dogattack[AnimalMax];
@@ -92,25 +94,19 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& r
 		if (csPacket.Player_key.is_w) {
 			heroes[responsePacket.player_id].ISW();
 		}
-
-
 		if (csPacket.Player_key.is_a) {
 			heroes[responsePacket.player_id].ISA();
 		}
-
 		if (csPacket.Player_key.is_s) {
 			heroes[responsePacket.player_id].ISS();
 		}
-
 		if (csPacket.Player_key.is_d) {
 			heroes[responsePacket.player_id].ISD();
 		}
-
 		if (csPacket.Player_key.is_q) {
 			heroes[csPacket.player_id].isQuit();
 		}
     }
-
 }
 
 void Posandlight(SC_PLAYER_PACKET& scPacket, int i)

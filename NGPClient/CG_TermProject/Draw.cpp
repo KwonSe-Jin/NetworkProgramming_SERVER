@@ -336,12 +336,16 @@ void draw() {
 
 		
 	hero[global_ID].Update();
-
+	
+	// to_do 내가 죽었는데 다른 사람 플레이어가 안보임! 
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
 		
-		if (i != global_ID && hero[i].Hero_ID!=-1 && hero[i].status ) {
-			hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
+		if (i != global_ID && hero[i].Hero_ID!=-1  ) {
+			
+			if(hero[i].status)
+				hero[i].Draw(); 
+			
 		}
 	}
 

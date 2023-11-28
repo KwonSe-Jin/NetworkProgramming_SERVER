@@ -16,6 +16,7 @@ extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;
 extern Animal AniBear;
 
+
 Hero::Hero(int id) : ID{ id }
 {
 	if (id == 0) {

@@ -1,15 +1,20 @@
 #pragma once
 #include "pch.h"
+#include "gun.h"
+
 extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;
 extern Animal AniBear;
 
+extern vector<Gun*> gun;
 extern vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 extern Room catRoom;
 extern Room dogRoom;
 extern Room bearRoom;
 
-
+extern bool isCollideDog(Animal r1, Gun r2);
+extern bool isCollide2D(Animal r1, Gun r2);
+extern bool isCollideBear(Animal r1, Gun r2);
 
 void AnimalCollideCat() {
 
@@ -45,104 +50,104 @@ void AnimalCollideDog() {
 }
 
 
-//
-//void BulletCollideCat() {
-//
-//	for (int i = 0; i < gun.size(); ++i) {
-//		for (int j = 0; j < cats.size(); ++j) {
-//			if (isCollide2D(*cats[j], *gun[i])) {
-//				cats[j]->HP -= gun[i]->Damage;
-//				delete gun[i];
-//				if (0 == cats[j]->HP) {
-//					for (int i = 0; i < 40; ++i) {
-//						particle[i]->dirY = -0.2;
-//					}
-//					CatEndPosX = cats[j]->Position.x;
-//					CatEndPosZ = cats[j]->Position.z;
-//					isParticle = true;
-//					delete cats[j];
-//					catdead++;
-//					cats.erase(cats.begin() + j);
-//					--j;
-//				}
-//				gun.erase(gun.begin() + i);
-//				--i;
-//				break;
-//			}
-//
-//		}
-//
-//	}
-//}
-//
-//void BulletCollideDog() {
-//
-//	for (int i = 0; i < gun.size(); ++i) {
-//		for (int j = 0; j < dogs.size(); ++j) {
-//			if (isCollideDog(*dogs[j], *gun[i])) {
-//				dogs[j]->HP -= gun[i]->Damage;
-//				delete gun[i];
-//				if (0 == dogs[j]->HP) {
-//					for (int i = 0; i < 40; ++i) {
-//						particle[i]->dirY = -0.2;
-//					}
-//					isParticle = true;
-//					delete dogs[j];
-//					dogdead++;
-//					dogs.erase(dogs.begin() + j);
-//					--j;
-//				}
-//				gun.erase(gun.begin() + i);
-//				--i;
-//				break;
-//			}
-//
-//		}
-//
-//	}
-//}
-//
-//void BulletCollideBear() {
-//
-//	for (int i = 0; i < gun.size(); ++i) {
-//		if (isCollideBear(bear, *gun[i])) {
-//			bear.HP -= gun[i]->Damage;
-//			delete gun[i];
-//			if (0 == bear.HP) {
-//				for (int i = 0; i < 40; ++i) {
-//					particle[i]->dirY = -0.2;
-//				}
-//				BearLife = false;
-//				beardead = true;
-//				isParticle = true;
-//			}
-//			gun.erase(gun.begin() + i);
-//			--i;
-//		}
-//	}
-//}
-//
-//bool isCollide2D(Cat r1, Gun r2)
-//{
-//	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-//	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-//	return true;
-//}
-//
-//bool isCollideDog(Dog r1, Gun r2)
-//{
-//	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-//	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-//	return true;
-//}
-//
-//
-//bool isCollideBear(Bear r1, Gun r2)
-//{
-//	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-//	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-//	return true;
-//}
+
+void BulletCollideCat() {
+
+	for (int i = 0; i < gun.size(); ++i) {
+		for (int j = 0; j < AniCats.size(); ++j) {
+			if (isCollide2D(*AniCats[j], *gun[i])) {
+				AniCats[j]->HP -= gun[i]->Damage;
+				delete gun[i];
+				if (0 == AniCats[j]->HP) {
+					/*for (int i = 0; i < 40; ++i) {
+						particle[i]->dirY = -0.2;
+					}
+					CatEndPosX = cats[j]->Position.x;
+					CatEndPosZ = cats[j]->Position.z;
+					isParticle = true;
+					delete cats[j];
+					catdead++;
+					cats.erase(cats.begin() + j);
+					--j;*/
+				}
+				gun.erase(gun.begin() + i);
+				--i;
+				break;
+			}
+
+		}
+
+	}
+}
+
+void BulletCollideDog() {
+
+	for (int i = 0; i < gun.size(); ++i) {
+		for (int j = 0; j < AniDogs.size(); ++j) {
+			if (isCollideDog(*AniDogs[j], *gun[i])) {
+				AniDogs[j]->HP -= gun[i]->Damage;
+				delete gun[i];
+				if (0 == AniDogs[j]->HP) {
+					/*for (int i = 0; i < 40; ++i) {
+						particle[i]->dirY = -0.2;
+					}
+					isParticle = true;
+					delete dogs[j];
+					dogdead++;
+					dogs.erase(dogs.begin() + j);
+					--j;*/
+				}
+				gun.erase(gun.begin() + i);
+				--i;
+				break;
+			}
+
+		}
+
+	}
+}
+
+void BulletCollideBear() {
+
+	for (int i = 0; i < gun.size(); ++i) {
+		if (isCollideBear(AniBear, *gun[i])) {
+			AniBear.HP -= gun[i]->Damage;
+			delete gun[i];
+			if (0 == AniBear.HP) {
+				/*for (int i = 0; i < 40; ++i) {
+					particle[i]->dirY = -0.2;
+				}
+				BearLife = false;
+				beardead = true;
+				isParticle = true;*/
+			}
+			gun.erase(gun.begin() + i);
+			--i;
+		}
+	}
+}
+
+bool isCollide2D(Animal r1, Gun r2)
+{
+	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
+	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
+	return true;
+}
+
+bool isCollideDog(Animal r1, Gun r2)
+{
+	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
+	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
+	return true;
+}
+
+
+bool isCollideBear(Animal r1, Gun r2)
+{
+	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
+	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
+	return true;
+}
 
 
 bool isCollideAnimals_room(Animal r1, Room r2)

@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="Animal.cpp" />
     <ClCompile Include="Attack.cpp" />
+    <ClCompile Include="gun.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="NGPServer.cpp" />
     <ClCompile Include="Room.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Animal.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="gun.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="protocol.h" />

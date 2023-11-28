@@ -5,6 +5,7 @@
 #include "Attack.h"
 #include "Animal.h"
 #include "Room.h"
+#include "gun.h"
 #include <vector>
 #include <list>
 #include <queue>
@@ -36,7 +37,9 @@ constexpr float PI = 3.14159265358979323846f;
 #define Bear 3
 
 //전역은 여기에 선언해주세요.
+
 extern vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
+
 //using HeroRef = std::shared_ptr<class Hero>;
 extern int AnimalCnt ;
 
@@ -59,6 +62,7 @@ extern float HeroLocationZ;
 extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;
 extern Animal AniBear;
+extern vector<Gun*> gun;
 
 
 
@@ -69,17 +73,23 @@ extern Room bearRoom;
 
 
 
-extern void AnimalCollideCat();
-extern void AnimalCollideDog();
-
+//extern void AnimalCollideCat();
+//extern void AnimalCollideDog();
+//
 //extern void BulletCollideCat();
 //extern void BulletCollideDog();
 //extern void BulletCollideBear();
-extern void CatAndRoomCollision();
-extern void DogAndRoomCollision();
-extern void Bearroomtest();
-extern void HeroVSDog();	
-extern void HeroVSBear();
-extern void HeroVSCat();
+//
+//extern void HeroVSDog();	
+//extern void HeroVSBear();
+//extern void HeroVSCat();
+//
+//
+//extern bool isCollideDog(Animal r1, Gun r2);
+//extern bool isCollide2D(Animal r1, Gun r2);
+//extern bool isCollideBear(Animal r1, Gun r2);
 
 
+//extern void CatAndRoomCollision();
+//extern void DogAndRoomCollision();
+//extern void Bearroomtest();
