@@ -294,7 +294,7 @@ void CalculateThread()
 
 	}
 }
-
+std::mutex heroIdMutex;
 void HandleClientSocket(SOCKET clientSocket)
 {
 	//SC_PLAYER_PACKET p;
@@ -316,11 +316,16 @@ void HandleClientSocket(SOCKET clientSocket)
 	SC_PLAYER_PACKET p;
 
 	// 클라이언트에게 스레드 ID를 보내기 위한 작업
-	int player_id = HeroID;
+	int player_id;
+	{
+		std::lock_guard<std::mutex> lock(heroIdMutex);
+		player_id = HeroID;
+		++HeroID;
+	}
 	send(clientSocket, reinterpret_cast<char*>(&player_id), sizeof(player_id), 0);
 	cout << HeroID << endl;
 
-	++HeroID;
+	//++HeroID;
 	//cout << LThreadId << endl;
 	//cout << heroes[0].ID << endl;
 
