@@ -93,7 +93,7 @@ void Animal::update()
 
 	closelineX = HeroLocationX - PosX;
 	closelineZ = HeroLocationZ - PosZ;
-
+	//병합때매
 	if ((g_catlive && !g_herodead && AnimalType == Cat) || (g_doglive && !g_herodead && AnimalType == Dog) ||
 		(g_bearlive && !g_herodead && AnimalType == Bear)) {
 
