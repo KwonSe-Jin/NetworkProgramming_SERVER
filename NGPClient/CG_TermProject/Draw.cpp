@@ -38,7 +38,6 @@ bool isCollideBear(Bear r1, Gun r2);
 int catdead{};
 int dogdead{};
 int beardead{};
-
 int HerogetHP = 10;
 
 float lightPosX = 0.0;

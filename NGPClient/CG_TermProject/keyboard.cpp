@@ -14,7 +14,6 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 	CS_PLAYER_PACKET p;
 	get_vangleandStatus(&(p.camera.VangleX), &(p.camera.VangleY), &(p.status));
 	p.player_id = global_ID;
-	cout << p.status << endl;
 
 	//p.player_id = Th
 	switch (key) {
