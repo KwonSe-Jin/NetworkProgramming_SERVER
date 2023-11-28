@@ -29,7 +29,7 @@ Animal::Animal(int type, int id) : AnimalType(type),Index(id)
 		PosZ = urdZ(dre);
 		HP = 20;
 		Attack = 10;	
-		if (AnimalCnt == AnimalMax) { // �����̴� 6������ �����߰�, 6���� ��� ID�ο��� �� ��� ���� ID�ο����ִ� ���� 0���� �ʱ�ȭ�Ѵ�.
+		if (AnimalCnt == AnimalMax) { 
 			AnimalCnt = 0;
 		}
 
@@ -42,7 +42,7 @@ Animal::Animal(int type, int id) : AnimalType(type),Index(id)
 		PosZ = urdZ(dre);
 		HP = 40;
 		Attack = 20;
-		if (AnimalCnt == AnimalMax) { // �����̴� 6������ �����߰�, 6���� ��� ID�ο��� �� ��� ���� ID�ο����ִ� ���� 0���� �ʱ�ȭ�Ѵ�.
+		if (AnimalCnt == AnimalMax) { 
 			AnimalCnt = 0;
 		}
 	}
@@ -90,8 +90,8 @@ void Animal::update()
     closelineX = HeroLocationX - PosX;
     closelineZ = HeroLocationZ - PosZ;
 
-    if ((g_catlive && heroes[closestHeroIndex]._flag && AnimalType == Cat) || (g_doglive && heroes[closestHeroIndex]._flag && AnimalType == Dog) ||
-        (g_bearlive && heroes[closestHeroIndex]._flag && AnimalType == Bear)) {
+    if ((g_catlive && heroes[closestHeroIndex]._flag && AnimalType == Cat && closestHeroIndex != -1) || (g_doglive && heroes[closestHeroIndex]._flag && AnimalType == Dog &&closestHeroIndex != -1) ||
+        (g_bearlive && heroes[closestHeroIndex]._flag && AnimalType == Bear&& closestHeroIndex != -1)) {
 
         if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
 

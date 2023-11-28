@@ -87,7 +87,7 @@ int Hero::InfoHP() {
 void Hero::Update()
 {
 	damage();
-	if (HP < 0)
+	if (HP <= 0)
 	{
 		lightColorR = 0.5f;
 		lightColorG = 0.5f;
