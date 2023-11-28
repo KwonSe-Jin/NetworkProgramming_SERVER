@@ -229,10 +229,15 @@ float Hero::getFront()
 	return PosZ + 0.12f;
 }
 
-void Hero::get_vangle(float* x, float* y)
+void Hero::get_Info(float* x, float* y, bool* status)
 {
 	*x = VAngleX;
 	*y = VAngleY;
+	if (HP < 0)
+		*status = false;
+	else
+		*status = true;
+
 }
 
 

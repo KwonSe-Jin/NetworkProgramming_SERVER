@@ -157,9 +157,9 @@ void animalInfo(SC_MONSTER_PACKET* p, int i)
 	
 }
 
-void get_vangle(float* x, float* y)
+void get_vangleandStatus(float* x, float* y, bool* status)
 {
-	hero[global_ID].get_vangle(x, y);
+	hero[global_ID].get_Info(x, y, status);
 }
 
 int t_count;

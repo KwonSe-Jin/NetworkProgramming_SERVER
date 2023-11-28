@@ -78,7 +78,7 @@ void SC_BOSSBEAR_Send(SOCKET clientSocket)
     }
 }
 
-void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET & responsePacket) {
+void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& responsePacket) {
 
     responsePacket.player_id = csPacket.player_id;
     responsePacket.status = csPacket.status;
@@ -88,26 +88,29 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET & 
     /*cout << heroes[scPacket.player_id ].VAngleX << endl;
     cout << heroes[scPacket.player_id ].VAngleY << endl;*/
 
-    if (csPacket.Player_key.is_w) {
-        heroes[responsePacket.player_id].ISW();
-    }
+    if (responsePacket.status) {
+		if (csPacket.Player_key.is_w) {
+			heroes[responsePacket.player_id].ISW();
+		}
 
 
-    if (csPacket.Player_key.is_a) {
-        heroes[responsePacket.player_id].ISA();
-    }
+		if (csPacket.Player_key.is_a) {
+			heroes[responsePacket.player_id].ISA();
+		}
 
-    if (csPacket.Player_key.is_s) {
-        heroes[responsePacket.player_id].ISS();
-    }
+		if (csPacket.Player_key.is_s) {
+			heroes[responsePacket.player_id].ISS();
+		}
 
-    if (csPacket.Player_key.is_d) {
-        heroes[responsePacket.player_id].ISD();
-    }
+		if (csPacket.Player_key.is_d) {
+			heroes[responsePacket.player_id].ISD();
+		}
 
-    if (csPacket.Player_key.is_q) {
-        heroes[csPacket.player_id].isQuit();
+		if (csPacket.Player_key.is_q) {
+			heroes[csPacket.player_id].isQuit();
+		}
     }
+    cout << responsePacket.status << endl;
 
 }
 
@@ -249,7 +252,6 @@ void CalculateThread()
                 }
             }
 
-			
 		}
 		
         if(heroes.size() && heroes.size() == HeroID)
@@ -273,8 +275,6 @@ void CalculateThread()
                     SC_PLAYER_Send(responsePacket, clientsocketes[j]);
             }
            
-           
-        
         }
         this_thread::sleep_for(0.5ms);
         g_m.unlock();

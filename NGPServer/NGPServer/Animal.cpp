@@ -67,7 +67,7 @@ float Animal::calculateDistance(float targetX, float targetZ)
 
 void Animal::update()
 {
-    float closestDistance = 3.40282e+38;  //  ִ밪      ʱ ȭ
+    float closestDistance = 3.40282e+38;
     int closestHeroIndex = -1;
 
     for (int i = 0; i < heroes.size(); ++i) {
@@ -85,13 +85,14 @@ void Animal::update()
     float dz = HeroLocationZ - PosZ;
     float dx = HeroLocationX - PosX;
 
-    Direction = atan2(dx, dz);
+	closelineX = HeroLocationX - PosX;
+	closelineZ = HeroLocationZ - PosZ;
+	//병합때매
+	if ((g_catlive && !g_herodead && AnimalType == Cat) || (g_doglive && !g_herodead && AnimalType == Dog) ||
+		(g_bearlive && !g_herodead && AnimalType == Bear)) {
 
-    closelineX = HeroLocationX - PosX;
-    closelineZ = HeroLocationZ - PosZ;
-
-    if ((g_catlive && !g_herodead && AnimalType == Cat) || (g_doglive && !g_herodead && AnimalType == Dog) ||
-        (g_bearlive && !g_herodead && AnimalType == Bear)) {
+    if ((g_catlive && heroes[closestHeroIndex]._flag && AnimalType == Cat) || (g_doglive && heroes[closestHeroIndex]._flag && AnimalType == Dog) ||
+        (g_bearlive && heroes[closestHeroIndex]._flag && AnimalType == Bear)) {
 
         if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
 
