@@ -384,7 +384,7 @@ void CalculateThread()
             }
 
 		}
-		this_thread::sleep_for(1ms);
+		this_thread::sleep_for(0.5ms);
 		g_m.unlock();
 
 	}
