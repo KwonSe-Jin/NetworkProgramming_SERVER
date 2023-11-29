@@ -64,7 +64,7 @@ extern vector<Animal*> AniDogs;
 extern Animal AniBear;
 extern vector<Gun*> gun;
 
-
+extern int readycount;
 
 
 extern Room catRoom;

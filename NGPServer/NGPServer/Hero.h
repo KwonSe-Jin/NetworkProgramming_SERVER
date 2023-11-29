@@ -7,12 +7,13 @@ class Hero
 	bool firstmap;
 
 public:
+	bool is_q;
 	Attack catattack[6];
 	Attack dogattack[6];
 	Attack bearattack;
 
 	bool _flag = true;
-
+	bool _readyflag = false;
 	bool catlive;
 	bool doglive;
 	bool bearlive;
@@ -34,6 +35,7 @@ public:
 	void ISA();
 	void ISS();
 	void ISD();
+	void ISR();
 	void damage();
 	void Update();
 	int InfoHP();

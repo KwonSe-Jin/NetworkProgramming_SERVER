@@ -7,7 +7,7 @@ extern bool g_bearlive;
 //extern bool herodead;
 extern float HeroLocationX;
 extern float HeroLocationZ;
-
+extern int readycount;
 //extern Attack catattack[AnimalMax];
 //extern Attack dogattack[AnimalMax];
 //extern Attack bearattack;
@@ -24,19 +24,21 @@ Hero::Hero(int id) : ID{ id }
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
-	else if(id==1)
+	else if (id == 1)
 	{
 		PosX = 3;
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
-	else if (id == 2) 
+	else if (id == 2)
 	{
 		PosX = -3;
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
 	HP = 100;
+	is_q=false;
+
 	firstmap = true;
 	catlive = false;
 	doglive = false;
@@ -88,14 +90,14 @@ int Hero::InfoHP() {
 void Hero::Update()
 {
 	damage();
-	if (HP < 0)
+	if (HP <= 0)
 	{
 		lightColorR = 0.5f;
 		lightColorG = 0.5f;
 		lightColorB = 0.5f;
 		_flag = false;
 	}
-	
+
 
 	if (PosX < -1 && firstmap)
 	{
@@ -112,25 +114,58 @@ void Hero::Update()
 	}
 
 
-	if (PosZ < -10 && firstmap|| g_catlive&&firstmap) { //�����̹� ���� 
-		PosX = -100;
-		PosZ = 0;
+	if (PosZ < -10 && firstmap &&(readycount == 3) || g_catlive && firstmap) {
+		if (ID == 0) {
+			PosX = -100;
+			PosZ = 0;
+		}
+		else if (ID == 1) {
+			PosX = -97;
+			PosZ = 0;
+
+		}
+		else if (ID == 2) {
+			PosX = -103;
+			PosZ = 0;
+		}
+	
 		catlive = true;
 		bearlive = false;
 		doglive = false;
 		firstmap = false;
 	}
-	if (PosZ < -7 && catlive|| g_doglive && catlive) { //�������� ���� 
-		PosX = 100;
-		PosZ = 0;
+	if (PosZ < -7 && catlive || g_doglive && catlive) {
+		if (ID == 0) {
+			PosX = 100;
+			PosZ = 0;
+		}
+		else if (ID == 1) {
+			PosX = 97;
+			PosZ = 0;
+
+		}
+		else if (ID == 2) {
+			PosX = 103;
+			PosZ = 0;
+		}
 		catlive = false;
 		doglive = true;
 		bearlive = false;
 
 	}
-	if (PosZ < -7 && doglive|| g_bearlive&& doglive) { //�� �� ���� 
-		PosX = 0;
-		PosZ = -100;
+	if (PosZ < -7 && doglive || g_bearlive && doglive) {
+		if (ID == 0) {
+			PosX = 0;
+			PosZ = -100;
+		}
+		else if (ID == 1) {
+			PosX = 3;
+			PosZ = -100;
+		}
+		else if (ID == 2) {
+			PosX = -3;
+			PosZ = -100;
+		}
 		doglive = false;
 		catlive = false;
 		bearlive = true;
@@ -149,7 +184,9 @@ void Hero::location()
 
 void Hero::isQuit()
 {
+	is_q = true;
 	_flag = false;
+
 }
 
 void Hero::ISW()
@@ -182,7 +219,11 @@ void Hero::ISD()
 	PosZ += 0.2 * sin(radians);
 	PosX += 0.2 * cos(radians);
 }
-
+void Hero::ISR()
+{
+	readycount++;
+	_readyflag = true;
+}
 float Hero::getLeft()
 {
 	return PosX - 0.12f;
