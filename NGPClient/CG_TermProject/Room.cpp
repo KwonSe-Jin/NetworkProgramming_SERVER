@@ -71,7 +71,7 @@ void Room::Draw()
 		}
 		
 	}
-	else if(beardead) {
+	else if(beardead) { // 클리어했을 때
 		for (int i = 0; i < 6; ++i) {
 			if (i == 4) {
 				glBindTexture(GL_TEXTURE_2D, RoomTexture[AnimalRoom]);
