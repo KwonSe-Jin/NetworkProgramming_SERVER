@@ -94,7 +94,7 @@ bool NetworkManager::recvData() {
 	recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	recv(clientSocket, buf, size, MSG_WAITALL);
 
-	switch (buf[0]) {
+	switch (int(buf[0])) {
 	case SC_PLAYER: {
 		SC_PLAYER_PACKET* p = reinterpret_cast<SC_PLAYER_PACKET*>(buf);
 		makeInfo(p);

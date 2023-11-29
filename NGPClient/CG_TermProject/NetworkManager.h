@@ -17,7 +17,8 @@ extern bool isBullet;
 
 //#define serverIP "192.168.41.8"
 #define serverIP "127.0.0.1"
-#define serverPort 9000
+//#define serverPort 9000
+#define serverPort 7777
 
 #pragma comment(lib, "ws2_32.lib")
 void makeInfo(SC_PLAYER_PACKET* p);
