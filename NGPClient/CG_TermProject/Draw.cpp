@@ -165,15 +165,15 @@ void gun_clear()
 
 void bulletInfo(SC_BULLET_PACKET* p)
 {
-	if(p->size > gun.size())
+	if (p->size > gun.size())
 		gun.push_back(new Gun{ p->dirx,p->diry, p->dirz });
 	cout << gun.size() << endl;
-	
+
 	gun[p->id]->setInfo(p);
 }
 
 
-void get_vangleandStatus(float* x, float* y, bool* status, float *dirx, float *diry, float *dirz)
+void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz)
 {
 	hero[global_ID].get_Info(x, y, status, dirx, diry, dirz);
 }
@@ -314,23 +314,40 @@ void draw() {
 
 
 
-	
 
+	int c_dead = 0;
 
 	for (int i = 0; i < cats.size(); ++i) {
 		if (cats[i]->HP > 0)
 		{
 			cats[i]->draw();
 		}
+		else {
+			++c_dead;
+		}
+		if (c_dead == 6) {
+			catdead = 6;
+			gun.clear();
+			c_dead++;
+		}
 	}
-
+	int d_dead = 0;
 	for (int i = 0; i < dogs.size(); ++i) {
-		if(dogs[i]->HP > 0)
+		if (dogs[i]->HP > 0) {
 			dogs[i]->draw();
+		}
+		else {
+			++d_dead;
+		}
+		if (d_dead == 6) {
+			dogdead = 6;
+			gun.clear();
+			d_dead++;
+		}
 	}
 
 	if (BearLife) {
-		if(bear.HP > 0)
+		if (bear.HP > 0)
 			bear.draw();
 	}
 
@@ -341,7 +358,6 @@ void draw() {
 
 
 	hero[global_ID].Update();
-	
 	// to_do 내가 죽었는데 다른 사람 플레이어가 안보임! 
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
 	{
@@ -352,44 +368,13 @@ void draw() {
 
 
 
-	/*if (catlive)
-		HeroVSCat();
-
-	if (doglive)
-		HeroVSDog();
-
-	if (bearlive)
-		HeroVSBear();*/
-
 	for (Gun*& gunbullet : gun) {
 		gunbullet->Update();
-		if(gunbullet->status)
+		if (gunbullet->status)
 			gunbullet->Draw();
 
 	}
-	//if (isParticle) {
-	//	for (int i = 0; i < 40; ++i) {
-	//		particle[i]->update();
-	//		particle[i]->draw();
-	//	}
-	//}
 
-	//if (isBullet && BulletLimit == 0) {
-	//	BulletLimit += 1;
-	//	gun.push_back(new Gun{ cameraPos.x,cameraPos.y,cameraPos.z, TermGunDir.x,TermGunDir.y,TermGunDir.z });
-	//}
-
-	//auto p = find_if(gun.begin(), gun.end(), [](Gun* guns) {
-	//	if ((guns->GetPosX()) > 500 || (guns->GetPosX()) < -500 || (guns->GetPosZ()) > 500 || (guns->GetPosZ()) < -500) {
-	//		return true;
-	//	}
-	//	else {
-	//		return false;
-	//	}
-	//	});
-	//if (p != gun.end() && gun.begin() != gun.end()) {
-	//	gun.erase(p);
-	//}
 	glBindVertexArray(HeroHPVAO);
 	aColor = glGetUniformLocation(shaderID, "objectColor");
 	glUniform4f(aColor, 1.0, 0.0, 0., 1);
