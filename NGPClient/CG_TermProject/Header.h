@@ -3,7 +3,6 @@
 
 #include "NetworkManager.h"
 
-
 #include <iostream>
 #include <Windows.h>
 #pragma comment(lib,"winmm.lib")
@@ -126,7 +125,7 @@ extern int catdead;
 extern int dogdead;
 extern int beardead;
 
-extern NetworkManager networkManager;
+//extern NetworkManager networkManager;
 
 
 

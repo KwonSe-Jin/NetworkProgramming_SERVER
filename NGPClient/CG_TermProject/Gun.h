@@ -8,10 +8,10 @@ class Gun
 	glm::mat4 Change;
 
 	glm::vec3 color;
-
 	float PosX;
 	float PosY;
 	float PosZ;
+	
 	float dirX;
 	float dirY;
 	float dirZ;
@@ -21,7 +21,7 @@ class Gun
 	
 
 public:
-	Gun(float posX, float posY, float posZ, float dirX, float dirY, float dirZ);
+	Gun(float x, float y, float z);
 	~Gun();
 	float getLeft();
 	float getRight();
@@ -36,6 +36,6 @@ public:
 	friend void BulletCollideCat();
 	friend void BulletCollideDog();
 	friend void BulletCollideBear();
-
 	void Loction();
+	void setInfo(SC_BULLET_PACKET* p);
 };

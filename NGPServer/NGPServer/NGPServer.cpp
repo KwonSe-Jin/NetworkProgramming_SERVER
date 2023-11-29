@@ -27,7 +27,6 @@ bool g_herodead = false;
 float HeroLocationX = 0;
 float HeroLocationZ = 0;
 
-
 int catdead{};
 int dogdead{};
 int beardead{};
@@ -46,6 +45,7 @@ vector<Gun*> gun;
 //Attack dogattack[AnimalMax];
 //Attack bearattack;
 
+vector <SC_BULLET_PACKET> bullet;
 SC_MONSTER_PACKET monsters[6];
 SC_MONSTER_PACKET BossBear;
 
@@ -80,6 +80,16 @@ void SC_BOSSBEAR_Send(SOCKET clientSocket)
     }
 }
 
+void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
+{
+    int size = sizeof(p);
+    send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+    int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
+    if (result == SOCKET_ERROR) {
+        //std::cout << "Failed to send data" << std::endl;
+    }
+}
+
 void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& responsePacket) {
 
     responsePacket.player_id = csPacket.player_id;
@@ -106,6 +116,12 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& r
 		if (csPacket.Player_key.is_q) {
 			heroes[csPacket.player_id].isQuit();
 		}
+        if (csPacket.Player_key.is_bullet) {
+            cout << "총 생성" << endl;
+            gun.push_back(new Gun{ heroes[responsePacket.player_id].PosX, heroes[responsePacket.player_id].PosY + 0.5f ,heroes[responsePacket.player_id].PosZ
+                ,csPacket.Player_key.dirx,csPacket.Player_key.diry,csPacket.Player_key.dirz });
+            //cout << csPacket.Player_key.dirx << endl;
+        }
     }
 }
 
@@ -131,6 +147,30 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
     cout << scPacket.Player_pos.y << endl;
     cout << scPacket.Player_pos.z << endl;*/
 } 
+
+
+void bulletcalculate(SC_BULLET_PACKET& scPacket, int i)
+{
+    //BulletCollideBear();
+    //BulletCollideDog();
+    //BulletCollideCat();
+    gun[i]->Update();
+
+    scPacket.packet_type = SC_BULLET;
+    scPacket.id = i;
+
+    //p.x = gun[i]->PosX;
+    //p.y = gun[i]->PosY;
+    //p.z = gun[i]->PosZ;
+    scPacket.status = gun[i]->status;
+    scPacket.dirx = gun[i]->GunDirX;
+    scPacket.diry = gun[i]->GunDirY;
+    scPacket.dirz = gun[i]->GunDirZ;
+    scPacket.size = gun.size();
+    cout << gun.size() << endl;
+    //cout << p.packet_type << endl;
+}
+
 
 
 void processmonsterPacket(Animal& ani) {
@@ -230,7 +270,6 @@ void CalculateThread()
                 BossBear.packet_type = 2;
                 BossBear.animal_type = BEAR;
 
-               
                 BossBear.direction = AniBear.Direction;
                 BossBear.hp = AniBear.HP;
 
@@ -252,24 +291,41 @@ void CalculateThread()
         if(heroes.size() && heroes.size() == HeroID)
         {
             SC_PLAYER_PACKET responsePacket;
-
+            SC_BULLET_PACKET bulletPacket;
             if (!playerInput.empty())
             {
                 CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
                 playerInput.pop();
                 processCSPlayerPacket(*playerInputPacket, responsePacket);
+
             }
+
 
             for (int i = 0; i < heroes.size(); ++i)
             {
                 heroes[i].Update();
+             
+                for (int i = 0; i < gun.size(); ++i)
+                {
+                    bulletcalculate(bulletPacket, i);
+                    for (int j = 0; j < heroes.size(); ++j)
+                    {
+                        SC_BULLET_Send(bulletPacket, clientsocketes[j]);
+                    }
+                }
                 //클라이언트 입력
                 
+
                 Posandlight(responsePacket, i);
-                for (int j = 0; j < heroes.size(); ++j)
+                for (int j = 0; j < heroes.size(); ++j) 
+                {
                     SC_PLAYER_Send(responsePacket, clientsocketes[j]);
+                        
+                }
+
             }
-           
+
+
         }
         this_thread::sleep_for(0.5ms);
         g_m.unlock();

@@ -124,6 +124,7 @@ float CatEndPosX;
 float CatEndPosZ;
 
 extern int global_ID;
+int gun_size;
 
 //NetworkManager networkManager("127.0.0.1", 7777);
 
@@ -157,9 +158,24 @@ void animalInfo(SC_MONSTER_PACKET* p, int i)
 	
 }
 
-void get_vangleandStatus(float* x, float* y, bool* status)
+void gun_clear()
 {
-	hero[global_ID].get_Info(x, y, status);
+	gun.clear();
+}
+
+void bulletInfo(SC_BULLET_PACKET* p)
+{
+	if(p->size > gun.size())
+		gun.push_back(new Gun{ p->dirx,p->diry, p->dirz });
+	cout << gun.size() << endl;
+	
+	gun[p->id]->setInfo(p);
+}
+
+
+void get_vangleandStatus(float* x, float* y, bool* status, float *dirx, float *diry, float *dirz)
+{
+	hero[global_ID].get_Info(x, y, status, dirx, diry, dirz);
 }
 
 int t_count;
@@ -365,28 +381,29 @@ void draw() {
 		gunbullet->Draw();
 
 	}
-	if (isParticle) {
-		for (int i = 0; i < 40; ++i) {
-			particle[i]->update();
-			particle[i]->draw();
-		}
-	}
-	if (isBullet && BulletLimit == 0) {
-		BulletLimit += 1;
-		gun.push_back(new Gun{ cameraPos.x,cameraPos.y,cameraPos.z, TermGunDir.x,TermGunDir.y,TermGunDir.z });
-	}
+	//if (isParticle) {
+	//	for (int i = 0; i < 40; ++i) {
+	//		particle[i]->update();
+	//		particle[i]->draw();
+	//	}
+	//}
 
-	auto p = find_if(gun.begin(), gun.end(), [](Gun* guns) {
-		if ((guns->GetPosX()) > 500 || (guns->GetPosX()) < -500 || (guns->GetPosZ()) > 500 || (guns->GetPosZ()) < -500) {
-			return true;
-		}
-		else {
-			return false;
-		}
-		});
-	if (p != gun.end() && gun.begin() != gun.end()) {
-		gun.erase(p);
-	}
+	//if (isBullet && BulletLimit == 0) {
+	//	BulletLimit += 1;
+	//	gun.push_back(new Gun{ cameraPos.x,cameraPos.y,cameraPos.z, TermGunDir.x,TermGunDir.y,TermGunDir.z });
+	//}
+
+	//auto p = find_if(gun.begin(), gun.end(), [](Gun* guns) {
+	//	if ((guns->GetPosX()) > 500 || (guns->GetPosX()) < -500 || (guns->GetPosZ()) > 500 || (guns->GetPosZ()) < -500) {
+	//		return true;
+	//	}
+	//	else {
+	//		return false;
+	//	}
+	//	});
+	//if (p != gun.end() && gun.begin() != gun.end()) {
+	//	gun.erase(p);
+	//}
 	glBindVertexArray(HeroHPVAO);
 	aColor = glGetUniformLocation(shaderID, "objectColor");
 	glUniform4f(aColor, 1.0, 0.0, 0., 1);

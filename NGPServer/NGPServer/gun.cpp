@@ -1,5 +1,6 @@
 #include "gun.h"
-
+#include <iostream>
+using namespace std;
 
 
 Gun::Gun(float posX, float posY, float posZ, float dirX, float dirY, float dirZ) :  PosX(posX), PosY(posY), PosZ(posZ),
@@ -8,6 +9,10 @@ dirX(dirX), dirY(dirY), dirZ(dirZ)
 	startP = 0.8;
 
 	Damage = 10;
+	GunDirX = 0;
+	GunDirY = 0;
+	GunDirZ = 0;
+	status = true;
 }
 
 Gun::~Gun()
@@ -17,18 +22,21 @@ Gun::~Gun()
 
 void Gun::Update()
 {
+	startP += 0.3;
+
 	//if (herodead) {
 	//	Damage = 0;
 	//}
 	/*BulletCollideBear();
 	BulletCollideDog();
 	BulletCollideCat();*/
-	startP += 0.3;
-	//GunDir = glm::vec3(dirX * startP, dirY * startP, dirZ * startP) + glm::vec3(PosX, PosY, PosZ);
-	
-	/*glm::mat4 Scale = glm::scale(Unit, glm::vec3(0.01, 0.01, 0.01));
-	glm::mat4 Trans = glm::translate(Unit, glm::vec3(GunDir.x, GunDir.y, GunDir.z));
-	Change = Trans * Scale;*/
+	GunDirX = dirX * startP + PosX;
+	GunDirY = dirY * startP + PosY;
+	GunDirZ = dirZ * startP + PosZ;	
+	//cout << dirX << endl;
+	//cout << dirY << endl;
+	//cout << dirZ << endl;
+
 }
 
 

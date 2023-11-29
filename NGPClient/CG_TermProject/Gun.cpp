@@ -1,8 +1,7 @@
 #include "Gun.h"
 #include <algorithm>
 
-Gun::Gun(float posX, float posY, float posZ, float dirX, float dirY, float dirZ) : Unit(1.f), PosX(posX), PosY(posY), PosZ(posZ),
-dirX(dirX), dirY(dirY), dirZ(dirZ)
+Gun::Gun(float x, float y, float z) : Unit(1.f), PosX(x), PosY(y), PosZ(z)
 {
 
 	startP = 0.8;
@@ -20,16 +19,17 @@ Gun::~Gun()
 
 void Gun::Update()
 {
-	if (herodead) {
-		Damage = 0;
-	}
-	BulletCollideBear();
-	BulletCollideDog();
-	BulletCollideCat();
-	startP += 0.3;
-	GunDir = glm::vec3(dirX * startP, dirY * startP, dirZ * startP) + glm::vec3(PosX, PosY, PosZ);
+	//if (herodead) {
+	//	Damage = 0;
+	//}
+	//BulletCollideBear();
+	//BulletCollideDog();
+	//BulletCollideCat();
+	/*startP += 0.3;*/
+	/*GunDir = glm::vec3(dirX * startP, dirY * startP, dirZ * startP) + glm::vec3(PosX, PosY, PosZ);*/
+	
 	glm::mat4 Scale = glm::scale(Unit, glm::vec3(0.01, 0.01, 0.01));
-	glm::mat4 Trans = glm::translate(Unit, glm::vec3(GunDir.x, GunDir.y, GunDir.z));
+	glm::mat4 Trans = glm::translate(Unit, glm::vec3(PosX, PosY, PosZ));
 	Change = Trans * Scale;
 }
 
@@ -54,6 +54,17 @@ void Gun::Draw()
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(Change));
 
 	glDrawArrays(GL_TRIANGLES, 0, vertex2.size() * 3);
+}
+
+void Gun::setInfo(SC_BULLET_PACKET* p)
+{
+	PosX = p->dirx;
+	PosY = p->diry;
+	PosZ = p->dirz;
+	/*GunDir.x = p->dirx;
+	GunDir.z = p->diry;
+	GunDir.y = p->dirz;*/
+
 }
 
 

@@ -57,7 +57,8 @@ void BulletCollideCat() {
 		for (int j = 0; j < AniCats.size(); ++j) {
 			if (isCollide2D(*AniCats[j], *gun[i])) {
 				AniCats[j]->HP -= gun[i]->Damage;
-				delete gun[i];
+				//delete gun[i];
+				gun[i]->status = false;
 				if (0 == AniCats[j]->HP) {
 					/*for (int i = 0; i < 40; ++i) {
 						particle[i]->dirY = -0.2;

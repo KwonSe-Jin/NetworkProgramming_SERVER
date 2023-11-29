@@ -40,8 +40,8 @@ class Hero
 
 	float cameraJump{};
 
-	//glm::vec3 TermGunDir{0,0,0};
-	//glm::vec3 cameraPos{0,0,0};
+	glm::vec3 TermGunDir{0,0,0};
+	glm::vec3 cameraPos{0,0,0};
 
 
 	float CarX = 0.0;
@@ -83,7 +83,8 @@ public:
 	float getRight();
 	float getBehind();
 	float getFront();
-	void get_Info(float* x, float* y, bool* status);
+	void get_Info(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz);
+
 	
 	friend void HeroVSDog();
 	friend void HeroVSBear();

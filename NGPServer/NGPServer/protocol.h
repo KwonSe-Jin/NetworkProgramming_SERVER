@@ -68,7 +68,9 @@ struct SC_MONSTER_PACKET
 struct SC_BULLET_PACKET
 {
 	int packet_type;
+	int size;
 	int id;
+	bool status;
 	float x;
 	float y;
 	float z;

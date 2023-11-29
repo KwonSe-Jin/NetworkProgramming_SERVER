@@ -229,7 +229,7 @@ float Hero::getFront()
 	return PosZ + 0.12f;
 }
 
-void Hero::get_Info(float* x, float* y, bool* status)
+void Hero::get_Info(float* x, float* y, bool* status, float* dirx, float *diry, float *dirz)
 {
 	*x = VAngleX;
 	*y = VAngleY;
@@ -237,6 +237,9 @@ void Hero::get_Info(float* x, float* y, bool* status)
 		*status = false;
 	else
 		*status = true;
+	*dirx = TermGunDir.x;
+	*diry = TermGunDir.y;
+	*dirz = TermGunDir.z;
 
 }
 
