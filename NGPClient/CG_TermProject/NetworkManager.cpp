@@ -122,7 +122,7 @@ bool NetworkManager::recvData() {
 	}
 	case SC_BULLET: {
 
-		std::cout << size << "bullet size" << std::endl;
+		//std::cout << size << "bullet size" << std::endl;
 		SC_BULLET_PACKET* p = reinterpret_cast<SC_BULLET_PACKET*>(buf);
 
 		bulletInfo(p);

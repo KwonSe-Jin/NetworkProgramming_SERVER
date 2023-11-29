@@ -59,6 +59,8 @@ int i = 0;
 bool catopen = true;
 bool dogopen = true;
 
+bool toggle1 = true;
+bool toggle2 = true;
 /// <summary>
 /// 주인공
 /// </summary>
@@ -167,7 +169,6 @@ void bulletInfo(SC_BULLET_PACKET* p)
 {
 	if (p->size > gun.size())
 		gun.push_back(new Gun{ p->dirx,p->diry, p->dirz });
-	cout << gun.size() << endl;
 
 	gun[p->id]->setInfo(p);
 }
@@ -295,11 +296,6 @@ void draw() {
 	Dogright.Draw();
 	Dogright.Update();
 
-	//AnimalCollideCat();
-	//Catroomtest();
-
-	//AnimalCollideDog();
-	//DogAndRoomCollision();
 
 	GLuint selectColorLocation = glGetUniformLocation(shaderID, "selectColor");
 	glUniform1i(selectColorLocation, 0);
@@ -327,7 +323,13 @@ void draw() {
 		}
 		if (c_dead == 6) {
 			catdead = 6;
-			gun.clear();
+			if (toggle1) {
+				cout << "toggle1 == " << toggle1 << endl;
+
+				gun.clear();
+				toggle1=!toggle1;
+
+			}
 			c_dead++;
 		}
 	}
@@ -341,7 +343,12 @@ void draw() {
 		}
 		if (d_dead == 6) {
 			dogdead = 6;
-			gun.clear();
+			if (toggle2) {
+				cout << "toggle2 == " << toggle2 << endl;
+
+				gun.clear();
+				toggle2=!toggle2;
+			}
 			d_dead++;
 		}
 	}
@@ -349,6 +356,10 @@ void draw() {
 	if (BearLife) {
 		if (bear.HP > 0)
 			bear.draw();
+	}
+
+	if (bear.HP <= 0) {
+		beardead = true;
 	}
 
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
@@ -379,280 +390,6 @@ void draw() {
 	aColor = glGetUniformLocation(shaderID, "objectColor");
 	glUniform4f(aColor, 1.0, 0.0, 0., 1);
 
-}
-
-void AnimalCollideCat() {
-
-	for (int i = 0; i < cats.size(); ++i) {
-		for (int j = i + 1; j < cats.size(); ++j) {
-			float distanceX = abs(cats[i]->Position.x - cats[j]->Position.x);
-
-			float distanceZ = abs(cats[i]->Position.z - cats[j]->Position.z);
-			if (distanceX <= 0.1f) {
-				cats[i]->Position.x += 0.1f;
-			}
-			if (distanceZ <= 0.1f) {
-				cats[i]->Position.z += 0.1f;
-			}
-		}
-	}
-}
-
-void AnimalCollideDog() {
-	for (int i = 0; i < dogs.size(); ++i) {
-		for (int j = i + 1; j < dogs.size(); ++j) {
-			float distanceX = abs(dogs[i]->Position.x - dogs[j]->Position.x);
-			float distanceZ = abs(dogs[i]->Position.z - dogs[j]->Position.z);
-			if (distanceX <= 0.1f) {
-				dogs[i]->Position.x += 0.1f;
-			}
-			if (distanceZ <= 0.1f) {
-				dogs[i]->Position.z += 0.1f;
-			}
-		}
-	}
-
-}
-
-
-
-void BulletCollideCat() {
-
-	for (int i = 0; i < gun.size(); ++i) {
-		for (int j = 0; j < cats.size(); ++j) {
-			if (isCollide2D(*cats[j], *gun[i])) {
-				cats[j]->HP -= gun[i]->Damage;
-				delete gun[i];
-				if (0 == cats[j]->HP) {
-					for (int i = 0; i < 40; ++i) {
-						particle[i]->dirY = -0.2;
-					}
-					CatEndPosX = cats[j]->Position.x;
-					CatEndPosZ = cats[j]->Position.z;
-					isParticle = true;
-					delete cats[j];
-					catdead++;
-					cats.erase(cats.begin() + j);
-					--j;
-				}
-				gun.erase(gun.begin() + i);
-				--i;
-				break;
-			}
-
-		}
-
-	}
-}
-
-void BulletCollideDog() {
-
-	for (int i = 0; i < gun.size(); ++i) {
-		for (int j = 0; j < dogs.size(); ++j) {
-			if (isCollideDog(*dogs[j], *gun[i])) {
-				dogs[j]->HP -= gun[i]->Damage;
-				delete gun[i];
-				if (0 == dogs[j]->HP) {
-					for (int i = 0; i < 40; ++i) {
-						particle[i]->dirY = -0.2;
-					}
-					isParticle = true;
-					delete dogs[j];
-					dogdead++;
-					dogs.erase(dogs.begin() + j);
-					--j;
-				}
-				gun.erase(gun.begin() + i);
-				--i;
-				break;
-			}
-
-		}
-
-	}
-}
-
-void BulletCollideBear() {
-
-	for (int i = 0; i < gun.size(); ++i) {
-		if (isCollideBear(bear, *gun[i])) {
-			bear.HP -= gun[i]->Damage;
-			delete gun[i];
-			if (0 == bear.HP) {
-				for (int i = 0; i < 40; ++i) {
-					particle[i]->dirY = -0.2;
-				}
-				BearLife = false;
-				beardead = true;
-				isParticle = true;
-			}
-			gun.erase(gun.begin() + i);
-			--i;
-		}
-	}
-}
-
-bool isCollide2D(Cat r1, Gun r2)
-{
-	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-	return true;
-}
-
-bool isCollideDog(Dog r1, Gun r2)
-{
-	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-	return true;
-}
-
-
-bool isCollideBear(Bear r1, Gun r2)
-{
-	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-	return true;
-}
-
-
-bool isCollideCatroom(Cat r1, Room r2)
-{
-	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-	return true;
-}
-
-bool isCollideDogroom(Dog r1, Room r2)
-{
-	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-	return true;
-}
-
-bool isCollideBearroom(Bear r1, Room r2)
-{
-	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-	return true;
-}
-
-bool HeroVSRoom(Hero r1, Room r2)
-{
-	if (r1.getRight() < r2.getLeft() || r1.getLeft() > r2.getRight()) return false;
-	if (r1.getFront() < r2.getBehind() || r1.getBehind() > r2.getFront()) return false;
-	return true;
-}
-
-void CatAndRoomCollision()
-{
-	for (int i = 0; i < cats.size(); ++i) {
-		if (isCollideCatroom(*cats[i], catRoom)) {
-
-			if (cats[i]->Position.x < catRoom.PositionX - 5)
-				cats[i]->Position.x += 1;
-			if (cats[i]->Position.x > catRoom.PositionX + 5)
-				cats[i]->Position.x -= 1;
-			if (cats[i]->Position.z < catRoom.PositionZ - 5)
-				cats[i]->Position.z += 1;
-			if (cats[i]->Position.z > catRoom.PositionZ + 5)
-				cats[i]->Position.z -= 1;
-		}
-	}
-}
-
-
-void DogAndRoomCollision()
-{
-	for (int i = 0; i < dogs.size(); ++i) {
-		if (isCollideDogroom(*dogs[i], dogRoom)) {
-			if (dogs[i]->Position.x < dogRoom.PositionX - 5)
-				dogs[i]->Position.x += 1;
-			if (dogs[i]->Position.x > dogRoom.PositionX + 5)
-				dogs[i]->Position.x -= 1;
-			if (dogs[i]->Position.z < dogRoom.PositionZ - 5)
-				dogs[i]->Position.z += 1;
-			if (dogs[i]->Position.z > dogRoom.PositionZ + 5)
-				dogs[i]->Position.z -= 1;
-		}
-	}
-}
-
-
-void Bearroomtest()
-{
-
-	if (isCollideBearroom(bear, bearRoom)) {
-
-		if (bear.Position.x < bearRoom.PositionX - 5)
-			bear.Position.x += 1;
-		if (bear.Position.x > bearRoom.PositionX + 5)
-			bear.Position.x -= 1;
-		if (bear.Position.z < bearRoom.PositionZ - 5)
-			bear.Position.z += 1;
-		if (bear.Position.z > bearRoom.PositionZ + 5)
-			bear.Position.z -= 1;
-	}
-
-}
-
-
-
-void HeroVSBear()
-{
-	if (HeroVSRoom(hero[global_ID], bearRoom)) {
-
-
-		if (hero[global_ID].PosX < bearRoom.PositionX - 5)
-			hero[global_ID].PosX += 1.0;
-		if (hero[global_ID].PosX > bearRoom.PositionX + 5)
-			hero[global_ID].PosX -= 1.0;
-		if (hero[global_ID].PosZ < bearRoom.PositionZ - 5)
-			hero[global_ID].PosZ += 1.0;
-		if (hero[global_ID].PosZ > bearRoom.PositionZ + 5)
-			hero[global_ID].PosZ -= 1.0;
-	}
-}
-
-void HeroVSCat()
-{
-	if (HeroVSRoom(hero[global_ID], catRoom)) {
-
-		if (catdead == 6 && hero[global_ID].PosX > -101 && hero[global_ID].PosX < -98 && hero[global_ID].PosZ < -4.5 && isW) {
-			hero[global_ID].PosZ -= 0.1;
-		}
-		else {
-			if (hero[global_ID].PosX < catRoom.PositionX - 5)
-				hero[global_ID].PosX += 1.0;
-			if (hero[global_ID].PosX > catRoom.PositionX + 5)
-				hero[global_ID].PosX -= 1.0;
-			if (hero[global_ID].PosZ < catRoom.PositionZ - 5)
-				hero[global_ID].PosZ += 1.0;
-			if (hero[global_ID].PosZ > catRoom.PositionZ + 5)
-				hero[global_ID].PosZ -= 1.0;
-		}
-
-	}
-}
-
-void HeroVSDog()
-{
-	if (HeroVSRoom(hero[global_ID], dogRoom)) {
-
-		if (dogdead == 6 && hero[global_ID].PosX < +101 && hero[global_ID].PosX > 98 && hero[global_ID].PosZ < -4.5 && isW) {
-			hero[global_ID].PosZ -= 0.1;
-		}
-		else {
-			if (hero[global_ID].PosX < dogRoom.PositionX - 5)
-				hero[global_ID].PosX += 1.0;
-			if (hero[global_ID].PosX > dogRoom.PositionX + 5)
-				hero[global_ID].PosX -= 1.0;
-			if (hero[global_ID].PosZ < dogRoom.PositionZ - 5)
-				hero[global_ID].PosZ += 1.0;
-			if (hero[global_ID].PosZ > dogRoom.PositionZ + 5)
-				hero[global_ID].PosZ -= 1.0;
-		}
-
-	}
 }
 
 void Restartinit()

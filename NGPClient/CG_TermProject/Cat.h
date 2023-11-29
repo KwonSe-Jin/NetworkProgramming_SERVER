@@ -64,10 +64,6 @@ public:
 	float getFront();
 	float getBottom();
 	float getTop();
-	friend void AnimalCollideCat();
-	friend void BulletCollideCat();
-	friend void CatAndRoomCollision();
-
 	void initCat();
 };
 

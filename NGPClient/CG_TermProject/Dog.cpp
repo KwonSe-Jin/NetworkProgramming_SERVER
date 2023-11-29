@@ -62,52 +62,6 @@ void Dog::draw()
 void Dog::update()
 {
 
-	//hero.location();
-	//float dz = HeroLocationZ - Position.z; //HeroLocationZ전역 
-	//float dx = HeroLocationX - Position.x; //HeroLocationZ전역 
-
-	//Direction = atan2(dx, dz);
-
-	//closelineX = HeroLocationX - Position.x;
-	//closelineZ = HeroLocationZ - Position.z;
-
-
-	//if (doglive && !herodead) {
-
-	//	if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
-
-	//		if (closelineX >= 0.5) {
-	//			closelineX -= 0.01;
-	//			Position.x += 0.01;
-	//		}
-	//		if (closelineX < -0.5) {
-	//			closelineX += 0.01;
-	//			Position.x -= 0.01;
-	//		}
-	//	}
-
-	//	if (!(closelineZ <= 0.5 && closelineZ >= -0.5)) {
-	//		if (closelineZ > 0.5) {
-	//			closelineZ -= 0.01;
-	//			Position.z += 0.01;
-	//		}
-	//		if (closelineZ < -0.5) {
-	//			closelineZ += 0.01;
-	//			Position.z -= 0.01;
-	//		}
-
-	//	}
-	//}
-
-	//if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
-	//	dogattack[Index].Activate = true;
-	//	++dogattack[Index].AttackCount;
-	//}
-	//else {
-	//	dogattack[Index].Activate = false;
-	//}
-
-
 	nose.keyIn(Position, Direction);
 	head.keyIn(Position, Direction);
 	armL.keyIn(Position, Direction);

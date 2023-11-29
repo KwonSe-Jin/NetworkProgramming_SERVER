@@ -13,8 +13,6 @@ DoorL::DoorL(int open)
 
 void DoorL::Update()
 {
-	//FixUpdate();
-	//Tx = glm::translate(Tx, glm::vec3(0, 0, 0));
 	glm::mat4 Scale = glm::scale(Unit, glm::vec3(0.5, 1, 0.125));
 	glm::mat4 Trans;
 	if (Open == 1) {
@@ -23,7 +21,6 @@ void DoorL::Update()
 	}
 	else
 		Trans = glm::translate(Unit, glm::vec3(99.5-openingDog, 0, -4.9));
-	//glm::mat4 Trans1 = glm::translate(Unit, glm::vec3(0, 1, 0));
 	Change = Trans * Scale;
 }
 
@@ -42,8 +39,3 @@ void DoorL::Draw()
 	}
 }
 
-
-//for (int i = 0; i < 6; ++i) {
-//	glBindTexture(GL_TEXTURE_2D, Texture[i]);
-//	glDrawArrays(GL_TRIANGLES, i * 6, 6);
-//}

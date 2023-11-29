@@ -196,6 +196,7 @@ void HeroVSBear()
 				heroes[i].PosX += 1.0;
 			if (heroes[i].PosX > bearRoom.PositionX + 5)
 				heroes[i].PosX -= 1.0;
+
 			if (heroes[i].PosZ < bearRoom.PositionZ - 5)
 				heroes[i].PosZ += 1.0;
 			if (heroes[i].PosZ > bearRoom.PositionZ + 5)
