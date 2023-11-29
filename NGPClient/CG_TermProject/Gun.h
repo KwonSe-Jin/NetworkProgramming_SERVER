@@ -18,7 +18,6 @@ class Gun
 	int  Damage;
 	glm::vec3 GunDir;
 	float startP;
-	
 
 public:
 	Gun(float x, float y, float z);
@@ -38,4 +37,6 @@ public:
 	friend void BulletCollideBear();
 	void Loction();
 	void setInfo(SC_BULLET_PACKET* p);
+	bool status;
+
 };

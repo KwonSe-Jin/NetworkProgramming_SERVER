@@ -153,7 +153,7 @@ void bulletcalculate(SC_BULLET_PACKET& scPacket, int i)
 {
     //BulletCollideBear();
     //BulletCollideDog();
-    //BulletCollideCat();
+    BulletCollideCat();
     gun[i]->Update();
 
     scPacket.packet_type = SC_BULLET;
@@ -313,8 +313,13 @@ void CalculateThread()
                         SC_BULLET_Send(bulletPacket, clientsocketes[j]);
                     }
                 }
+
                 //클라이언트 입력
-                
+               /* for (int i = 0; i < gun.size(); ++i)
+                {
+                    if (gun[i]->status)
+                        delete gun[i];
+                }*/
 
                 Posandlight(responsePacket, i);
                 for (int j = 0; j < heroes.size(); ++j) 

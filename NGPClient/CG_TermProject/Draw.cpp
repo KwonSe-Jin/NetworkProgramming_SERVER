@@ -378,7 +378,8 @@ void draw() {
 
 	for (Gun*& gunbullet : gun) {
 		gunbullet->Update();
-		gunbullet->Draw();
+		if(gunbullet->status)
+			gunbullet->Draw();
 
 	}
 	//if (isParticle) {

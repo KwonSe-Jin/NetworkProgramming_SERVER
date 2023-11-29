@@ -61,6 +61,7 @@ void Gun::setInfo(SC_BULLET_PACKET* p)
 	PosX = p->dirx;
 	PosY = p->diry;
 	PosZ = p->dirz;
+	status = p->status;
 	/*GunDir.x = p->dirx;
 	GunDir.z = p->diry;
 	GunDir.y = p->dirz;*/
