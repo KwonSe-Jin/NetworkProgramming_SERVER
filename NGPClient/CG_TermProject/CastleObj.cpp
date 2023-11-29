@@ -35,13 +35,9 @@ void CastleObj::Draw()
 	glUniformMatrix4fv(model, 1, GL_FALSE, glm::value_ptr(Change));
 
 
-	//GLuint aColor = glGetUniformLocation(shaderID, "objectColor");
-	//glUniform4f(aColor, 1, 1, 0, 1.0);
-
 	GLuint modelLocation = glGetUniformLocation(shaderID, "modelTransform");
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(Change));
 	glDrawArrays(GL_TRIANGLES, 0, vertex5.size() * 3);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 }
 

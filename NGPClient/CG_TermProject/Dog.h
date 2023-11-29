@@ -58,9 +58,6 @@ public:
 	float getFront();
 	float getBottom();
 	float getTop();
-	friend void AnimalCollideDog();
-	friend void BulletCollideDog();
-	friend void DogAndRoomCollision();
 	void initDog();
 };
 

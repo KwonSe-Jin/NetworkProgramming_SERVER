@@ -15,8 +15,6 @@ Tunnel::Tunnel(int open)
 
 void Tunnel::Update()
 {
-	//FixUpdate();
-	//Tx = glm::translate(Tx, glm::vec3(0, 0, 0));
 	glm::mat4 Scale = glm::scale(Unit, glm::vec3(1, 1, 2));
 	glm::mat4 Trans;
 	if (Open == 1) {
@@ -25,7 +23,6 @@ void Tunnel::Update()
 	}
 	else 
 		Trans = glm::translate(Unit, glm::vec3(100, 0, -6.9));
-	//glm::mat4 Trans1 = glm::translate(Unit, glm::vec3(0, 1, 0));
 	Change = Trans* Scale;
 }
 

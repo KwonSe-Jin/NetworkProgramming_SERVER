@@ -54,8 +54,6 @@ public:
 	float getBottom();
 	float getTop();
 
-	friend void BulletCollideBear();
-	friend void Bearroomtest();
 
 	void InitBear();
 };

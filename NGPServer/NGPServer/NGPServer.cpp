@@ -54,6 +54,7 @@ bool toggle2 = true;
 
 void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
+	p.packet_type = SC_PLAYER;
 	int size = sizeof(p);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
@@ -65,6 +66,7 @@ void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 
 void SC_MONSTER_Send(SOCKET clientSocket)
 {
+	monsters->packet_type = SC_MONSTER;
 	int size = sizeof(SC_MONSTER_PACKET) * 6;
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&monsters), sizeof(monsters), 0);
@@ -75,6 +77,7 @@ void SC_MONSTER_Send(SOCKET clientSocket)
 
 void SC_BOSSBEAR_Send(SOCKET clientSocket)
 {
+	BossBear.packet_type = SC_MONSTER;
 	int size = sizeof(SC_MONSTER_PACKET);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&BossBear), sizeof(BossBear), 0);
@@ -85,6 +88,7 @@ void SC_BOSSBEAR_Send(SOCKET clientSocket)
 
 void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
 {
+	p.packet_type = SC_BULLET;
 	int size = sizeof(p);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
@@ -92,6 +96,7 @@ void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
 		//std::cout << "Failed to send data" << std::endl;
 	}
 }
+mutex b_m;
 
 void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& responsePacket) {
 
@@ -120,7 +125,7 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& r
 			heroes[csPacket.player_id].isQuit();
 		}
 		if (csPacket.Player_key.is_bullet) {
-			cout << "총 생성" << endl;
+			//cout << "총 생성" << endl;
 			gun.push_back(new Gun{ heroes[responsePacket.player_id].PosX, heroes[responsePacket.player_id].PosY + 0.5f ,heroes[responsePacket.player_id].PosZ
 				,csPacket.Player_key.dirx,csPacket.Player_key.diry,csPacket.Player_key.dirz });
 			//cout << csPacket.Player_key.dirx << endl;
@@ -198,20 +203,45 @@ void processmonsterPacket(Animal& ani) {
 	monsters[ani.Index].hp = ani.HP;
 
 
-	ani.update();
+	int d_Cat = 0;
+	int d_Dog = 0;
 
 	if (g_catlive) {
 		AnimalCollideCat();
 		Catroomtest();
+		for (int i = 0; i < AniCats.size(); ++i) {
+			if (AniCats[i]->HP <= 0)
+				++d_Cat;
+		}
+
+		if (d_Cat >= 6) {
+
+		}
+		else {
+			HeroVSCat();
+		}
 	}
 	if (g_doglive)
 	{
 		AnimalCollideDog();
 		DogAndRoomCollision();
+
+		for (int i = 0; i < AniDogs.size(); ++i) {
+			if (AniDogs[i]->HP <= 0)
+				++d_Dog;
+		}
+		if (d_Dog >= 6) {
+		}
+		else {
+			HeroVSDog();
+		}
 	}
 	if (g_bearlive) {
+		HeroVSBear();
+
 		BearAndRoomCollision();
 	}
+	ani.update();
 
 	monsters[ani.Index].x = ani.PosX;
 	monsters[ani.Index].y = ani.PosY;
@@ -242,8 +272,9 @@ void CalculateThread()
 				g_doglive = true;
 				g_bearlive = false;
 				if (toggle1) {
+					cout << "toggle1 == " << toggle1 << endl;
 					gun.clear();
-					!toggle1;
+					toggle1 = !toggle1;
 				}
 
 			}
@@ -252,8 +283,9 @@ void CalculateThread()
 				g_doglive = false;
 				g_bearlive = true;
 				if (toggle2) {
+					cout << "toggle2 == " << toggle2 << endl;
 					gun.clear();
-					!toggle2;
+					toggle2 = !toggle2;
 				}
 
 			}
@@ -263,7 +295,8 @@ void CalculateThread()
 		if ((heroes.size() && g_catlive) || (heroes.size() && g_doglive) || (heroes.size() && g_bearlive)) {
 			if (g_catlive)
 			{
-				HeroVSCat();
+
+
 				for (int i = 0; i < 6; ++i) {
 					processmonsterPacket(*AniCats[i]);
 				}
@@ -275,7 +308,6 @@ void CalculateThread()
 
 			if (g_doglive)
 			{
-				HeroVSDog();
 				for (int i = 0; i < 6; ++i) {
 					processmonsterPacket(*AniDogs[i]);
 				}
@@ -287,18 +319,18 @@ void CalculateThread()
 
 			if (g_bearlive)
 			{
-				HeroVSBear();
 				BossBear.packet_type = 2;
 				BossBear.animal_type = BEAR;
 
 
 				BossBear.direction = AniBear.Direction;
 				BossBear.hp = AniBear.HP;
+				HeroVSBear();
 
+				BearAndRoomCollision();
 
 				AniBear.update();
 
-				BearAndRoomCollision();
 
 				BossBear.x = AniBear.PosX;
 				BossBear.y = AniBear.PosY;
@@ -323,21 +355,23 @@ void CalculateThread()
 
             }
 
+			for (int i = 0; i < gun.size(); ++i)
+			{
+				bulletcalculate(bulletPacket, i);
+				for (int j = 0; j < heroes.size(); ++j)
+				{
+					if (!heroes[j].is_q)
+						SC_BULLET_Send(bulletPacket, clientsocketes[j]);
+				}
+			}
 
             for (int i = 0; i < heroes.size(); ++i)
             {
               	if (!heroes[i].is_q) {
 					heroes[i].Update();
 				}
-                for (int i = 0; i < gun.size(); ++i)
-                {
-                    bulletcalculate(bulletPacket, i);
-                    for (int j = 0; j < heroes.size(); ++j)
-                    {
-						if (!heroes[j].is_q)
-                        	SC_BULLET_Send(bulletPacket, clientsocketes[j]);
-                    }
-                }
+
+                
 
                 Posandlight(responsePacket, i);
                 for (int j = 0; j < heroes.size(); ++j) 
@@ -350,7 +384,7 @@ void CalculateThread()
             }
 
 		}
-		this_thread::sleep_for(0.5ms);
+		this_thread::sleep_for(1ms);
 		g_m.unlock();
 
 	}
@@ -367,25 +401,25 @@ void HandleClientSocket(SOCKET clientSocket)
 	// 나머지 클라이언트 소켓 처리 코드
 
 	// ?? h -> 공석 0번 
-
-	Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
-	{
-		lock_guard<mutex> lock(heroMutex);
-		heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
-	}
-	//여기서 ID를 클라에게 보내주기
-	SC_PLAYER_PACKET p;
-
-	// 클라이언트에게 스레드 ID를 보내기 위한 작업
-	int player_id;
 	{
 		std::lock_guard<std::mutex> lock(heroIdMutex);
+		Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
+		{
+			lock_guard<mutex> lock(heroMutex);
+			heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
+		}
+		//여기서 ID를 클라에게 보내주기
+		SC_PLAYER_PACKET p;
+
+		// 클라이언트에게 스레드 ID를 보내기 위한 작업
+		int player_id;
+
 		player_id = HeroID;
 		++HeroID;
-	}
-	send(clientSocket, reinterpret_cast<char*>(&player_id), sizeof(player_id), 0);
-	cout << HeroID << endl;
 
+		send(clientSocket, reinterpret_cast<char*>(&player_id), sizeof(player_id), 0);
+		cout << HeroID << endl;
+	}
 	//++HeroID;
 	//cout << LThreadId << endl;
 	//cout << heroes[0].ID << endl;
@@ -440,7 +474,7 @@ int main()
 
 	SocketUtils::SetReuseAddress(listenSocket, true);
 
-	if (SocketUtils::BindAnyAddress(listenSocket, 7777) == false)
+	if (SocketUtils::BindAnyAddress(listenSocket, 9000) == false)
 		return 0;
 
 	if (SocketUtils::Listen(listenSocket, SOMAXCONN) == false)

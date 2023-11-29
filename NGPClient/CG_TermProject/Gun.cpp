@@ -28,7 +28,7 @@ void Gun::Update()
 	/*startP += 0.3;*/
 	/*GunDir = glm::vec3(dirX * startP, dirY * startP, dirZ * startP) + glm::vec3(PosX, PosY, PosZ);*/
 	
-	glm::mat4 Scale = glm::scale(Unit, glm::vec3(0.01, 0.01, 0.01));
+	glm::mat4 Scale = glm::scale(Unit, glm::vec3(0.05, 0.05, 0.05));
 	glm::mat4 Trans = glm::translate(Unit, glm::vec3(PosX, PosY, PosZ));
 	Change = Trans * Scale;
 }
