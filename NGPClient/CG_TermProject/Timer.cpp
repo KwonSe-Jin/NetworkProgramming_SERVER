@@ -43,11 +43,11 @@ void timer(int value)
 		bear.update();
 	}
 
-	if (catdead ==6 && !(openingCat >= 1)) {
+	if (catdead >=6 && !(openingCat >= 1)) {
 		openingCat += 0.01;
 	}
 
-	if (dogdead == 6 && !(openingDog >= 1)) {
+	if (dogdead >= 6 && !(openingDog >= 1)) {
 		openingDog += 0.01;
 	}
 

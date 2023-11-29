@@ -49,6 +49,9 @@ vector <SC_BULLET_PACKET> bullet;
 SC_MONSTER_PACKET monsters[6];
 SC_MONSTER_PACKET BossBear;
 
+bool toggle1 = true;
+bool toggle2 = true;
+
 void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
 	int size = sizeof(p);
@@ -82,12 +85,12 @@ void SC_BOSSBEAR_Send(SOCKET clientSocket)
 
 void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
 {
-    int size = sizeof(p);
-    send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-    int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
-    if (result == SOCKET_ERROR) {
-        //std::cout << "Failed to send data" << std::endl;
-    }
+	int size = sizeof(p);
+	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
+	if (result == SOCKET_ERROR) {
+		//std::cout << "Failed to send data" << std::endl;
+	}
 }
 
 void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& responsePacket) {
@@ -116,12 +119,12 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& r
 		if (csPacket.Player_key.is_q) {
 			heroes[csPacket.player_id].isQuit();
 		}
-        if (csPacket.Player_key.is_bullet) {
-            cout << "총 생성" << endl;
-            gun.push_back(new Gun{ heroes[responsePacket.player_id].PosX, heroes[responsePacket.player_id].PosY + 0.5f ,heroes[responsePacket.player_id].PosZ
-                ,csPacket.Player_key.dirx,csPacket.Player_key.diry,csPacket.Player_key.dirz });
-            //cout << csPacket.Player_key.dirx << endl;
-        }
+		if (csPacket.Player_key.is_bullet) {
+			cout << "총 생성" << endl;
+			gun.push_back(new Gun{ heroes[responsePacket.player_id].PosX, heroes[responsePacket.player_id].PosY + 0.5f ,heroes[responsePacket.player_id].PosZ
+				,csPacket.Player_key.dirx,csPacket.Player_key.diry,csPacket.Player_key.dirz });
+			//cout << csPacket.Player_key.dirx << endl;
+		}
 		if (csPacket.ready) {
 			if (heroes[responsePacket.player_id]._readyflag == false)
 				heroes[responsePacket.player_id].ISR();
@@ -132,7 +135,6 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& r
 		if (csPacket.Player_key.is_q) {
 			heroes[csPacket.player_id].isQuit();
 		}
-	
 	}
 }
 
@@ -165,20 +167,20 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 
 void bulletcalculate(SC_BULLET_PACKET& scPacket, int i)
 {
-    BulletCollideBear();
-    BulletCollideDog();
-    BulletCollideCat();
-    gun[i]->Update();
+	BulletCollideBear();
+	BulletCollideDog();
+	BulletCollideCat();
+	gun[i]->Update();
 
-    scPacket.packet_type = SC_BULLET;
-    scPacket.id = i;
+	scPacket.packet_type = SC_BULLET;
+	scPacket.id = i;
 
 
-    scPacket.status = gun[i]->status;
-    scPacket.dirx = gun[i]->GunDirX;
-    scPacket.diry = gun[i]->GunDirY;
-    scPacket.dirz = gun[i]->GunDirZ;
-    scPacket.size = gun.size();
+	scPacket.status = gun[i]->status;
+	scPacket.dirx = gun[i]->GunDirX;
+	scPacket.diry = gun[i]->GunDirY;
+	scPacket.dirz = gun[i]->GunDirZ;
+	scPacket.size = gun.size();
 }
 
 
@@ -236,18 +238,23 @@ void CalculateThread()
 				g_bearlive = false;
 			}
 			else if (heroes[i].doglive) {
-
 				g_catlive = false;
 				g_doglive = true;
 				g_bearlive = false;
-                gun.clear();
+				if (toggle1) {
+					gun.clear();
+					!toggle1;
+				}
 
 			}
 			else if (heroes[i].bearlive) {
 				g_catlive = false;
 				g_doglive = false;
 				g_bearlive = true;
-                gun.clear();
+				if (toggle2) {
+					gun.clear();
+					!toggle2;
+				}
 
 			}
 		}
@@ -265,7 +272,7 @@ void CalculateThread()
 						SC_MONSTER_Send(clientsocketes[i]);
 				}
 			}
-			
+
 			if (g_doglive)
 			{
 				HeroVSDog();
@@ -274,7 +281,7 @@ void CalculateThread()
 				}
 				for (int i = 0; i < heroes.size(); ++i) {
 					if (!heroes[i].is_q)
-					SC_MONSTER_Send(clientsocketes[i]);
+						SC_MONSTER_Send(clientsocketes[i]);
 				}
 			}
 
@@ -298,7 +305,7 @@ void CalculateThread()
 				BossBear.z = AniBear.PosZ;
 				for (int i = 0; i < heroes.size(); ++i) {
 					if (!heroes[i].is_q)
-					SC_BOSSBEAR_Send(clientsocketes[i]);
+						SC_BOSSBEAR_Send(clientsocketes[i]);
 				}
 			}
 
@@ -358,7 +365,7 @@ void HandleClientSocket(SOCKET clientSocket)
 	//send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 
 	// 나머지 클라이언트 소켓 처리 코드
-	
+
 	// ?? h -> 공석 0번 
 
 	Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
