@@ -378,7 +378,7 @@ void CalculateThread()
 			}
 
 		}
-		this_thread::sleep_for(0.5ms);
+		this_thread::sleep_for(0.7ms);
 		g_m.unlock();
 
 	}
@@ -468,7 +468,7 @@ int main()
 
 	SocketUtils::SetReuseAddress(listenSocket, true);
 
-	if (SocketUtils::BindAnyAddress(listenSocket, 7777) == false)
+	if (SocketUtils::BindAnyAddress(listenSocket, 9000) == false)
 		return 0;
 
 	if (SocketUtils::Listen(listenSocket, SOMAXCONN) == false)
