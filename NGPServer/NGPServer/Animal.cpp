@@ -121,19 +121,28 @@ void Animal::update()
 
     if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
         if (AnimalType == Cat) {
-            AnimalCrushHero = true;
-            heroes[closestHeroIndex].catattack[Index].Activate = true;
-            ++heroes[closestHeroIndex].catattack[Index].AttackCount;
+            if (this->HP > 0) {
+                AnimalCrushHero = true;
+                heroes[closestHeroIndex].catattack[Index].Activate = true;
+                ++heroes[closestHeroIndex].catattack[Index].AttackCount;
+            }
+       
         }
         if (AnimalType == Dog) {
-            AnimalCrushHero = true;
-            heroes[closestHeroIndex].dogattack[Index].Activate = true;
-            ++heroes[closestHeroIndex].dogattack[Index].AttackCount;
+            if (this->HP > 0) {
+                AnimalCrushHero = true;
+                heroes[closestHeroIndex].dogattack[Index].Activate = true;
+                ++heroes[closestHeroIndex].dogattack[Index].AttackCount;
+            }
+           
         }
         if (AnimalType == Bear) {
-            AnimalCrushHero = true;
-            heroes[closestHeroIndex].bearattack.Activate = true;
-            ++(heroes[closestHeroIndex].bearattack.AttackCount);
+            if (this->HP > 0) {
+                AnimalCrushHero = true;
+                heroes[closestHeroIndex].bearattack.Activate = true;
+                ++(heroes[closestHeroIndex].bearattack.AttackCount);
+            }
+           
         }
     }
     else {

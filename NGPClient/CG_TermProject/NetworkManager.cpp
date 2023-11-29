@@ -121,28 +121,12 @@ bool NetworkManager::recvData() {
 
 	}
 	case SC_BULLET: {
-		//gun_clear();
-		//std::cout << size << "bullet size" << std::endl;
-		//
-		//int bullet_count = size / 28;
-		//int i = 0;
-		//cout << bullet_count << endl;
 
-		//while (bullet_count)
-		//{
-		//    SC_BULLET_PACKET* p = reinterpret_cast<SC_BULLET_PACKET*>(buf);
-
-		//    bulletInfo(p);
-		//   
-		//    bullet_count--;
-		//    if (bullet_count > 1)
-		//        recv(clientSocket, buf, 28, 0);
-		//}
 		std::cout << size << "bullet size" << std::endl;
 		SC_BULLET_PACKET* p = reinterpret_cast<SC_BULLET_PACKET*>(buf);
 
 		bulletInfo(p);
-		//SC_BULLET_PACKET* p = reinterpret_cast<SC_BULLET_PACKET*>(buf);
+		
 	}
 				  break;
 	default:

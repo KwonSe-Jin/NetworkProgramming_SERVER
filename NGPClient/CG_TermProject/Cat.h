@@ -45,13 +45,13 @@ class Cat
 	float Direction;
 	bool CatCrushHero;
 
-	int HP;
 	int Attack;
 
 
 public:
 	Cat();
 	~Cat();
+	int HP;
 
 	int Index = 0;
 	void draw();

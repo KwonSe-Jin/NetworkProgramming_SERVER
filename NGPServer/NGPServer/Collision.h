@@ -20,14 +20,16 @@ void AnimalCollideCat() {
 
 	for (int i = 0; i < AniCats.size(); ++i) {
 		for (int j = i + 1; j < AniCats.size(); ++j) {
-			float distanceX = abs(AniCats[i]->PosX - AniCats[j]->PosX);
+			if (AniCats[i]->HP > 0 && AniCats[j]->HP > 0) {
+				float distanceX = abs(AniCats[i]->PosX - AniCats[j]->PosX);
 
-			float distanceZ = abs(AniCats[i]->PosZ - AniCats[j]->PosZ);
-			if (distanceX <= 0.1f) {
-				AniCats[i]->PosX += 0.1f;
-			}
-			if (distanceZ <= 0.1f) {
-				AniCats[i]->PosZ += 0.1f;
+				float distanceZ = abs(AniCats[i]->PosZ - AniCats[j]->PosZ);
+				if (distanceX <= 0.1f) {
+					AniCats[i]->PosX += 0.1f;
+				}
+				if (distanceZ <= 0.1f) {
+					AniCats[i]->PosZ += 0.1f;
+				}
 			}
 		}
 	}
@@ -36,13 +38,15 @@ void AnimalCollideCat() {
 void AnimalCollideDog() {
 	for (int i = 0; i < AniDogs.size(); ++i) {
 		for (int j = i + 1; j < AniDogs.size(); ++j) {
-			float distanceX = abs(AniDogs[i]->PosX - AniDogs[j]->PosX);
-			float distanceZ = abs(AniDogs[i]->PosZ - AniDogs[j]->PosZ);
-			if (distanceX <= 0.1f) {
-				AniDogs[i]->PosX += 0.1f;
-			}
-			if (distanceZ <= 0.1f) {
-				AniDogs[i]->PosZ += 0.1f;
+			if (AniDogs[i]->HP > 0 && AniDogs[j]->HP > 0) {
+				float distanceX = abs(AniDogs[i]->PosX - AniDogs[j]->PosX);
+				float distanceZ = abs(AniDogs[i]->PosZ - AniDogs[j]->PosZ);
+				if (distanceX <= 0.1f) {
+					AniDogs[i]->PosX += 0.1f;
+				}
+				if (distanceZ <= 0.1f) {
+					AniDogs[i]->PosZ += 0.1f;
+				}
 			}
 		}
 	}
@@ -55,26 +59,12 @@ void BulletCollideCat() {
 
 	for (int i = 0; i < gun.size(); ++i) {
 		for (int j = 0; j < AniCats.size(); ++j) {
-			if (isCollide2D(*AniCats[j], *gun[i])) {
+			if (isCollide2D(*AniCats[j], *gun[i]) && gun[i]->status && AniCats[j]->HP >= 0) {
 				AniCats[j]->HP -= gun[i]->Damage;
-				//delete gun[i];
 				gun[i]->status = false;
-				if (0 == AniCats[j]->HP) {
-					/*for (int i = 0; i < 40; ++i) {
-						particle[i]->dirY = -0.2;
-					}
-					CatEndPosX = cats[j]->Position.x;
-					CatEndPosZ = cats[j]->Position.z;
-					isParticle = true;
-					delete cats[j];
-					catdead++;
-					cats.erase(cats.begin() + j);
-					--j;*/
-				}
-				gun.erase(gun.begin() + i);
-				--i;
 				break;
 			}
+
 
 		}
 
@@ -85,21 +75,9 @@ void BulletCollideDog() {
 
 	for (int i = 0; i < gun.size(); ++i) {
 		for (int j = 0; j < AniDogs.size(); ++j) {
-			if (isCollideDog(*AniDogs[j], *gun[i])) {
+			if (isCollideDog(*AniDogs[j], *gun[i]) && gun[i]->status && AniDogs[j]->HP >= 0) {
 				AniDogs[j]->HP -= gun[i]->Damage;
-				delete gun[i];
-				if (0 == AniDogs[j]->HP) {
-					/*for (int i = 0; i < 40; ++i) {
-						particle[i]->dirY = -0.2;
-					}
-					isParticle = true;
-					delete dogs[j];
-					dogdead++;
-					dogs.erase(dogs.begin() + j);
-					--j;*/
-				}
-				gun.erase(gun.begin() + i);
-				--i;
+				gun[i]->status = false;
 				break;
 			}
 
@@ -111,19 +89,9 @@ void BulletCollideDog() {
 void BulletCollideBear() {
 
 	for (int i = 0; i < gun.size(); ++i) {
-		if (isCollideBear(AniBear, *gun[i])) {
+		if (isCollideBear(AniBear, *gun[i]) && gun[i]->status && AniBear.HP >= 0) {
 			AniBear.HP -= gun[i]->Damage;
-			delete gun[i];
-			if (0 == AniBear.HP) {
-				/*for (int i = 0; i < 40; ++i) {
-					particle[i]->dirY = -0.2;
-				}
-				BearLife = false;
-				beardead = true;
-				isParticle = true;*/
-			}
-			gun.erase(gun.begin() + i);
-			--i;
+			gun[i]->status = false;
 		}
 	}
 }

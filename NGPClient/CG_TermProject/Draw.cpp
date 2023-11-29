@@ -314,35 +314,24 @@ void draw() {
 
 
 
-	//AnimalCollideCat();
-	//CatAndRoomCollision();
-
-	//AnimalCollideDog();
-	//DogAndRoomCollision();
-
-	//for (int i = 0; i < cats.size(); ++i) {
-	//	cats[i]->update();
-	//}
-
-	//for (int i = 0; i < dogs.size(); ++i) {
-	//	dogs[i]->update();
-	//}
-
-	//if (BearLife) {
-	//	bear.update();
-	//}
+	
 
 
 	for (int i = 0; i < cats.size(); ++i) {
-		cats[i]->draw();
+		if (cats[i]->HP > 0)
+		{
+			cats[i]->draw();
+		}
 	}
 
 	for (int i = 0; i < dogs.size(); ++i) {
-		dogs[i]->draw();
+		if(dogs[i]->HP > 0)
+			dogs[i]->draw();
 	}
 
 	if (BearLife) {
-		bear.draw();
+		if(bear.HP > 0)
+			bear.draw();
 	}
 
 	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!

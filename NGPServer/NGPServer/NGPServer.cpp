@@ -151,24 +151,20 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 
 void bulletcalculate(SC_BULLET_PACKET& scPacket, int i)
 {
-    //BulletCollideBear();
-    //BulletCollideDog();
+    BulletCollideBear();
+    BulletCollideDog();
     BulletCollideCat();
     gun[i]->Update();
 
     scPacket.packet_type = SC_BULLET;
     scPacket.id = i;
 
-    //p.x = gun[i]->PosX;
-    //p.y = gun[i]->PosY;
-    //p.z = gun[i]->PosZ;
+
     scPacket.status = gun[i]->status;
     scPacket.dirx = gun[i]->GunDirX;
     scPacket.diry = gun[i]->GunDirY;
     scPacket.dirz = gun[i]->GunDirZ;
     scPacket.size = gun.size();
-    cout << gun.size() << endl;
-    //cout << p.packet_type << endl;
 }
 
 
@@ -230,11 +226,15 @@ void CalculateThread()
 				g_catlive = false;
 				g_doglive = true;
 				g_bearlive = false;
+                gun.clear();
+
 			}
 			else if (heroes[i].bearlive) {
 				g_catlive = false;
 				g_doglive = false;
 				g_bearlive = true;
+                gun.clear();
+
 			}
 		}
 
@@ -313,13 +313,6 @@ void CalculateThread()
                         SC_BULLET_Send(bulletPacket, clientsocketes[j]);
                     }
                 }
-
-                //클라이언트 입력
-               /* for (int i = 0; i < gun.size(); ++i)
-                {
-                    if (gun[i]->status)
-                        delete gun[i];
-                }*/
 
                 Posandlight(responsePacket, i);
                 for (int j = 0; j < heroes.size(); ++j) 

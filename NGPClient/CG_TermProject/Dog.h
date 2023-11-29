@@ -35,7 +35,6 @@ class Dog
 	Sword swordR;
 	Sword swordL;
 
-	int HP;
 	int Attack;
 	glm::vec3 Position;
 	float Direction;
@@ -47,6 +46,7 @@ class Dog
 public:
 	Dog();
 	~Dog();
+	int HP;
 
 	int Index = 0;
 	void draw();

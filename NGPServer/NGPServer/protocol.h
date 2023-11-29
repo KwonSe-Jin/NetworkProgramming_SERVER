@@ -71,9 +71,7 @@ struct SC_BULLET_PACKET
 	int size;
 	int id;
 	bool status;
-	float x;
-	float y;
-	float z;
+
 	float dirx;
 	float diry;
 	float dirz;
