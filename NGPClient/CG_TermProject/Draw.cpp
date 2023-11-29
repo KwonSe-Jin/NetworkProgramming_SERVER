@@ -165,11 +165,12 @@ void gun_clear()
 	gun.clear();
 }
 
+
 void bulletInfo(SC_BULLET_PACKET* p)
 {
 	if (p->size > gun.size())
 		gun.push_back(new Gun{ p->dirx,p->diry, p->dirz });
-
+	cout << gun.size() << endl;
 	gun[p->id]->setInfo(p);
 }
 

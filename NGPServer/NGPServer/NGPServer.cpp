@@ -54,6 +54,7 @@ bool toggle2 = true;
 
 void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
+	p.packet_type = SC_PLAYER;
 	int size = sizeof(p);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
@@ -65,6 +66,7 @@ void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 
 void SC_MONSTER_Send(SOCKET clientSocket)
 {
+	monsters->packet_type = SC_MONSTER;
 	int size = sizeof(SC_MONSTER_PACKET) * 6;
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&monsters), sizeof(monsters), 0);
@@ -75,6 +77,7 @@ void SC_MONSTER_Send(SOCKET clientSocket)
 
 void SC_BOSSBEAR_Send(SOCKET clientSocket)
 {
+	BossBear.packet_type = SC_MONSTER;
 	int size = sizeof(SC_MONSTER_PACKET);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&BossBear), sizeof(BossBear), 0);
@@ -85,6 +88,7 @@ void SC_BOSSBEAR_Send(SOCKET clientSocket)
 
 void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
 {
+	p.packet_type = SC_BULLET;
 	int size = sizeof(p);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
@@ -92,6 +96,7 @@ void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
 		//std::cout << "Failed to send data" << std::endl;
 	}
 }
+mutex b_m;
 
 void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& responsePacket) {
 
@@ -350,21 +355,23 @@ void CalculateThread()
 
             }
 
+			for (int i = 0; i < gun.size(); ++i)
+			{
+				bulletcalculate(bulletPacket, i);
+				for (int j = 0; j < heroes.size(); ++j)
+				{
+					if (!heroes[j].is_q)
+						SC_BULLET_Send(bulletPacket, clientsocketes[j]);
+				}
+			}
 
             for (int i = 0; i < heroes.size(); ++i)
             {
               	if (!heroes[i].is_q) {
 					heroes[i].Update();
 				}
-                for (int i = 0; i < gun.size(); ++i)
-                {
-                    bulletcalculate(bulletPacket, i);
-                    for (int j = 0; j < heroes.size(); ++j)
-                    {
-						if (!heroes[j].is_q)
-                        	SC_BULLET_Send(bulletPacket, clientsocketes[j]);
-                    }
-                }
+
+                
 
                 Posandlight(responsePacket, i);
                 for (int j = 0; j < heroes.size(); ++j) 
@@ -377,7 +384,7 @@ void CalculateThread()
             }
 
 		}
-		this_thread::sleep_for(0.7ms);
+		this_thread::sleep_for(1ms);
 		g_m.unlock();
 
 	}
@@ -394,25 +401,25 @@ void HandleClientSocket(SOCKET clientSocket)
 	// 나머지 클라이언트 소켓 처리 코드
 
 	// ?? h -> 공석 0번 
-
-	Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
-	{
-		lock_guard<mutex> lock(heroMutex);
-		heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
-	}
-	//여기서 ID를 클라에게 보내주기
-	SC_PLAYER_PACKET p;
-
-	// 클라이언트에게 스레드 ID를 보내기 위한 작업
-	int player_id;
 	{
 		std::lock_guard<std::mutex> lock(heroIdMutex);
+		Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
+		{
+			lock_guard<mutex> lock(heroMutex);
+			heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
+		}
+		//여기서 ID를 클라에게 보내주기
+		SC_PLAYER_PACKET p;
+
+		// 클라이언트에게 스레드 ID를 보내기 위한 작업
+		int player_id;
+
 		player_id = HeroID;
 		++HeroID;
-	}
-	send(clientSocket, reinterpret_cast<char*>(&player_id), sizeof(player_id), 0);
-	cout << HeroID << endl;
 
+		send(clientSocket, reinterpret_cast<char*>(&player_id), sizeof(player_id), 0);
+		cout << HeroID << endl;
+	}
 	//++HeroID;
 	//cout << LThreadId << endl;
 	//cout << heroes[0].ID << endl;
