@@ -120,7 +120,7 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& r
 			heroes[csPacket.player_id].isQuit();
 		}
 		if (csPacket.Player_key.is_bullet) {
-			cout << "총 생성" << endl;
+			//cout << "총 생성" << endl;
 			gun.push_back(new Gun{ heroes[responsePacket.player_id].PosX, heroes[responsePacket.player_id].PosY + 0.5f ,heroes[responsePacket.player_id].PosZ
 				,csPacket.Player_key.dirx,csPacket.Player_key.diry,csPacket.Player_key.dirz });
 			//cout << csPacket.Player_key.dirx << endl;
@@ -199,20 +199,45 @@ void processmonsterPacket(Animal& ani) {
 	monsters[ani.Index].hp = ani.HP;
 
 
-	ani.update();
+	int d_Cat = 0;
+	int d_Dog = 0;
 
 	if (g_catlive) {
 		AnimalCollideCat();
 		Catroomtest();
+		for (int i = 0; i < AniCats.size(); ++i) {
+			if (AniCats[i]->HP <= 0)
+				++d_Cat;
+		}
+
+		if (d_Cat >= 6) {
+
+		}
+		else {
+			HeroVSCat();
+		}
 	}
 	if (g_doglive)
 	{
 		AnimalCollideDog();
 		DogAndRoomCollision();
+
+		for (int i = 0; i < AniDogs.size(); ++i) {
+			if (AniDogs[i]->HP <= 0)
+				++d_Dog;
+		}
+		if (d_Dog >= 6) {
+		}
+		else {
+			HeroVSDog();
+		}
 	}
 	if (g_bearlive) {
+		HeroVSBear();
+
 		BearAndRoomCollision();
 	}
+	ani.update();
 
 	monsters[ani.Index].x = ani.PosX;
 	monsters[ani.Index].y = ani.PosY;
@@ -243,8 +268,9 @@ void CalculateThread()
 				g_doglive = true;
 				g_bearlive = false;
 				if (toggle1) {
+					cout << "toggle1 == " << toggle1 << endl;
 					gun.clear();
-					!toggle1;
+					toggle1 = !toggle1;
 				}
 
 			}
@@ -253,8 +279,9 @@ void CalculateThread()
 				g_doglive = false;
 				g_bearlive = true;
 				if (toggle2) {
+					cout << "toggle2 == " << toggle2 << endl;
 					gun.clear();
-					!toggle2;
+					toggle2 = !toggle2;
 				}
 
 			}
@@ -264,7 +291,8 @@ void CalculateThread()
 		if ((heroes.size() && g_catlive) || (heroes.size() && g_doglive) || (heroes.size() && g_bearlive)) {
 			if (g_catlive)
 			{
-				HeroVSCat();
+
+
 				for (int i = 0; i < 6; ++i) {
 					processmonsterPacket(*AniCats[i]);
 				}
@@ -276,7 +304,6 @@ void CalculateThread()
 
 			if (g_doglive)
 			{
-				HeroVSDog();
 				for (int i = 0; i < 6; ++i) {
 					processmonsterPacket(*AniDogs[i]);
 				}
@@ -288,18 +315,18 @@ void CalculateThread()
 
 			if (g_bearlive)
 			{
-				HeroVSBear();
 				BossBear.packet_type = 2;
 				BossBear.animal_type = BEAR;
 
 
 				BossBear.direction = AniBear.Direction;
 				BossBear.hp = AniBear.HP;
+				HeroVSBear();
 
+				BearAndRoomCollision();
 
 				AniBear.update();
 
-				BearAndRoomCollision();
 
 				BossBear.x = AniBear.PosX;
 				BossBear.y = AniBear.PosY;

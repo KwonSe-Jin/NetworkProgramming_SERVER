@@ -50,48 +50,6 @@ void Bear::draw()
 
 void Bear::update()
 {
-	//hero.location();
-	//float dz = HeroLocationZ - Position.z;
-	//float dx = HeroLocationX - Position.x;
-
-	//Direction = atan2(dx, dz);
-
-	//closelineX = HeroLocationX - Position.x;
-	//closelineZ = HeroLocationZ - Position.z;
-
-	//if (bearlive && !herodead) {
-	//	if (!(closelineX <= 0.5 && closelineX >= -0.5)) {
-
-	//		if (closelineX >= 0.5) {
-	//			closelineX -= 0.03;
-	//			Position.x += 0.03;
-	//		}
-	//		if (closelineX < -0.5) {
-	//			closelineX += 0.03;
-	//			Position.x -= 0.03;
-	//		}
-	//	}
-	//	if (!(closelineZ <= 0.5 && closelineZ >= -0.5)) {
-	//		if (closelineZ > 0.5) {
-	//			closelineZ -= 0.03;
-	//			Position.z += 0.03;
-	//		}
-	//		if (closelineZ < -0.5) {
-	//			closelineZ += 0.03;
-	//			Position.z -= 0.03;
-	//		}
-	//	}
-	//}
-
-
-	//if ((closelineX <= 0.5 && closelineX >= -0.5) && (closelineZ <= 0.5 && closelineZ >= -0.5)) {
-	//	bearattack.Activate = true;
-	//	++bearattack.AttackCount;
-	//}
-	//else {
-	//	bearattack.Activate = false;
-	//}
-
 	nose.keyIn(Position, Direction);
 	head.keyIn(Position, Direction);
 	armL.keyIn(Position, Direction);

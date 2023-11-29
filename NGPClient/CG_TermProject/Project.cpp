@@ -117,7 +117,7 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	//std::string receivedData;
 	//if (networkManager.ReceiveData(receivedData)) {
 	//	std::cout << "Received from the server: " << receivedData << std::endl;
-	//}
+	//}f
 
 	// Send data to the server
 	networkManager.Receiveid();

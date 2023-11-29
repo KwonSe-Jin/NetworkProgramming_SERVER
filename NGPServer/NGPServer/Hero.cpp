@@ -192,32 +192,32 @@ void Hero::isQuit()
 void Hero::ISW()
 {
 	float radians = VAngleY * PI / 180.0f;
-	PosZ -= 0.2 * cos(radians);
-	PosX += 0.2 * sin(radians);
+	PosZ -= 0.1 * cos(radians);
+	PosX += 0.1 * sin(radians);
 }
 
 void Hero::ISA()
 {
 	float radians = VAngleY * PI / 180.0f;
 
-	PosZ -= 0.2 * sin(radians);
-	PosX -= 0.2 * cos(radians);
+	PosZ -= 0.1 * sin(radians);
+	PosX -= 0.1 * cos(radians);
 
 }
 
 void Hero::ISS()
 {
 	float radians = VAngleY * PI / 180.0f;
-	PosZ += 0.2 * cos(radians);
-	PosX -= 0.2 * sin(radians);
+	PosZ += 0.1 * cos(radians);
+	PosX -= 0.1 * sin(radians);
 }
 
 void Hero::ISD()
 {
 	float radians = VAngleY * PI / 180.0f;
 
-	PosZ += 0.2 * sin(radians);
-	PosX += 0.2 * cos(radians);
+	PosZ += 0.1 * sin(radians);
+	PosX += 0.1 * cos(radians);
 }
 void Hero::ISR()
 {
