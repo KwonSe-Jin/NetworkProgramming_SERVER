@@ -92,7 +92,7 @@ bool NetworkManager::recvData() {
 	//std::cout << size << "????? ????" << std::endl;
 
 	recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-	recv(clientSocket, buf, size, 0);
+	recv(clientSocket, buf, size, MSG_WAITALL);
 
 	switch (buf[0]) {
 	case SC_PLAYER: {
