@@ -15,7 +15,7 @@ using namespace std;
 extern bool isW, isA, isS, isD;
 extern bool isBullet;
 
-//#define serverIP "192.168.41.8"
+//#define serverIP "192.168.121.55"
 #define serverIP "127.0.0.1"
 #define serverPort 9000
 

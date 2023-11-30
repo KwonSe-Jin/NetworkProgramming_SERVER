@@ -24,10 +24,12 @@ GLvoid Mouse(int button, int state, int x, int y) {
 				&(p.Player_key.dirx), &(p.Player_key.diry), &(p.Player_key.dirz));
 			p.player_id = global_ID;
 			p.Player_key.is_bullet = true;
-
-			if (!networkManager.SendPlayerData(p)) {
-				std::cout << "패킷보내기 실패" << std::endl;
+			if (p.status) {
+				if (!networkManager.SendPlayerData(p)) {
+					std::cout << "패킷보내기 실패" << std::endl;
+				}
 			}
+			
 			ball_count++;
 			playSound.GunSound();
 		}

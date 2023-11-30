@@ -217,6 +217,11 @@ GLvoid drawScene()
 
 
 void draw() {
+
+	if (hero[global_ID].HP <= 0) {
+		herodead = true;
+	}
+
 	///재시작 !! 
 	if (RestartPress) {
 		Restartinit();

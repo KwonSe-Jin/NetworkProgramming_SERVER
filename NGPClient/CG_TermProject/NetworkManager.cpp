@@ -91,7 +91,7 @@ bool NetworkManager::recvData() {
 	int size;
 	//std::cout << size << "????? ????" << std::endl;
 
-	recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+	recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), MSG_WAITALL);
 	recv(clientSocket, buf, size, MSG_WAITALL);
 
 	switch (int(buf[0])) {

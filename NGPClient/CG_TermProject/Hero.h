@@ -19,7 +19,6 @@ class Hero
 	float scaleX;
 	float scaleY;
 	float scaleZ;
-	int HP;
 	float PosX;
 	float PosY;
 	float PosZ;
@@ -62,6 +61,7 @@ class Hero
 
 public:
 	bool status;
+	int HP;
 
 	int Hero_ID = -1;
 	float lightColorR = 1.0f;

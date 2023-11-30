@@ -54,220 +54,222 @@ bool toggle2 = true;
 
 void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
-	p.packet_type = SC_PLAYER;
-	int size = sizeof(p);
-	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
-	if (result == SOCKET_ERROR) {
-		//std::cout << "Failed to send data" << std::endl;
-	}
+    p.packet_type = SC_PLAYER;
+    int size = sizeof(p);
+    send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+    int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
+    if (result == SOCKET_ERROR) {
+        //std::cout << "Failed to send data" << std::endl;
+    }
 
 }
 
 void SC_MONSTER_Send(SC_MONSTER_PACKET& p, SOCKET clientSocket)
 {
-	p.packet_type = SC_MONSTER;
-	int size = sizeof(p);
-	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
-	if (result == SOCKET_ERROR) {
-		//std::cout << "Failed to send data" << std::endl;
-	}
+    p.packet_type = SC_MONSTER;
+    int size = sizeof(p);
+    send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+    int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
+    if (result == SOCKET_ERROR) {
+        //std::cout << "Failed to send data" << std::endl;
+    }
 }
 
 void SC_BOSSBEAR_Send(SOCKET clientSocket)
 {
-	BossBear.packet_type = SC_MONSTER;
-	int size = sizeof(SC_MONSTER_PACKET);
-	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-	int result = send(clientSocket, reinterpret_cast<char*>(&BossBear), sizeof(BossBear), 0);
-	if (result == SOCKET_ERROR) {
-		//std::cout << "Failed to send data" << std::endl;
-	}
+    BossBear.packet_type = SC_MONSTER;
+    int size = sizeof(SC_MONSTER_PACKET);
+    send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+    int result = send(clientSocket, reinterpret_cast<char*>(&BossBear), sizeof(BossBear), 0);
+    if (result == SOCKET_ERROR) {
+        //std::cout << "Failed to send data" << std::endl;
+    }
 }
 
 void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
 {
-	p.packet_type = SC_BULLET;
-	int size = sizeof(p);
-	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
-	if (result == SOCKET_ERROR) {
-		//std::cout << "Failed to send data" << std::endl;
-	}
+    p.packet_type = SC_BULLET;
+    int size = sizeof(p);
+    send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+    int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
+    if (result == SOCKET_ERROR) {
+        //std::cout << "Failed to send data" << std::endl;
+    }
 }
 
 void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& responsePacket) {
 
-	responsePacket.player_id = csPacket.player_id;
-	responsePacket.status = csPacket.status;
-	responsePacket.ready = csPacket.ready;
-	heroes[responsePacket.player_id].VAngleX = csPacket.camera.VangleX;
-	heroes[responsePacket.player_id].VAngleY = csPacket.camera.VangleY;
-	/*cout << heroes[scPacket.player_id ].VAngleX << endl;
-	cout << heroes[scPacket.player_id ].VAngleY << endl;*/
+    responsePacket.packet_type = SC_PLAYER;
+    responsePacket.player_id = csPacket.player_id;
+    responsePacket.status = csPacket.status;
+    responsePacket.ready = csPacket.ready;
+    heroes[responsePacket.player_id].VAngleX = csPacket.camera.VangleX;
+    heroes[responsePacket.player_id].VAngleY = csPacket.camera.VangleY;
+    /*cout << heroes[scPacket.player_id ].VAngleX << endl;
+    cout << heroes[scPacket.player_id ].VAngleY << endl;*/
 
-	if (responsePacket.status) {
-		if (csPacket.Player_key.is_w) {
-			heroes[responsePacket.player_id].ISW();
-		}
-		if (csPacket.Player_key.is_a) {
-			heroes[responsePacket.player_id].ISA();
-		}
-		if (csPacket.Player_key.is_s) {
-			heroes[responsePacket.player_id].ISS();
-		}
-		if (csPacket.Player_key.is_d) {
-			heroes[responsePacket.player_id].ISD();
-		}
-		if (csPacket.Player_key.is_q) {
-			heroes[csPacket.player_id].isQuit();
-		}
-		if (csPacket.Player_key.is_bullet) {
-			//cout << "총 생성" << endl;
-			gun.push_back(new Gun{ heroes[responsePacket.player_id].PosX, heroes[responsePacket.player_id].PosY + 0.5f ,heroes[responsePacket.player_id].PosZ
-				,csPacket.Player_key.dirx,csPacket.Player_key.diry,csPacket.Player_key.dirz });
-			//cout << csPacket.Player_key.dirx << endl;
-		}
-		if (csPacket.ready) {
-			if (heroes[responsePacket.player_id]._readyflag == false)
-				heroes[responsePacket.player_id].ISR();
-			cout << readycount << endl;
-		}
+    if (responsePacket.status) {
+        if (csPacket.Player_key.is_w) {
+            heroes[responsePacket.player_id].ISW();
+        }
+        if (csPacket.Player_key.is_a) {
+            heroes[responsePacket.player_id].ISA();
+        }
+        if (csPacket.Player_key.is_s) {
+            heroes[responsePacket.player_id].ISS();
+        }
+        if (csPacket.Player_key.is_d) {
+            heroes[responsePacket.player_id].ISD();
+        }
+        if (csPacket.Player_key.is_q) {
+            heroes[csPacket.player_id].isQuit();
+        }
+        if (csPacket.Player_key.is_bullet) {
+            //cout << "총 생성" << endl;
+            gun.push_back(new Gun{ heroes[responsePacket.player_id].PosX, heroes[responsePacket.player_id].PosY + 0.5f ,heroes[responsePacket.player_id].PosZ
+               ,csPacket.Player_key.dirx,csPacket.Player_key.diry,csPacket.Player_key.dirz });
+            //cout << csPacket.Player_key.dirx << endl;
+        }
+        if (csPacket.ready) {
+            if (heroes[responsePacket.player_id]._readyflag == false)
+                heroes[responsePacket.player_id].ISR();
+            cout << readycount << endl;
+        }
 
 
-		if (csPacket.Player_key.is_q) {
-			heroes[csPacket.player_id].isQuit();
-		}
-	}
+        if (csPacket.Player_key.is_q) {
+            heroes[csPacket.player_id].isQuit();
+        }
+    }
 }
 
 void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 {
-	scPacket.packet_type = SC_PLAYER;
-	scPacket.player_id = i;
-	scPacket.player_hp = heroes[scPacket.player_id].HP;
+    scPacket.packet_type = SC_PLAYER;
+    scPacket.player_id = i;
+    scPacket.player_hp = heroes[scPacket.player_id].HP;
 
-	if (heroes[scPacket.player_id]._flag)
-		scPacket.status = true;
-	else {
-		scPacket.status = false;
-	}
+    if (heroes[scPacket.player_id]._flag)
+        scPacket.status = true;
+    else {
+        scPacket.status = false;
+    }
 
-	scPacket.Player_pos.x = heroes[scPacket.player_id].PosX;
-	scPacket.Player_pos.y = heroes[scPacket.player_id].PosY;
-	scPacket.Player_pos.z = heroes[scPacket.player_id].PosZ;
+    scPacket.Player_pos.x = heroes[scPacket.player_id].PosX;
+    scPacket.Player_pos.y = heroes[scPacket.player_id].PosY;
+    scPacket.Player_pos.z = heroes[scPacket.player_id].PosZ;
 
-	scPacket.Player_light.R = heroes[scPacket.player_id].lightColorR;
-	scPacket.Player_light.G = heroes[scPacket.player_id].lightColorG;
-	scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
+    scPacket.Player_light.R = heroes[scPacket.player_id].lightColorR;
+    scPacket.Player_light.G = heroes[scPacket.player_id].lightColorG;
+    scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
 
-	/*   cout << "플레이어 좌표" << endl;
-	   cout << scPacket.Player_pos.x << endl;
-	   cout << scPacket.Player_pos.y << endl;
-	   cout << scPacket.Player_pos.z << endl;*/
+    /*   cout << "플레이어 좌표" << endl;
+       cout << scPacket.Player_pos.x << endl;
+       cout << scPacket.Player_pos.y << endl;
+       cout << scPacket.Player_pos.z << endl;*/
 }
 
 
 void bulletcalculate(SC_BULLET_PACKET& scPacket, int i)
 {
-	BulletCollideBear();
-	BulletCollideDog();
-	BulletCollideCat();
-	gun[i]->Update();
+    BulletCollideBear();
+    BulletCollideDog();
+    BulletCollideCat();
+    gun[i]->Update();
 
-	scPacket.packet_type = SC_BULLET;
-	scPacket.id = i;
+    scPacket.packet_type = SC_BULLET;
+    scPacket.id = i;
 
 
-	scPacket.status = gun[i]->status;
-	scPacket.dirx = gun[i]->GunDirX;
-	scPacket.diry = gun[i]->GunDirY;
-	scPacket.dirz = gun[i]->GunDirZ;
-	scPacket.size = gun.size();
+    scPacket.status = gun[i]->status;
+    scPacket.dirx = gun[i]->GunDirX;
+    scPacket.diry = gun[i]->GunDirY;
+    scPacket.dirz = gun[i]->GunDirZ;
+    scPacket.size = gun.size();
 }
 
 
 
 void processmonsterPacket(SC_MONSTER_PACKET& monster, int i) {
 
-	
 
-	if (g_catlive)
-	{
-		monster.animal_type = CAT;
-		monster.direction = AniCats[i]->Direction;
-		monster.hp = AniCats[i]->HP;
-	
-	}
-	else if (g_doglive)
-	{
-		monster.animal_type = DOG;
-		monster.direction = AniDogs[i]->Direction;
-		monster.hp = AniDogs[i]->HP;
-		
-	}
 
-	int d_Cat = 0;
-	int d_Dog = 0;
+    if (g_catlive)
+    {
+        monster.animal_type = CAT;
+        monster.direction = AniCats[i]->Direction;
+        monster.hp = AniCats[i]->HP;
 
-	if (g_catlive) {
-		AnimalCollideCat();
-		Catroomtest();
-		for (int i = 0; i < AniCats.size(); ++i) {
-			if (AniCats[i]->HP <= 0)
-				++d_Cat;
-		}
+    }
+    else if (g_doglive)
+    {
+        monster.animal_type = DOG;
+        monster.direction = AniDogs[i]->Direction;
+        monster.hp = AniDogs[i]->HP;
 
-		if (d_Cat >= 6) {
+    }
 
-		}
-		else {
-			HeroVSCat();
-		}
-	}
-	if (g_doglive)
-	{
-		AnimalCollideDog();
-		DogAndRoomCollision();
+    int d_Cat = 0;
+    int d_Dog = 0;
 
-		for (int i = 0; i < AniDogs.size(); ++i) {
-			if (AniDogs[i]->HP <= 0)
-				++d_Dog;
-		}
-		if (d_Dog >= 6) {
-		}
-		else {
-			HeroVSDog();
-		}
-	}
-	if (g_bearlive) {
-		HeroVSBear();
+    if (g_catlive) {
+        AnimalCollideCat();
+        Catroomtest();
+        for (int i = 0; i < AniCats.size(); ++i) {
+            if (AniCats[i]->HP <= 0)
+                ++d_Cat;
+        }
 
-		BearAndRoomCollision();
-	}
-	monster.packet_type = 2;
-	monster.Monster_id = i;
-	if (g_catlive)
-	{
-		monster.animal_type = CAT;
-		monster.direction = AniCats[i]->Direction;
-		monster.hp = AniCats[i]->HP;
-		AniCats[i]->update();
-		monster.x = AniCats[i]->PosX;
-		monster.y = AniCats[i]->PosY;
-		monster.z = AniCats[i]->PosZ;
-	}
-	else if (g_doglive)
-	{
-		monster.animal_type = DOG;
-		monster.direction = AniDogs[i]->Direction;
-		monster.hp = AniDogs[i]->HP;
-		AniDogs[i]->update();
-		monster.x = AniDogs[i]->PosX;
-		monster.y = AniDogs[i]->PosY;
-		monster.z = AniDogs[i]->PosZ;
-	}
+        if (d_Cat >= 6) {
+
+        }
+        else {
+            HeroVSCat();
+        }
+    }
+    if (g_doglive)
+    {
+        AnimalCollideDog();
+        DogAndRoomCollision();
+
+        for (int i = 0; i < AniDogs.size(); ++i) {
+            if (AniDogs[i]->HP <= 0)
+                ++d_Dog;
+        }
+        if (d_Dog >= 6) {
+        }
+        else {
+            HeroVSDog();
+        }
+    }
+    if (g_bearlive) {
+        HeroVSBear();
+
+        BearAndRoomCollision();
+    }
+
+    monster.packet_type = 2;
+    monster.Monster_id = i;
+    if (g_catlive)
+    {
+        monster.animal_type = CAT;
+        monster.direction = AniCats[i]->Direction;
+        monster.hp = AniCats[i]->HP;
+        AniCats[i]->update();
+        monster.x = AniCats[i]->PosX;
+        monster.y = AniCats[i]->PosY;
+        monster.z = AniCats[i]->PosZ;
+    }
+    else if (g_doglive)
+    {
+        monster.animal_type = DOG;
+        monster.direction = AniDogs[i]->Direction;
+        monster.hp = AniDogs[i]->HP;
+        AniDogs[i]->update();
+        monster.x = AniDogs[i]->PosX;
+        monster.y = AniDogs[i]->PosY;
+        monster.z = AniDogs[i]->PosZ;
+    }
 
 
 
@@ -279,260 +281,263 @@ mutex heroMutex;
 // 게임 논리를 처리할 계산 스레드
 void CalculateThread()
 {
-	while (true)
-	{
-		//todo
+    while (true)
+    {
+        //todo
 
-		g_m.lock();
+        g_m.lock();
 
-		for (int i = 0; i < heroes.size(); ++i) {
-			if (heroes[i].catlive) { // 한명이라도 들어간 순간? 
-				g_catlive = true;
-				g_doglive = false;
-				g_bearlive = false;
-			}
-			else if (heroes[i].doglive) {
-				g_catlive = false;
-				g_doglive = true;
-				g_bearlive = false;
-				if (toggle1) {
-					cout << "toggle1 == " << toggle1 << endl;
-					gun.clear();
-					toggle1 = !toggle1;
-				}
+        for (int i = 0; i < heroes.size(); ++i) {
+            if (heroes[i].catlive) { // 한명이라도 들어간 순간? 
+                g_catlive = true;
+                g_doglive = false;
+                g_bearlive = false;
+            }
+            else if (heroes[i].doglive) {
+                g_catlive = false;
+                g_doglive = true;
+                g_bearlive = false;
+                if (toggle1) {
+                    cout << "toggle1 == " << toggle1 << endl;
+                    gun.clear();
+                    toggle1 = !toggle1;
+                }
 
-			}
-			else if (heroes[i].bearlive) {
-				g_catlive = false;
-				g_doglive = false;
-				g_bearlive = true;
-				if (toggle2) {
-					cout << "toggle2 == " << toggle2 << endl;
-					gun.clear();
-					toggle2 = !toggle2;
-				}
+            }
+            else if (heroes[i].bearlive) {
+                g_catlive = false;
+                g_doglive = false;
+                g_bearlive = true;
+                if (toggle2) {
+                    cout << "toggle2 == " << toggle2 << endl;
+                    gun.clear();
+                    toggle2 = !toggle2;
+                }
 
-			}
-		}
-
-
-		if ((heroes.size() && g_catlive) || (heroes.size() && g_doglive) || (heroes.size() && g_bearlive)) {
-			if (g_catlive)
-			{
-				SC_MONSTER_PACKET monster;
-				for (int i = 0; i < AniCats.size(); ++i)
-				{
-					processmonsterPacket(monster, i);
-					for (int j = 0; j < heroes.size(); ++j)
-					{
-						if (!heroes[j].is_q)
-							SC_MONSTER_Send(monster, clientsocketes[j]);
-					}
-				}
-			}
-
-			if (g_doglive)
-			{
-				SC_MONSTER_PACKET monster;
-				for (int i = 0; i < AniDogs.size(); ++i)
-				{
-					processmonsterPacket(monster, i);
-					for (int j = 0; j < heroes.size(); ++j)
-					{
-						if (!heroes[j].is_q)
-							SC_MONSTER_Send(monster, clientsocketes[j]);
-					}
-				}
-			}
-
-			if (g_bearlive)
-			{
-				BossBear.packet_type = 2;
-				BossBear.animal_type = BEAR;
+            }
+        }
 
 
-				BossBear.direction = AniBear.Direction;
-				BossBear.hp = AniBear.HP;
-				HeroVSBear();
+        if ((heroes.size() && g_catlive) || (heroes.size() && g_doglive) || (heroes.size() && g_bearlive)) {
+            if (g_catlive)
+            {
+                SC_MONSTER_PACKET monster;
+                for (int i = 0; i < AniCats.size(); ++i)
+                {
+                    processmonsterPacket(monster, i);
+                    for (int j = 0; j < heroes.size(); ++j)
+                    {
+                        if (!heroes[j].is_q && heroes[j].toggleID==false)
+                            SC_MONSTER_Send(monster, clientsocketes[j]);
+                    }
+                }
+            }
 
-				BearAndRoomCollision();
+            if (g_doglive)
+            {
+                SC_MONSTER_PACKET monster;
+                for (int i = 0; i < AniDogs.size(); ++i)
+                {
+                    processmonsterPacket(monster, i);
+                    for (int j = 0; j < heroes.size(); ++j)
+                    {
+                        if (!heroes[j].is_q && heroes[j].toggleID == false)
+                            SC_MONSTER_Send(monster, clientsocketes[j]);
+                    }
+                }
+            }
 
-				AniBear.update();
+            if (g_bearlive)
+            {
+                BossBear.packet_type = 2;
+                BossBear.animal_type = BEAR;
 
 
-				BossBear.x = AniBear.PosX;
-				BossBear.y = AniBear.PosY;
-				BossBear.z = AniBear.PosZ;
-				for (int i = 0; i < heroes.size(); ++i) {
-					if (!heroes[i].is_q)
-						SC_BOSSBEAR_Send(clientsocketes[i]);
-				}
-			}
+                BossBear.direction = AniBear.Direction;
+                BossBear.hp = AniBear.HP;
+                HeroVSBear();
 
-		}
-		
-        if(heroes.size() && heroes.size() == HeroID)
+                BearAndRoomCollision();
+
+                AniBear.update();
+
+
+                BossBear.x = AniBear.PosX;
+                BossBear.y = AniBear.PosY;
+                BossBear.z = AniBear.PosZ;
+                for (int i = 0; i < heroes.size(); ++i) {
+                    if (!heroes[i].is_q && heroes[i].toggleID == false)
+                        SC_BOSSBEAR_Send(clientsocketes[i]);
+                }
+            }
+
+        }
+
+        if (heroes.size() && heroes.size() == HeroID)
         {
             SC_PLAYER_PACKET responsePacket;
             SC_BULLET_PACKET bulletPacket;
-            if (!playerInput.empty())
-            {
+            player_m.lock();
+            if (!playerInput.empty()) {
                 CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
                 playerInput.pop();
                 processCSPlayerPacket(*playerInputPacket, responsePacket);
-
             }
+            player_m.unlock();
 
-			for (int i = 0; i < gun.size(); ++i)
-			{
-				bulletcalculate(bulletPacket, i);
-				for (int j = 0; j < heroes.size(); ++j)
-				{
-					if (!heroes[j].is_q)
-						SC_BULLET_Send(bulletPacket, clientsocketes[j]);
-				}
-			}
+            for (int i = 0; i < gun.size(); ++i)
+            {
+                bulletcalculate(bulletPacket, i);
+                for (int j = 0; j < heroes.size(); ++j)
+                {
+                    if (!heroes[j].is_q && heroes[j].toggleID == false)
+                        SC_BULLET_Send(bulletPacket, clientsocketes[j]);
+                }
+            }
 
             for (int i = 0; i < heroes.size(); ++i)
             {
-              	if (!heroes[i].is_q) {
-					heroes[i].Update();
-				}
+                if (!heroes[i].is_q) {
+                    heroes[i].Update();
+                }
 
-                
+
 
                 Posandlight(responsePacket, i);
-                for (int j = 0; j < heroes.size(); ++j) 
+                for (int j = 0; j < heroes.size(); ++j)
                 {
-                    if (!heroes[j].is_q) {
-							SC_PLAYER_Send(responsePacket, clientsocketes[j]);
-						}
+                    if (!heroes[j].is_q && heroes[j].toggleID == false) {
+                        SC_PLAYER_Send(responsePacket, clientsocketes[j]);
+                    }
                 }
 
             }
 
-		}
-		this_thread::sleep_for(0.5ms);
-		g_m.unlock();
+        }
+        this_thread::sleep_for(0.5ms);
 
-	}
+        g_m.unlock();
+    }
+
+
 }
 std::mutex heroIdMutex;
 void HandleClientSocket(SOCKET clientSocket)
 {
-	
-	{
-		std::lock_guard<std::mutex> lock(heroIdMutex);
-		Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
-		{
-			lock_guard<mutex> lock(heroMutex);
-			heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
-		}
-		//여기서 ID를 클라에게 보내주기
-		SC_PLAYER_PACKET p;
 
-		// 클라이언트에게 스레드 ID를 보내기 위한 작업
-		int player_id;
+    {
+        std::lock_guard<std::mutex> lock(heroIdMutex);
+        Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
+        {
+            lock_guard<mutex> lock(heroMutex);
+            heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
+        }
+        //여기서 ID를 클라에게 보내주기
 
-		player_id = HeroID;
-		++HeroID;
+        // 클라이언트에게 스레드 ID를 보내기 위한 작업
 
-		send(clientSocket, reinterpret_cast<char*>(&player_id), sizeof(player_id), 0);
-		cout << HeroID << endl;
-	}
-	//++HeroID;
-	//cout << LThreadId << endl;
-	//cout << heroes[0].ID << endl;
-
-	char recvBuffer[1000 + 1];
-	int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
-	if (recvLen == SOCKET_ERROR)
-	{
-
-		cout << "클라이언트와 연결이 끊김" << endl;
-		return;
-	}
-
-	recvBuffer[recvLen] = '\0';
-
-	cout << "Recv Data = " << recvBuffer << endl;
-	cout << "Recv Data len = " << recvLen << endl;
+        
+        if (heroes[HeroID].ID != -1 && heroes[HeroID].toggleID) { //id할당받고, 보내지 않았음 
+            send(clientsocketes[HeroID], reinterpret_cast<char*>(&heroes[HeroID].ID), sizeof(heroes[HeroID].ID), 0);
+            heroes[HeroID].toggleID = false; // 바로 토글끄기 
+        }
+        ++HeroID;
 
 
-	while (true)
-	{
-		//클라이언트에서 키입력 받기 고정길이 // 가변길이 방식
+    }
+    //++HeroID;
+    //cout << LThreadId << endl;
+    //cout << heroes[0].ID << endl;
 
-		char buf[100];
-		int size;
-		recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-		//std::cout << size << "바이트 받음" << std::endl;
-		int result = recv(clientSocket, buf, size, MSG_WAITALL);
-		if (result == SOCKET_ERROR)
-		{
+    char recvBuffer[1000 + 1];
+    int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
+    if (recvLen == SOCKET_ERROR)
+    {
 
-			cout << "클라이언트와 연결이 끊김" << endl;
-			return;
-		}
-		CS_PLAYER_PACKET* p = reinterpret_cast<CS_PLAYER_PACKET*>(buf);
+        cout << "클라이언트와 연결이 끊김" << endl;
+        return;
+    }
 
-		lock_guard<mutex> playerLock(player_m);
-		playerInput.push(p);
-	}
-	// 클라이언트 소켓 종료
-	SocketUtils::Close(clientSocket);
+    recvBuffer[recvLen] = '\0';
+
+    cout << "Recv Data = " << recvBuffer << endl;
+    cout << "Recv Data len = " << recvLen << endl;
+
+
+    while (true)
+    {
+        //클라이언트에서 키입력 받기 고정길이 // 가변길이 방식
+
+        char buf[100];
+        int size;
+        recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), MSG_WAITALL);
+        //std::cout << size << "바이트 받음" << std::endl;
+        int result = recv(clientSocket, buf, size, MSG_WAITALL);
+        if (result == SOCKET_ERROR)
+        {
+
+            cout << "클라이언트와 연결이 끊김" << endl;
+            return;
+        }
+        CS_PLAYER_PACKET* p = reinterpret_cast<CS_PLAYER_PACKET*>(buf);
+
+        lock_guard<mutex> playerLock(player_m);
+        playerInput.push(p);
+    }
+    // 클라이언트 소켓 종료
+    SocketUtils::Close(clientSocket);
 }
 
 ThreadManager threadManager;
 int main()
 {
-	SocketUtils::Init();
+    SocketUtils::Init();
 
-	SOCKET listenSocket = SocketUtils::CreateSocket();
-	if (listenSocket == INVALID_SOCKET)
-		return 0;
+    SOCKET listenSocket = SocketUtils::CreateSocket();
+    if (listenSocket == INVALID_SOCKET)
+        return 0;
 
-	SocketUtils::SetReuseAddress(listenSocket, true);
+    SocketUtils::SetReuseAddress(listenSocket, true);
 
-	if (SocketUtils::BindAnyAddress(listenSocket, 9000) == false)
-		return 0;
+    if (SocketUtils::BindAnyAddress(listenSocket, 9000) == false)
+        return 0;
 
-	if (SocketUtils::Listen(listenSocket, SOMAXCONN) == false)
-		return 0;
+    if (SocketUtils::Listen(listenSocket, SOMAXCONN) == false)
+        return 0;
 
-	cout << "서버 대기중.................." << endl;
-	SOCKADDR_IN clientAddr;
-	int addrLen = sizeof(clientAddr);
-	thread calculationThread(CalculateThread);
-	//thread MonsterThrea(MonsterThread);
+    cout << "서버 대기중.................." << endl;
+    SOCKADDR_IN clientAddr;
+    int addrLen = sizeof(clientAddr);
+    thread calculationThread(CalculateThread);
+    //thread MonsterThrea(MonsterThread);
 
-	// Accept
-	while (true)
-	{
-		SOCKET clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
-		if (clientSocket == INVALID_SOCKET)
-		{
-			return 0;
-		}
+    // Accept
+    while (true)
+    {
+        SOCKET clientSocket = ::accept(listenSocket, (SOCKADDR*)&clientAddr, &addrLen);
+        if (clientSocket == INVALID_SOCKET)
+        {
+            return 0;
+        }
 
-		SocketUtils::SetTcpNoDelay(clientSocket, true);
+        SocketUtils::SetTcpNoDelay(clientSocket, true);
 
-		clientsocketes.emplace_back(clientSocket);
-		cout << "Client Connected!" << endl;
+        clientsocketes.emplace_back(clientSocket);
+        cout << "Client Connected!" << endl;
 
-		// 클라이언트 별로 스레드 시작
-		threadManager.Launch([clientSocket]()
-			{
-				// 스레드에서 클라이언트 소켓 처리 코드를 실행
-				HandleClientSocket(clientSocket);
-			});
+        // 클라이언트 별로 스레드 시작
+        threadManager.Launch([clientSocket]()
+            {
+                // 스레드에서 클라이언트 소켓 처리 코드를 실행
+                HandleClientSocket(clientSocket);
+            });
 
-	}
-	threadManager.Join();
-	calculationThread.join();
-	//MonsterThrea.join();
+    }
+    threadManager.Join();
+    calculationThread.join();
+    //MonsterThrea.join();
 
 
-	SocketUtils::Close(listenSocket);
-	SocketUtils::Clear();
+    SocketUtils::Close(listenSocket);
+    SocketUtils::Clear();
 }
