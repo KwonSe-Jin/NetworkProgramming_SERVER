@@ -114,7 +114,7 @@ void Hero::Update()
 	}
 
 
-	if (PosZ < -10 && firstmap &&(readycount == 2) || g_catlive && firstmap) {
+	if (PosZ < -10 && firstmap &&(readycount == 3) || g_catlive && firstmap) {
 		if (ID == 0) {
 			PosX = -100;
 			PosZ = 0;

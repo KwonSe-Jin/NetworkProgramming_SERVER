@@ -101,7 +101,7 @@ bool NetworkManager::recvData() {
 	}
 				  break;
 	case SC_MONSTER: {
-		std::cout << size << "monster" << std::endl;
+		//std::cout << size << "monster" << std::endl;
 		SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
 		animalInfo(p);
 		break;
