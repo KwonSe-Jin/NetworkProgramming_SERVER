@@ -193,7 +193,20 @@ void processmonsterPacket(SC_MONSTER_PACKET& monster, int i) {
 
 	
 
-
+	if (g_catlive)
+	{
+		monster.animal_type = CAT;
+		monster.direction = AniCats[i]->Direction;
+		monster.hp = AniCats[i]->HP;
+	
+	}
+	else if (g_doglive)
+	{
+		monster.animal_type = DOG;
+		monster.direction = AniDogs[i]->Direction;
+		monster.hp = AniDogs[i]->HP;
+		
+	}
 
 	int d_Cat = 0;
 	int d_Dog = 0;
@@ -399,7 +412,7 @@ void CalculateThread()
             }
 
 		}
-		this_thread::sleep_for(0.1ms);
+		this_thread::sleep_for(0.5ms);
 		g_m.unlock();
 
 	}
@@ -407,15 +420,7 @@ void CalculateThread()
 std::mutex heroIdMutex;
 void HandleClientSocket(SOCKET clientSocket)
 {
-	//SC_PLAYER_PACKET p;
-
-	//// 클라이언트에게 스레드 ID를 보내기 위한 작업
-	//p.player_id = LThreadId;
-	//send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
-
-	// 나머지 클라이언트 소켓 처리 코드
-
-	// ?? h -> 공석 0번 
+	
 	{
 		std::lock_guard<std::mutex> lock(heroIdMutex);
 		Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
