@@ -36,7 +36,7 @@ Hero::Hero(int id) : ID{ id }
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
-	HP = 100;
+	HP = 1000;
 	is_q=false;
 
 	firstmap = true;

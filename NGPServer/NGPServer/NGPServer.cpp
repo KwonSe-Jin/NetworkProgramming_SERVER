@@ -64,12 +64,12 @@ void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 
 }
 
-void SC_MONSTER_Send(SOCKET clientSocket)
+void SC_MONSTER_Send(SC_MONSTER_PACKET& p, SOCKET clientSocket)
 {
-	monsters->packet_type = SC_MONSTER;
-	int size = sizeof(SC_MONSTER_PACKET) * 6;
+	p.packet_type = SC_MONSTER;
+	int size = sizeof(p);
 	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-	int result = send(clientSocket, reinterpret_cast<char*>(&monsters), sizeof(monsters), 0);
+	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 	if (result == SOCKET_ERROR) {
 		//std::cout << "Failed to send data" << std::endl;
 	}
@@ -96,7 +96,6 @@ void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
 		//std::cout << "Failed to send data" << std::endl;
 	}
 }
-mutex b_m;
 
 void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& responsePacket) {
 
@@ -190,17 +189,10 @@ void bulletcalculate(SC_BULLET_PACKET& scPacket, int i)
 
 
 
-void processmonsterPacket(Animal& ani) {
+void processmonsterPacket(SC_MONSTER_PACKET& monster, int i) {
 
-	monsters[ani.Index].packet_type = 2;
-	monsters[ani.Index].Monster_id = ani.Index;
-	if (g_catlive)
-		monsters[ani.Index].animal_type = CAT;
-	else if (g_doglive)
-		monsters[ani.Index].animal_type = DOG;
+	
 
-	monsters[ani.Index].direction = ani.Direction;
-	monsters[ani.Index].hp = ani.HP;
 
 
 	int d_Cat = 0;
@@ -241,11 +233,30 @@ void processmonsterPacket(Animal& ani) {
 
 		BearAndRoomCollision();
 	}
-	ani.update();
+	monster.packet_type = 2;
+	monster.Monster_id = i;
+	if (g_catlive)
+	{
+		monster.animal_type = CAT;
+		monster.direction = AniCats[i]->Direction;
+		monster.hp = AniCats[i]->HP;
+		AniCats[i]->update();
+		monster.x = AniCats[i]->PosX;
+		monster.y = AniCats[i]->PosY;
+		monster.z = AniCats[i]->PosZ;
+	}
+	else if (g_doglive)
+	{
+		monster.animal_type = DOG;
+		monster.direction = AniDogs[i]->Direction;
+		monster.hp = AniDogs[i]->HP;
+		AniDogs[i]->update();
+		monster.x = AniDogs[i]->PosX;
+		monster.y = AniDogs[i]->PosY;
+		monster.z = AniDogs[i]->PosZ;
+	}
 
-	monsters[ani.Index].x = ani.PosX;
-	monsters[ani.Index].y = ani.PosY;
-	monsters[ani.Index].z = ani.PosZ;
+
 
 }
 
@@ -295,25 +306,29 @@ void CalculateThread()
 		if ((heroes.size() && g_catlive) || (heroes.size() && g_doglive) || (heroes.size() && g_bearlive)) {
 			if (g_catlive)
 			{
-
-
-				for (int i = 0; i < 6; ++i) {
-					processmonsterPacket(*AniCats[i]);
-				}
-				for (int i = 0; i < heroes.size(); ++i) {
-					if (!heroes[i].is_q)
-						SC_MONSTER_Send(clientsocketes[i]);
+				SC_MONSTER_PACKET monster;
+				for (int i = 0; i < AniCats.size(); ++i)
+				{
+					processmonsterPacket(monster, i);
+					for (int j = 0; j < heroes.size(); ++j)
+					{
+						if (!heroes[j].is_q)
+							SC_MONSTER_Send(monster, clientsocketes[j]);
+					}
 				}
 			}
 
 			if (g_doglive)
 			{
-				for (int i = 0; i < 6; ++i) {
-					processmonsterPacket(*AniDogs[i]);
-				}
-				for (int i = 0; i < heroes.size(); ++i) {
-					if (!heroes[i].is_q)
-						SC_MONSTER_Send(clientsocketes[i]);
+				SC_MONSTER_PACKET monster;
+				for (int i = 0; i < AniDogs.size(); ++i)
+				{
+					processmonsterPacket(monster, i);
+					for (int j = 0; j < heroes.size(); ++j)
+					{
+						if (!heroes[j].is_q)
+							SC_MONSTER_Send(monster, clientsocketes[j]);
+					}
 				}
 			}
 
@@ -384,7 +399,7 @@ void CalculateThread()
             }
 
 		}
-		this_thread::sleep_for(1ms);
+		this_thread::sleep_for(0.1ms);
 		g_m.unlock();
 
 	}
@@ -447,7 +462,7 @@ void HandleClientSocket(SOCKET clientSocket)
 		int size;
 		recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 		//std::cout << size << "바이트 받음" << std::endl;
-		int result = recv(clientSocket, buf, size, 0);
+		int result = recv(clientSocket, buf, size, MSG_WAITALL);
 		if (result == SOCKET_ERROR)
 		{
 

@@ -139,18 +139,18 @@ void makeInfo(SC_PLAYER_PACKET* p)
 	hero[p->player_id].setInfo(p);
 }
 
-void animalInfo(SC_MONSTER_PACKET* p, int i)
+void animalInfo(SC_MONSTER_PACKET* p)
 {
 	// to_do 일단 캣으로!!
 	if (p->animal_type == CAT)
 	{
-		cats[i]->catinfo(p);
-		cats[i]->update();
+		cats[p->Monster_id]->catinfo(p);
+		cats[p->Monster_id]->update();
 	}
 	else if (p->animal_type == DOG)
 	{
-		dogs[i]->doginfo(p);
-		dogs[i]->update();
+		dogs[p->Monster_id]->doginfo(p);
+		dogs[p->Monster_id]->update();
 	}
 	else if (p->animal_type == BEAR)
 	{
@@ -170,7 +170,7 @@ void bulletInfo(SC_BULLET_PACKET* p)
 {
 	if (p->size > gun.size())
 		gun.push_back(new Gun{ p->dirx,p->diry, p->dirz });
-	cout << gun.size() << endl;
+	//cout << gun.size() << endl;
 	gun[p->id]->setInfo(p);
 }
 

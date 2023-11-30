@@ -92,31 +92,18 @@ bool NetworkManager::recvData() {
 	//std::cout << size << "????? ????" << std::endl;
 
 	recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-	recv(clientSocket, buf, size, 0);
+	recv(clientSocket, buf, size, MSG_WAITALL);
 
-	switch (buf[0]) {
+	switch (int(buf[0])) {
 	case SC_PLAYER: {
 		SC_PLAYER_PACKET* p = reinterpret_cast<SC_PLAYER_PACKET*>(buf);
 		makeInfo(p);
 	}
 				  break;
 	case SC_MONSTER: {
-		if (size == 32)
-		{
-			SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
-			int i = 0;
-			animalInfo(p, i);
-
-		}
-		else {
-			for (int i = 0; i < 6; ++i) {
-				char anibuf[32];
-				std::memcpy(&anibuf, &buf[i * 32], 32);
-				SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(anibuf);
-				animalInfo(p, i);
-
-			}
-		}
+		std::cout << size << "monster" << std::endl;
+		SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
+		animalInfo(p);
 		break;
 
 	}
