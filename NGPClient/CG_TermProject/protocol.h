@@ -11,7 +11,6 @@ enum AnimalNum
 	BEAR,
 };
 
-
 #pragma pack(push,1)
 struct SC_PLAYER_PACKET
 {
@@ -28,19 +27,6 @@ struct SC_PLAYER_PACKET
 		float z;
 
 	}Player_pos;
-
-	struct Player_key {
-		bool is_w;
-		bool is_a;
-		bool is_s;
-		bool is_d;
-		bool is_space;
-		bool is_bullet;
-		float dirx;
-		float diry;
-		float dirz;
-
-	}Player_key;
 
 	struct Player_light {
 		float R;
@@ -82,14 +68,6 @@ struct CS_PLAYER_PACKET
 	int player_hp;
 	bool status = true;
 	bool ready = false;
-
-	struct Player_pos {
-
-		float x = 0;
-		float y = 0;
-		float z = 0;
-
-	}Player_pos;
 
 	struct Player_key {
 		bool is_w = false;
