@@ -332,7 +332,7 @@ void draw() {
 			if (toggle1) {
 				cout << "toggle1 == " << toggle1 << endl;
 
-				gun.clear();
+				gun.erase(gun.begin(), gun.end());
 				toggle1=!toggle1;
 
 			}
@@ -352,7 +352,7 @@ void draw() {
 			if (toggle2) {
 				cout << "toggle2 == " << toggle2 << endl;
 
-				gun.clear();
+				gun.erase(gun.begin(), gun.end());
 				toggle2=!toggle2;
 			}
 			d_dead++;
