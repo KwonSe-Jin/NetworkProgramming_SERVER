@@ -11,8 +11,12 @@ vector<Hero> heroes;
 vector<SOCKET> clientsocketes;
 std::mutex g_m;
 queue<CS_PLAYER_PACKET*> playerInput;
+queue<SC_PLAYER_PACKET> playerqueue;
+queue<SC_MONSTER_PACKET> monsterqueue;
+queue<SC_BULLET_PACKET> bulletqueue;
 
 mutex player_m;
+mutex send_m;
 //전역 만든 것 
 int AnimalCnt = 0;
 extern int readycount = 0;
@@ -47,7 +51,6 @@ vector<Gun*> gun;
 
 vector <SC_BULLET_PACKET> bullet;
 SC_MONSTER_PACKET monsters[6];
-SC_MONSTER_PACKET BossBear;
 
 bool toggle1 = true;
 bool toggle2 = true;
@@ -75,17 +78,6 @@ void SC_MONSTER_Send(SC_MONSTER_PACKET& p, SOCKET clientSocket)
     }
 }
 
-void SC_BOSSBEAR_Send(SOCKET clientSocket)
-{
-    BossBear.packet_type = SC_MONSTER;
-    int size = sizeof(SC_MONSTER_PACKET);
-    send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
-    int result = send(clientSocket, reinterpret_cast<char*>(&BossBear), sizeof(BossBear), 0);
-    if (result == SOCKET_ERROR) {
-        //std::cout << "Failed to send data" << std::endl;
-    }
-}
-
 void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
 {
     p.packet_type = SC_BULLET;
@@ -97,46 +89,42 @@ void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
     }
 }
 
-void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket, SC_PLAYER_PACKET& responsePacket) {
+void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
+{
 
-    responsePacket.packet_type = SC_PLAYER;
-    responsePacket.player_id = csPacket.player_id;
-    responsePacket.status = csPacket.status;
-    responsePacket.ready = csPacket.ready;
-    heroes[responsePacket.player_id].VAngleX = csPacket.camera.VangleX;
-    heroes[responsePacket.player_id].VAngleY = csPacket.camera.VangleY;
+
+    heroes[csPacket.player_id].VAngleX = csPacket.camera.VangleX;
+    heroes[csPacket.player_id].VAngleY = csPacket.camera.VangleY;
     /*cout << heroes[scPacket.player_id ].VAngleX << endl;
     cout << heroes[scPacket.player_id ].VAngleY << endl;*/
 
-    if (responsePacket.status) {
+    if (csPacket.status) {
         if (csPacket.Player_key.is_w) {
-            heroes[responsePacket.player_id].ISW();
+            heroes[csPacket.player_id].ISW();
         }
         if (csPacket.Player_key.is_a) {
-            heroes[responsePacket.player_id].ISA();
+            heroes[csPacket.player_id].ISA();
         }
         if (csPacket.Player_key.is_s) {
-            heroes[responsePacket.player_id].ISS();
+            heroes[csPacket.player_id].ISS();
         }
         if (csPacket.Player_key.is_d) {
-            heroes[responsePacket.player_id].ISD();
+            heroes[csPacket.player_id].ISD();
         }
         if (csPacket.Player_key.is_q) {
             heroes[csPacket.player_id].isQuit();
         }
         if (csPacket.Player_key.is_bullet) {
             //cout << "총 생성" << endl;
-            gun.push_back(new Gun{ heroes[responsePacket.player_id].PosX, heroes[responsePacket.player_id].PosY + 0.5f ,heroes[responsePacket.player_id].PosZ
+            gun.push_back(new Gun{ heroes[csPacket.player_id].PosX, heroes[csPacket.player_id].PosY + 0.5f ,heroes[csPacket.player_id].PosZ
                ,csPacket.Player_key.dirx,csPacket.Player_key.diry,csPacket.Player_key.dirz });
             //cout << csPacket.Player_key.dirx << endl;
         }
         if (csPacket.ready) {
-            if (heroes[responsePacket.player_id]._readyflag == false)
-                heroes[responsePacket.player_id].ISR();
+            if (heroes[csPacket.player_id]._readyflag == false)
+                heroes[csPacket.player_id].ISR();
             cout << readycount << endl;
         }
-
-
         if (csPacket.Player_key.is_q) {
             heroes[csPacket.player_id].isQuit();
         }
@@ -163,10 +151,7 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
     scPacket.Player_light.G = heroes[scPacket.player_id].lightColorG;
     scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
 
-    /*   cout << "플레이어 좌표" << endl;
-       cout << scPacket.Player_pos.x << endl;
-       cout << scPacket.Player_pos.y << endl;
-       cout << scPacket.Player_pos.z << endl;*/
+
 }
 
 
@@ -270,11 +255,61 @@ void processmonsterPacket(SC_MONSTER_PACKET& monster, int i) {
         monster.y = AniDogs[i]->PosY;
         monster.z = AniDogs[i]->PosZ;
     }
-
-
-
 }
 
+void SendQueue()
+{
+    while (true)
+    {
+        send_m.lock();
+        if (heroes.size()) {
+            {
+                lock_guard<mutex> playerLock(player_m);
+                if (!playerqueue.empty())
+                {
+                    SC_PLAYER_PACKET p = playerqueue.front();
+                    playerqueue.pop();
+                    for (int j = 0; j < heroes.size(); ++j)
+                    {
+                        if (!heroes[j].is_q && heroes[j].toggleID == false) {
+                            SC_PLAYER_Send(p, clientsocketes[j]);
+                        }
+                    }
+                }
+            }
+
+            {
+                lock_guard<mutex> playerLock(player_m);
+                if (!bulletqueue.empty())
+                {
+                    SC_BULLET_PACKET p = bulletqueue.front();
+                    bulletqueue.pop();
+                    for (int j = 0; j < heroes.size(); ++j)
+                    {
+                        if (!heroes[j].is_q && heroes[j].toggleID == false)
+                            SC_BULLET_Send(p, clientsocketes[j]);
+                    }
+                }
+            }
+            {
+                lock_guard<mutex> playerLock(player_m);
+                if (!monsterqueue.empty())
+                {
+                    SC_MONSTER_PACKET p = monsterqueue.front();
+                    monsterqueue.pop();
+                    for (int j = 0; j < heroes.size(); ++j)
+                    {
+                        if (!heroes[j].is_q && heroes[j].toggleID == false)
+                            SC_MONSTER_Send(p, clientsocketes[j]);
+                    }
+                }
+            }
+
+        }
+        send_m.unlock();
+    }
+
+}
 
 mutex heroMutex;
 //Hero heroInstance;
@@ -298,7 +333,6 @@ void CalculateThread()
                 g_doglive = true;
                 g_bearlive = false;
                 if (toggle1) {
-                    cout << "toggle1 == " << toggle1 << endl;
                     gun.clear();
                     toggle1 = !toggle1;
                 }
@@ -309,14 +343,56 @@ void CalculateThread()
                 g_doglive = false;
                 g_bearlive = true;
                 if (toggle2) {
-                    cout << "toggle2 == " << toggle2 << endl;
                     gun.clear();
                     toggle2 = !toggle2;
                 }
 
             }
         }
+        if (heroes.size() && heroes.size() == HeroID)
+        {
+            SC_PLAYER_PACKET responsePacket;
+            SC_BULLET_PACKET bulletPacket;
+            player_m.lock();
+            if (!playerInput.empty()) {
+                CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
+                playerInput.pop();
+                processCSPlayerPacket(*playerInputPacket);
+            }
+            player_m.unlock();
 
+
+            for (int i = 0; i < heroes.size(); ++i)
+            {
+                if (!heroes[i].is_q) {
+                    heroes[i].Update();
+                }
+
+                Posandlight(responsePacket, i);
+                lock_guard<mutex> playerLock(player_m);
+                playerqueue.push(responsePacket);
+                /*for (int j = 0; j < heroes.size(); ++j)
+                {
+                    if (!heroes[j].is_q && heroes[j].toggleID == false) {
+                        SC_PLAYER_Send(responsePacket, clientsocketes[j]);
+                    }
+                }*/
+
+            }
+            for (int i = 0; i < gun.size(); ++i)
+            {
+                bulletcalculate(bulletPacket, i);
+                lock_guard<mutex> playerLock(player_m);
+                bulletqueue.push(bulletPacket);
+                /*for (int j = 0; j < heroes.size(); ++j)
+                {
+                    if (!heroes[j].is_q && heroes[j].toggleID == false)
+                        SC_BULLET_Send(bulletPacket, clientsocketes[j]);
+                }*/
+
+            }
+
+        }
 
         if ((heroes.size() && g_catlive) || (heroes.size() && g_doglive) || (heroes.size() && g_bearlive)) {
             if (g_catlive)
@@ -325,11 +401,13 @@ void CalculateThread()
                 for (int i = 0; i < AniCats.size(); ++i)
                 {
                     processmonsterPacket(monster, i);
-                    for (int j = 0; j < heroes.size(); ++j)
-                    {
-                        if (!heroes[j].is_q && heroes[j].toggleID==false)
-                            SC_MONSTER_Send(monster, clientsocketes[j]);
-                    }
+                    lock_guard<mutex> playerLock(player_m);
+                    monsterqueue.push(monster);
+                    //for (int j = 0; j < heroes.size(); ++j)
+                    //{
+                    //    if (!heroes[j].is_q && heroes[j].toggleID == false)
+                    //        SC_MONSTER_Send(monster, clientsocketes[j]);
+                    //}
                 }
             }
 
@@ -339,16 +417,20 @@ void CalculateThread()
                 for (int i = 0; i < AniDogs.size(); ++i)
                 {
                     processmonsterPacket(monster, i);
-                    for (int j = 0; j < heroes.size(); ++j)
+                    lock_guard<mutex> playerLock(player_m);
+                    monsterqueue.push(monster);
+
+                    /*for (int j = 0; j < heroes.size(); ++j)
                     {
                         if (!heroes[j].is_q && heroes[j].toggleID == false)
                             SC_MONSTER_Send(monster, clientsocketes[j]);
-                    }
+                    }*/
                 }
             }
 
             if (g_bearlive)
             {
+                SC_MONSTER_PACKET BossBear;
                 BossBear.packet_type = 2;
                 BossBear.animal_type = BEAR;
 
@@ -365,56 +447,19 @@ void CalculateThread()
                 BossBear.x = AniBear.PosX;
                 BossBear.y = AniBear.PosY;
                 BossBear.z = AniBear.PosZ;
-                for (int i = 0; i < heroes.size(); ++i) {
+                lock_guard<mutex> playerLock(player_m);
+                monsterqueue.push(BossBear);
+
+                /*for (int i = 0; i < heroes.size(); ++i) {
                     if (!heroes[i].is_q && heroes[i].toggleID == false)
                         SC_BOSSBEAR_Send(clientsocketes[i]);
-                }
+                }*/
             }
 
         }
 
-        if (heroes.size() && heroes.size() == HeroID)
-        {
-            SC_PLAYER_PACKET responsePacket;
-            SC_BULLET_PACKET bulletPacket;
-            player_m.lock();
-            if (!playerInput.empty()) {
-                CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
-                playerInput.pop();
-                processCSPlayerPacket(*playerInputPacket, responsePacket);
-            }
-            player_m.unlock();
 
-            for (int i = 0; i < gun.size(); ++i)
-            {
-                bulletcalculate(bulletPacket, i);
-                for (int j = 0; j < heroes.size(); ++j)
-                {
-                    if (!heroes[j].is_q && heroes[j].toggleID == false)
-                        SC_BULLET_Send(bulletPacket, clientsocketes[j]);
-                }
-            }
-
-            for (int i = 0; i < heroes.size(); ++i)
-            {
-                if (!heroes[i].is_q) {
-                    heroes[i].Update();
-                }
-
-
-
-                Posandlight(responsePacket, i);
-                for (int j = 0; j < heroes.size(); ++j)
-                {
-                    if (!heroes[j].is_q && heroes[j].toggleID == false) {
-                        SC_PLAYER_Send(responsePacket, clientsocketes[j]);
-                    }
-                }
-
-            }
-
-        }
-        this_thread::sleep_for(0.5ms);
+        this_thread::sleep_for(0.1ms);
 
         g_m.unlock();
     }
@@ -436,7 +481,7 @@ void HandleClientSocket(SOCKET clientSocket)
 
         // 클라이언트에게 스레드 ID를 보내기 위한 작업
 
-        
+
         if (heroes[HeroID].ID != -1 && heroes[HeroID].toggleID) { //id할당받고, 보내지 않았음 
             send(clientsocketes[HeroID], reinterpret_cast<char*>(&heroes[HeroID].ID), sizeof(heroes[HeroID].ID), 0);
             heroes[HeroID].toggleID = false; // 바로 토글끄기 
@@ -509,6 +554,7 @@ int main()
     SOCKADDR_IN clientAddr;
     int addrLen = sizeof(clientAddr);
     thread calculationThread(CalculateThread);
+    thread SendThread(SendQueue);
     //thread MonsterThrea(MonsterThread);
 
     // Accept
@@ -536,7 +582,7 @@ int main()
     threadManager.Join();
     calculationThread.join();
     //MonsterThrea.join();
-
+    SendThread.join();
 
     SocketUtils::Close(listenSocket);
     SocketUtils::Clear();

@@ -136,6 +136,7 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 			//networkManager.SendIdlePlayer();
 
 			networkManager.recvData();
+			//this_thread::sleep_for(0.5ms);
 		}
 		});
 

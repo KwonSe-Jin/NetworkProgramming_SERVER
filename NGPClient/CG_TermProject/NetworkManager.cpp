@@ -93,7 +93,6 @@ bool NetworkManager::recvData() {
 
 	recv(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), MSG_WAITALL);
 	recv(clientSocket, buf, size, MSG_WAITALL);
-
 	switch (int(buf[0])) {
 	case SC_PLAYER: {
 		SC_PLAYER_PACKET* p = reinterpret_cast<SC_PLAYER_PACKET*>(buf);
@@ -117,7 +116,7 @@ bool NetworkManager::recvData() {
 	}
 				  break;
 	default:
-		std::cout << "error" << endl;
+		std::cout << (int)buf[0] <<"error" << endl;
 		break;
 	}
 	return false;

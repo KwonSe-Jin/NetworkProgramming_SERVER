@@ -87,12 +87,12 @@ int DogCnt = 0;
 
 
 vector<Particle*> particle{ new Particle,new Particle, new Particle, new Particle, new Particle
-						,new Particle, new Particle,new Particle,new Particle,new Particle,
-						 new Particle,new Particle, new Particle, new Particle, new Particle
-						,new Particle, new Particle,new Particle,new Particle,new Particle,new Particle,new Particle, new Particle, new Particle, new Particle
-						,new Particle, new Particle,new Particle,new Particle,new Particle,
-						 new Particle,new Particle, new Particle, new Particle, new Particle
-						,new Particle, new Particle,new Particle,new Particle,new Particle };
+                  ,new Particle, new Particle,new Particle,new Particle,new Particle,
+                   new Particle,new Particle, new Particle, new Particle, new Particle
+                  ,new Particle, new Particle,new Particle,new Particle,new Particle,new Particle,new Particle, new Particle, new Particle, new Particle
+                  ,new Particle, new Particle,new Particle,new Particle,new Particle,
+                   new Particle,new Particle, new Particle, new Particle, new Particle
+                  ,new Particle, new Particle,new Particle,new Particle,new Particle };
 
 vector<Cat*> cats{ new Cat, new Cat, new Cat, new Cat, new Cat, new Cat };
 vector<Dog*> dogs{ new Dog, new Dog, new Dog, new Dog, new Dog, new Dog };
@@ -136,48 +136,48 @@ int gun_size;
 
 void makeInfo(SC_PLAYER_PACKET* p)
 {
-	hero[p->player_id].setInfo(p);
+    hero[p->player_id].setInfo(p);
 }
 
 void animalInfo(SC_MONSTER_PACKET* p)
 {
-	// to_do 일단 캣으로!!
-	if (p->animal_type == CAT)
-	{
-		cats[p->Monster_id]->catinfo(p);
-		cats[p->Monster_id]->update();
-	}
-	else if (p->animal_type == DOG)
-	{
-		dogs[p->Monster_id]->doginfo(p);
-		dogs[p->Monster_id]->update();
-	}
-	else if (p->animal_type == BEAR)
-	{
-		bear.bearinfo(p);
-		bear.update();
-	}
+    // to_do 일단 캣으로!!
+    if (p->animal_type == CAT)
+    {
+        cats[p->Monster_id]->catinfo(p);
+        cats[p->Monster_id]->update();
+    }
+    else if (p->animal_type == DOG)
+    {
+        dogs[p->Monster_id]->doginfo(p);
+        dogs[p->Monster_id]->update();
+    }
+    else if (p->animal_type == BEAR)
+    {
+        bear.bearinfo(p);
+        bear.update();
+    }
 
 }
 
 void gun_clear()
 {
-	gun.clear();
+    gun.clear();
 }
 
 
 void bulletInfo(SC_BULLET_PACKET* p)
 {
-	if (p->size > gun.size())
-		gun.push_back(new Gun{ p->dirx,p->diry, p->dirz });
-	//cout << gun.size() << endl;
-	gun[p->id]->setInfo(p);
+    if (p->size > gun.size())
+        gun.push_back(new Gun{ p->dirx,p->diry, p->dirz });
+    //cout << gun.size() << endl;
+    gun[p->id]->setInfo(p);
 }
 
 
 void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz)
 {
-	hero[global_ID].get_Info(x, y, status, dirx, diry, dirz);
+    hero[global_ID].get_Info(x, y, status, dirx, diry, dirz);
 }
 
 int t_count;
@@ -185,309 +185,309 @@ int t_count;
 GLvoid drawScene()
 {
 
-	GLuint SelectColor = glGetUniformLocation(shaderID, "SelectColor");
-	glUniform1i(SelectColor, 1);
+    GLuint SelectColor = glGetUniformLocation(shaderID, "SelectColor");
+    glUniform1i(SelectColor, 1);
 
-	if (hero[global_ID].lightColorR < 0.35)
-		glClearColor(0.f, 0.f, 0.f, 1.0f);
-	else
-		glClearColor(1.0, 1.0, 1.0, 1.0f);
+    if (hero[global_ID].lightColorR < 0.35)
+        glClearColor(0.f, 0.f, 0.f, 1.0f);
+    else
+        glClearColor(1.0, 1.0, 1.0, 1.0f);
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_DITHER);
-	//glEnable(GL_CULL_FACE);  
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_POLYGON_SMOOTH);
-	glShadeModel(GL_SMOOTH);
-	//glEnable(GL_CULL_FACE);
-	//glFrontFace(GL_CW);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DITHER);
+    //glEnable(GL_CULL_FACE);  
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_POLYGON_SMOOTH);
+    glShadeModel(GL_SMOOTH);
+    //glEnable(GL_CULL_FACE);
+    //glFrontFace(GL_CW);
 
-	//glm::mat4 projection;
+    //glm::mat4 projection;
 
-	hero[global_ID].cameraProjection();
-	hero[global_ID].camera();
-	draw();
-	hero[global_ID].DrawHP();
-	hero[global_ID].cameraProjection2();
-	//hero.TopView();
-	//draw();
-	glutSwapBuffers();
+    hero[global_ID].cameraProjection();
+    hero[global_ID].camera();
+    draw();
+    hero[global_ID].DrawHP();
+    hero[global_ID].cameraProjection2();
+    //hero.TopView();
+    //draw();
+    glutSwapBuffers();
 };
 
 
 void draw() {
 
-	if (hero[global_ID].HP <= 0) {
-		herodead = true;
-	}
+    if (hero[global_ID].HP <= 0) {
+        herodead = true;
+    }
 
-	///재시작 !! 
-	if (RestartPress) {
-		Restartinit();
-		RestartPress = false;
-	}
+    ///재시작 !! 
+    if (RestartPress) {
+        Restartinit();
+        RestartPress = false;
+    }
 
-	if (beardead) {
-		hero[global_ID].lightColorR = 1.0f;
-		hero[global_ID].lightColorG = 1.0f;
-		hero[global_ID].lightColorB = 1.0f;
-	}
-	if (herodead) {
-		hero[global_ID].lightColorR = 0.5f;
-		hero[global_ID].lightColorG = 0.5f;
-		hero[global_ID].lightColorB = 0.5f;
+    if (beardead) {
+        hero[global_ID].lightColorR = 1.0f;
+        hero[global_ID].lightColorG = 1.0f;
+        hero[global_ID].lightColorB = 1.0f;
+    }
+    if (herodead) {
+        hero[global_ID].lightColorR = 0.5f;
+        hero[global_ID].lightColorG = 0.5f;
+        hero[global_ID].lightColorB = 0.5f;
 
-	}
+    }
 
-	unsigned int lightPosLocation = glGetUniformLocation(shaderID, "lightPos");      //--- lightPos 
-	glm::vec4 tempv(lightPosX, lightPosY, lightPosZ, 1);
-	glm::mat4 Lightrotate = glm::rotate(glm::mat4(1.f), glm::radians(lightRot), glm::vec3(0, 1, 0));
-	tempv = Lightrotate * tempv;
-	glUniform3f(lightPosLocation, tempv.x, tempv.y, tempv.z);
-	unsigned int lightColorLocation = glGetUniformLocation(shaderID, "lightColor");   //--- lightColor 
-	glUniform3f(lightColorLocation, hero[global_ID].lightColorR, hero[global_ID].lightColorG, hero[global_ID].lightColorB);
-	unsigned int aColor = glGetUniformLocation(shaderID, "objectColor");   //--- object Color
-	glUniform4f(aColor, 1, 1., 1., 1.);
+    unsigned int lightPosLocation = glGetUniformLocation(shaderID, "lightPos");      //--- lightPos 
+    glm::vec4 tempv(lightPosX, lightPosY, lightPosZ, 1);
+    glm::mat4 Lightrotate = glm::rotate(glm::mat4(1.f), glm::radians(lightRot), glm::vec3(0, 1, 0));
+    tempv = Lightrotate * tempv;
+    glUniform3f(lightPosLocation, tempv.x, tempv.y, tempv.z);
+    unsigned int lightColorLocation = glGetUniformLocation(shaderID, "lightColor");   //--- lightColor 
+    glUniform3f(lightColorLocation, hero[global_ID].lightColorR, hero[global_ID].lightColorG, hero[global_ID].lightColorB);
+    unsigned int aColor = glGetUniformLocation(shaderID, "objectColor");   //--- object Color
+    glUniform4f(aColor, 1, 1., 1., 1.);
 
-	world.Draw();
+    world.Draw();
 
-	glEnable(GL_BLEND); //투명 객체 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
-	for (int i = 0; i < 400; ++i) {
-		tree[i].Draw();
-		tree[i].Update();
-	}
+    glEnable(GL_BLEND); //투명 객체 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-	for (int i = 0; i < 600; ++i) {
-		grass[i].Draw();
-		grass[i].Update();
-	}
-
-	glDisable(GL_BLEND);
+    for (int i = 0; i < 400; ++i) {
+        tree[i].Draw();
+        tree[i].Update();
+    }
 
 
-	if (catdead == 6) {
-		catopen = true;
-		dogopen = false;
-	}
+    for (int i = 0; i < 600; ++i) {
+        grass[i].Draw();
+        grass[i].Update();
+    }
+
+    glDisable(GL_BLEND);
 
 
-	if (dogdead == 6) {
-		catopen = false;
-		dogopen = true;
-	}
+    if (catdead == 6) {
+        catopen = true;
+        dogopen = false;
+    }
 
 
-	catRoom.Draw();
-	catRoom.Update();
-	dogRoom.Draw();
-	dogRoom.Update();
-	bearRoom.Draw();
-	bearRoom.Update();
-
-	castle.Draw();
-	castle.Update();
-
-	Catleft.Draw();
-	Catleft.Update();
-	Catright.Draw();
-	Catright.Update();
-
-	Dogleft.Draw();
-	Dogleft.Update();
-	Dogright.Draw();
-	Dogright.Update();
+    if (dogdead == 6) {
+        catopen = false;
+        dogopen = true;
+    }
 
 
-	GLuint selectColorLocation = glGetUniformLocation(shaderID, "selectColor");
-	glUniform1i(selectColorLocation, 0);
+    catRoom.Draw();
+    catRoom.Update();
+    dogRoom.Draw();
+    dogRoom.Update();
+    bearRoom.Draw();
+    bearRoom.Update();
 
-	Dogopen.Draw();
-	Dogopen.Update();
-	Catopen.Draw();
-	Catopen.Update();
+    castle.Draw();
+    castle.Update();
 
-	crown.Draw();
-	crown.Update();
+    Catleft.Draw();
+    Catleft.Update();
+    Catright.Draw();
+    Catright.Update();
 
-
-
-
-	int c_dead = 0;
-
-	for (int i = 0; i < cats.size(); ++i) {
-		if (cats[i]->HP > 0)
-		{
-			cats[i]->draw();
-		}
-		else {
-			++c_dead;
-		}
-		if (c_dead == 6) {
-			catdead = 6;
-			if (toggle1) {
-				cout << "toggle1 == " << toggle1 << endl;
-
-				gun.clear();
-				toggle1=!toggle1;
-
-			}
-			c_dead++;
-		}
-	}
-	int d_dead = 0;
-	for (int i = 0; i < dogs.size(); ++i) {
-		if (dogs[i]->HP > 0) {
-			dogs[i]->draw();
-		}
-		else {
-			++d_dead;
-		}
-		if (d_dead == 6) {
-			dogdead = 6;
-			if (toggle2) {
-				cout << "toggle2 == " << toggle2 << endl;
-
-				gun.clear();
-				toggle2=!toggle2;
-			}
-			d_dead++;
-		}
-	}
-
-	if (BearLife) {
-		if (bear.HP > 0)
-			bear.draw();
-	}
-
-	if (bear.HP <= 0) {
-		beardead = true;
-	}
-
-	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
-	{
-		hero[i].Update();
-	}
+    Dogleft.Draw();
+    Dogleft.Update();
+    Dogright.Draw();
+    Dogright.Update();
 
 
-	hero[global_ID].Update();
-	// to_do 내가 죽었는데 다른 사람 플레이어가 안보임! 
-	for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
-	{
-		if (i != global_ID && hero[i].Hero_ID != -1 && hero[i].status) {
-			hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
-		}
-	}
+    GLuint selectColorLocation = glGetUniformLocation(shaderID, "selectColor");
+    glUniform1i(selectColorLocation, 0);
+
+    Dogopen.Draw();
+    Dogopen.Update();
+    Catopen.Draw();
+    Catopen.Update();
+
+    crown.Draw();
+    crown.Update();
 
 
 
-	for (Gun*& gunbullet : gun) {
-		gunbullet->Update();
-		if (gunbullet->status)
-			gunbullet->Draw();
 
-	}
+    int c_dead = 0;
 
-	glBindVertexArray(HeroHPVAO);
-	aColor = glGetUniformLocation(shaderID, "objectColor");
-	glUniform4f(aColor, 1.0, 0.0, 0., 1);
+    for (int i = 0; i < cats.size(); ++i) {
+        if (cats[i]->HP > 0)
+        {
+            cats[i]->draw();
+        }
+        else {
+            ++c_dead;
+        }
+        if (c_dead == 6) {
+            catdead = 6;
+            if (toggle1) {
+                cout << "toggle1 == " << toggle1 << endl;
+
+                gun.erase(gun.begin(), gun.end());
+                toggle1 = !toggle1;
+
+            }
+            c_dead++;
+        }
+    }
+    int d_dead = 0;
+    for (int i = 0; i < dogs.size(); ++i) {
+        if (dogs[i]->HP > 0) {
+            dogs[i]->draw();
+        }
+        else {
+            ++d_dead;
+        }
+        if (d_dead == 6) {
+            dogdead = 6;
+            if (toggle2) {
+                cout << "toggle2 == " << toggle2 << endl;
+
+                gun.erase(gun.begin(), gun.end());
+                toggle2 = !toggle2;
+            }
+            d_dead++;
+        }
+    }
+
+    if (BearLife) {
+        if (bear.HP > 0)
+            bear.draw();
+    }
+
+    if (bear.HP <= 0) {
+        beardead = true;
+    }
+
+    for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
+    {
+        hero[i].Update();
+    }
+
+
+    hero[global_ID].Update();
+    // to_do 내가 죽었는데 다른 사람 플레이어가 안보임! 
+    for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
+    {
+        if (i != global_ID && hero[i].Hero_ID != -1 && hero[i].status) {
+            hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
+        }
+    }
+
+
+
+    for (Gun*& gunbullet : gun) {
+        gunbullet->Update();
+        if (gunbullet->status)
+            gunbullet->Draw();
+
+    }
+
+    glBindVertexArray(HeroHPVAO);
+    aColor = glGetUniformLocation(shaderID, "objectColor");
+    glUniform4f(aColor, 1.0, 0.0, 0., 1);
 
 }
 
 void Restartinit()
 {
-	playSound.stopBGM();
-	TermGunDir = { 0,0,0 };
-	cameraPos = { 0,0,0 };
-	catdead = 0;
-	dogdead = 0;
-	beardead = 0;
-	HerogetHP = 10;
-	lightPosX = 0.0;
-	lightPosY = 30.0;
-	lightPosZ = 0.0;
-	lightcolorN = 0;
-	lightRot = 0;
+    playSound.stopBGM();
+    TermGunDir = { 0,0,0 };
+    cameraPos = { 0,0,0 };
+    catdead = 0;
+    dogdead = 0;
+    beardead = 0;
+    HerogetHP = 10;
+    lightPosX = 0.0;
+    lightPosY = 30.0;
+    lightPosZ = 0.0;
+    lightcolorN = 0;
+    lightRot = 0;
 
-	isParticle = false;
-	isBullet = false;
-	openingCat = 0;
-	openingDog = 0;
-	i = 0;
-	DogCnt = 0;
-	CatCnt = 0;
+    isParticle = false;
+    isBullet = false;
+    openingCat = 0;
+    openingDog = 0;
+    i = 0;
+    DogCnt = 0;
+    CatCnt = 0;
 
-	// cat 초기화 
-	for (int i = 0; i < cats.size(); ++i) {
-		cats[i]->initCat();
-		cats[i]->Index = CatCnt;
-		++CatCnt;
-	}
+    // cat 초기화 
+    for (int i = 0; i < cats.size(); ++i) {
+        cats[i]->initCat();
+        cats[i]->Index = CatCnt;
+        ++CatCnt;
+    }
 
-	if (cats.size() != 6)
-	{
-		while (cats.size() < 6)
-		{
-			cats.emplace_back(new Cat());
-		}
+    if (cats.size() != 6)
+    {
+        while (cats.size() < 6)
+        {
+            cats.emplace_back(new Cat());
+        }
 
-	}
-	// 강아지 초기화 
+    }
+    // 강아지 초기화 
 
-	for (int i = 0; i < dogs.size(); ++i) {
-		dogs[i]->initDog();
-		dogs[i]->Index = DogCnt;
-		++DogCnt;
-	}
+    for (int i = 0; i < dogs.size(); ++i) {
+        dogs[i]->initDog();
+        dogs[i]->Index = DogCnt;
+        ++DogCnt;
+    }
 
-	if (dogs.size() != 6)
-	{
-		while (dogs.size() < 6)
-		{
-			dogs.emplace_back(new Dog());
-		}
-	}
+    if (dogs.size() != 6)
+    {
+        while (dogs.size() < 6)
+        {
+            dogs.emplace_back(new Dog());
+        }
+    }
 
-	//곰 초기화
-	bear.InitBear();
-	BearLife = true;
+    //곰 초기화
+    bear.InitBear();
+    BearLife = true;
 
-	//주인공 초기화 
+    //주인공 초기화 
 
-	catlive = false;
-	doglive = false;
-	bearlive = false;
+    catlive = false;
+    doglive = false;
+    bearlive = false;
 
-	herodead = false;
+    herodead = false;
 
-	catopen = true;
-	dogopen = true;
+    catopen = true;
+    dogopen = true;
 
-	HeroLocationX = 0;
-	HeroLocationZ = 0;
-	DogCnt = 0;
-	CatCnt = 0;
+    HeroLocationX = 0;
+    HeroLocationZ = 0;
+    DogCnt = 0;
+    CatCnt = 0;
 
-	for (int i = 0; i < AnimCnt; ++i)
-	{
-		catattack[i].initCatAttack();
-	}
-	for (int i = 0; i < AnimCnt; ++i)
-	{
-		dogattack[i].initDogAttack();
-	}
-	bearattack.initBearAttack();
-	bool jumpUp = true;
+    for (int i = 0; i < AnimCnt; ++i)
+    {
+        catattack[i].initCatAttack();
+    }
+    for (int i = 0; i < AnimCnt; ++i)
+    {
+        dogattack[i].initDogAttack();
+    }
+    bearattack.initBearAttack();
+    bool jumpUp = true;
 
-	hero[global_ID].initHero();
+    hero[global_ID].initHero();
 
 
-	///왕관 초기화
-	crown.initCrown();
+    ///왕관 초기화
+    crown.initCrown();
 
 
 
