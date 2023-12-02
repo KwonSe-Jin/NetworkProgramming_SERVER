@@ -19,6 +19,10 @@ GLvoid KeyboardUP(unsigned char key, int x, int y)
 	case 'D':
 		isD = false;
 		break;
+	case 'r':
+	case 'R':
+		isR = false;
+		break;
 	}
 }
 

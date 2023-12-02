@@ -137,6 +137,22 @@ int gun_size;
 void makeInfo(SC_PLAYER_PACKET* p)
 {
 	hero[p->player_id].setInfo(p);
+	if (hero[global_ID].ready == true && isR == true) {
+		cout << "================" << endl;
+		cout << "My id : " << global_ID << endl;
+
+		for (int i = 0; i < 3; i++)
+		{
+			if (i != global_ID) {
+				if (hero[i].ready == true)
+					cout << "player" << i << ": ready" << endl;
+			}
+		}
+		cout << "================" << endl;
+		//this_thread::sleep_for(0.5ms);
+	}
+	isR = false;
+
 }
 
 void animalInfo(SC_MONSTER_PACKET* p)

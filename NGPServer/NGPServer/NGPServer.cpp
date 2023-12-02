@@ -151,8 +151,10 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 	scPacket.Player_light.G = heroes[scPacket.player_id].lightColorG;
 	scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
 
-
+	scPacket.ready = heroes[scPacket.player_id]._readyflag;
+	
 }
+
 
 
 void bulletcalculate(SC_BULLET_PACKET& scPacket, int i)

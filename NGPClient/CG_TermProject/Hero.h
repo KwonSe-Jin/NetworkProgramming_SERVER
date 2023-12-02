@@ -62,7 +62,7 @@ class Hero
 public:
 	bool status;
 	int HP;
-
+	bool ready = false;
 	int Hero_ID = -1;
 	float lightColorR = 1.0f;
 	float lightColorG = 1.0f;

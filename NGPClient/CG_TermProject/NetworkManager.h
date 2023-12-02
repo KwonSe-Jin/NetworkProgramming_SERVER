@@ -12,7 +12,7 @@
 using namespace std;
 #include "protocol.h"
 #include "Header.h"
-extern bool isW, isA, isS, isD;
+extern bool isW, isA, isS, isD, isR;
 extern bool isBullet;
 
 //#define serverIP "192.168.121.55"

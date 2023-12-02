@@ -1,5 +1,5 @@
 #include "keyboard.h"
-bool isW, isA, isS, isD;
+bool isW, isA, isS, isD, isR;
 bool isJump;
 
 extern bool RestartPress ;
@@ -59,6 +59,7 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 	case 'r':
 	case 'R':
 		p.ready = true;
+		isR = true;
 		break;
 	/*case 'z':
 	case 'Z':

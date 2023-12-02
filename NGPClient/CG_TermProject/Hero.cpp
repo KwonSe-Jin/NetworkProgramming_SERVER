@@ -373,7 +373,8 @@ void Hero::setInfo(SC_PLAYER_PACKET* p)
 	lightColorR = p->Player_light.R;
 	lightColorG = p->Player_light.G;
 	lightColorB = p->Player_light.B;
-	
+	ready = p->ready;
+
 
 
 

@@ -75,7 +75,7 @@ extern glm::vec3 cameraPos;
 
 extern int BulletLimit;
 
-extern bool isW, isA, isS, isD;
+extern bool isW, isA, isS, isD, isR;
 extern bool isJump;
 extern bool jumpUp;
 
