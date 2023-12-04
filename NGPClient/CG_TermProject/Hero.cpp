@@ -229,7 +229,7 @@ float Hero::getFront()
 	return PosZ + 0.12f;
 }
 
-void Hero::get_Info(float* x, float* y, bool* status, float* dirx, float *diry, float *dirz)
+void Hero::get_Info(float* x, float* y, bool* status, float* dirx, float *diry, float *dirz, string * name)
 {
 	*x = VAngleX;
 	*y = VAngleY;
@@ -240,6 +240,7 @@ void Hero::get_Info(float* x, float* y, bool* status, float* dirx, float *diry, 
 	*dirx = TermGunDir.x;
 	*diry = TermGunDir.y;
 	*dirz = TermGunDir.z;
+	*name = nickname;
 
 }
 
@@ -374,7 +375,7 @@ void Hero::setInfo(SC_PLAYER_PACKET* p)
 	lightColorG = p->Player_light.G;
 	lightColorB = p->Player_light.B;
 	ready = p->ready;
-
+	nickname = p->nickname;
 
 
 

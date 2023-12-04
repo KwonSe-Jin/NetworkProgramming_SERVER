@@ -215,7 +215,7 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 	else {
 		scPacket.status = false;
 	}
-
+	scPacket.nickname = heroes[scPacket.player_id].nickname;
 	scPacket.Player_pos.x = heroes[scPacket.player_id].PosX;
 	scPacket.Player_pos.y = heroes[scPacket.player_id].PosY;
 	scPacket.Player_pos.z = heroes[scPacket.player_id].PosZ;
@@ -578,6 +578,7 @@ void HandleClientSocket(SOCKET clientSocket)
 	}
 
 	recvBuffer[recvLen] = '\0';
+	heroes[HeroID - 1].nickname = recvBuffer;
 
 	cout << "Recv Data = " << recvBuffer << endl;
 	cout << "Recv Data len = " << recvLen << endl;

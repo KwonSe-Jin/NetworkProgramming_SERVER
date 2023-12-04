@@ -33,7 +33,6 @@ class Hero
 	float VAngleX=0;
 	float VAngleY=0;
 
-
 	float cameraJump{};
 
 	glm::vec3 TermGunDir{0,0,0};
@@ -59,6 +58,8 @@ class Hero
 public:
 	bool status;
 	int HP;
+	string nickname;
+
 	bool ready = false;
 	int Hero_ID = -1;
 	float lightColorR = 1.0f;
@@ -80,7 +81,8 @@ public:
 	float getRight();
 	float getBehind();
 	float getFront();
-	void get_Info(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz);
+	void get_Info(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz, string* name);
+	
 
 	
 	friend void HeroVSDog();

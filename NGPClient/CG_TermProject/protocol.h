@@ -20,6 +20,7 @@ struct SC_PLAYER_PACKET
 	int player_hp;
 	bool status = true;
 	bool ready = false;
+	string nickname;
 
 	struct Player_pos {
 
@@ -69,6 +70,7 @@ struct CS_PLAYER_PACKET
 	int player_hp;
 	bool status = true;
 	bool ready = false;
+	string nickname;
 
 	struct Player_key {
 		bool is_p = false;

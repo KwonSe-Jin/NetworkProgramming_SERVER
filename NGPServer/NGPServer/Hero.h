@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Attack.h"
+#include <string>
 
 class Hero
 {
@@ -22,6 +23,7 @@ public:
 	bool bearlive;
 	bool herodead;
 
+	std::string nickname;
 	int ID;
 	int HP;
 	float PosX;

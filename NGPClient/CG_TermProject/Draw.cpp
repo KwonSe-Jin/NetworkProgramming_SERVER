@@ -142,6 +142,7 @@ struct Score
 {
     int id;
     int score;
+    string name;
 };
 
 float CatEndPosX;
@@ -221,9 +222,9 @@ void bulletInfo(SC_BULLET_PACKET* p)
 }
 
 
-void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz)
+void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz, string * name)
 {
-    hero[global_ID].get_Info(x, y, status, dirx, diry, dirz);
+    hero[global_ID].get_Info(x, y, status, dirx, diry, dirz, name);
 }
 
 int t_count;
@@ -467,8 +468,7 @@ void draw() {
                 temp = 260;
             else
                 temp = 0;
-
-            Score s = { i,temp };
+            Score s = { i,temp, hero[i].nickname };
             scorevec.push_back(s);
         }
         std::sort(scorevec.begin(), scorevec.end(), [](const Score& a, const Score& b) {
@@ -479,7 +479,7 @@ void draw() {
         {
             if (i == 0)
                 cout << "================" << endl;
-            cout << "Rank" << i + 1 << " : player " << scorevec[i].id << endl;
+            cout << "Rank" << i + 1 << " : " << scorevec[i].name << " player " << scorevec[i].id << endl;
             cout << "Score : " << scorevec[i].score << endl;
             if (i == 2)
                 cout << "================" << endl;

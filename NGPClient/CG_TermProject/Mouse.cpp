@@ -1,7 +1,7 @@
 #include "Mouse.h"
 #include "Sound.h"
 extern Sound playSound;
-void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz);
+void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz, string* name);
 
 extern NetworkManager networkManager;
 
@@ -24,8 +24,8 @@ GLvoid Mouse(int button, int state, int x, int y) {
 			is_ballfire = true;
 			//cout << ball_count << endl;
 			CS_PLAYER_PACKET p;
-			get_vangleandStatus(&(p.camera.VangleX), &(p.camera.VangleY), &(p.status), 
-				&(p.Player_key.dirx), &(p.Player_key.diry), &(p.Player_key.dirz));
+			get_vangleandStatus(&(p.camera.VangleX), &(p.camera.VangleY), &(p.status),
+				&(p.Player_key.dirx), &(p.Player_key.diry), &(p.Player_key.dirz), &(p.nickname));
 			p.player_id = global_ID;
 			p.Player_key.is_bullet = true;
 			if (p.status) {

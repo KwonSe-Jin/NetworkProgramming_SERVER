@@ -5,7 +5,7 @@ bool isJump;
 extern bool RestartPress ;
 extern NetworkManager networkManager;
 
-void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz);
+void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz, string* name);
 
 
 
@@ -15,7 +15,7 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 {
 	CS_PLAYER_PACKET p;
 	get_vangleandStatus(&(p.camera.VangleX), &(p.camera.VangleY), &(p.status),
-		&(p.Player_key.dirx), &(p.Player_key.diry), &(p.Player_key.dirz));
+		&(p.Player_key.dirx), &(p.Player_key.diry), &(p.Player_key.dirz), &(p.nickname));
 	p.player_id = global_ID;
 
 	//p.player_id = Th
