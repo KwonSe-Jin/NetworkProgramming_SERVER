@@ -64,7 +64,11 @@ SC_MONSTER_PACKET monsters[6];
 bool toggle1 = true;
 bool toggle2 = true;
 
+//++
+int RestartCnt = 0;
+
 void restart() {
+	//RestartCnt = 0;
 	AnimalCnt = 0;
 
 
@@ -128,6 +132,8 @@ void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 		//std::cout << "Failed to send data" << std::endl;
 	}
 
+	if (p.restart_cnt == 3)
+		RestartCnt = 0;
 }
 
 void SC_MONSTER_Send(SC_MONSTER_PACKET& p, SOCKET clientSocket)
@@ -187,8 +193,12 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 			cout << readycount << endl;
 		}
 		if (csPacket.Player_key.is_p) {
-			cout << "log is _ p " << endl;
-			restart();
+			if (heroes[csPacket.player_id].restart == false)
+				heroes[csPacket.player_id].ISP();
+			cout << "RestartCnt == " << RestartCnt << endl;
+			if (RestartCnt == 3)
+				restart();
+
 		}
 	}
 }
@@ -196,6 +206,7 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 {
 	scPacket.packet_type = SC_PLAYER;
+	scPacket.restart_cnt = RestartCnt;
 	scPacket.player_id = i;
 	scPacket.player_hp = heroes[scPacket.player_id].HP;
 
@@ -336,9 +347,12 @@ void SendQueue()
 					for (int j = 0; j < heroes.size(); ++j)
 					{
 						if (!heroes[j].is_q && heroes[j].toggleID == false) {
+							
 							SC_PLAYER_Send(p, clientsocketes[j]);
+
 						}
 					}
+					
 				}
 			}
 

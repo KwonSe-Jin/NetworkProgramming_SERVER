@@ -15,6 +15,7 @@ enum AnimalNum
 struct SC_PLAYER_PACKET
 {
 	int packet_type;
+	int restart_cnt;
 	int player_id;
 	int player_hp;
 	bool status = true;

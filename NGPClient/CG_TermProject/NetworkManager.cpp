@@ -98,6 +98,8 @@ bool NetworkManager::recvData() {
 	case SC_PLAYER: {
 		SC_PLAYER_PACKET* p = reinterpret_cast<SC_PLAYER_PACKET*>(buf);
 		makeInfo(p);
+		restartCnt(p);
+		
 	}
 				  break;
 	case SC_MONSTER: {

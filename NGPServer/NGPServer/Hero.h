@@ -6,6 +6,8 @@ class Hero
 {
 
 public:
+	bool restart = false;
+
 	bool firstmap= true;
 	bool toggleID = true;
 	bool is_q = false;
@@ -41,6 +43,7 @@ public:
 	void Update();
 	int InfoHP();
 	void location();
+	void ISP();
 	void isQuit();
 	float getLeft();
 	float getRight();

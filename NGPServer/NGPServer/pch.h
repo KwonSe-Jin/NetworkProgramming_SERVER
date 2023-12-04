@@ -70,6 +70,7 @@ extern int readycount;
 extern Room catRoom;
 extern Room dogRoom;
 extern Room bearRoom;
+extern int RestartCnt;
 
 
 

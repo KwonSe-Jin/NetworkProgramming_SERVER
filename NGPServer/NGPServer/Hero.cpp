@@ -15,6 +15,7 @@ extern int readycount;
 extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;
 extern Animal AniBear;
+extern int RestartCnt;
 
 
 Hero::Hero(int id) : ID{ id }
@@ -225,6 +226,13 @@ void Hero::ISR()
 	readycount++;
 	_readyflag = true;
 }
+
+void Hero::ISP()
+{
+	RestartCnt++;
+	restart = true;
+}
+
 float Hero::getLeft()
 {
 	return PosX - 0.12f;
@@ -281,7 +289,7 @@ void Hero::initHero()
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
-
+	restart = false;
 	is_q = false;
 
 	firstmap = true;

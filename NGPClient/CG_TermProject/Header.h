@@ -29,6 +29,7 @@
 #pragma comment(lib, "freeglut.lib")
 using namespace std;
 
+extern int RestartCnt;
 
 extern int ball_count;
 extern int BulletLimit;

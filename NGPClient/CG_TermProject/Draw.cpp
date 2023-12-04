@@ -99,6 +99,7 @@ int ball_count = 0;
 int BulletLimit;
 bool is_ballfire = false;
 int balltimer = 0;
+int RestartCnt = 0;
 
 
 
@@ -200,6 +201,11 @@ void animalInfo(SC_MONSTER_PACKET* p)
 
 }
 
+void restartCnt(SC_PLAYER_PACKET* p) {
+    RestartCnt =  p->restart_cnt;
+    cout << "RestartCnt== " << p->restart_cnt << endl;
+}
+
 void gun_clear()
 {
     gun.clear();
@@ -257,7 +263,7 @@ GLvoid drawScene()
 
 
 void draw() {
-    if (RestartPress) {
+    if (RestartPress && RestartCnt == 3) {
         Restartinit();
         RestartPress = false;
     }
@@ -486,7 +492,7 @@ void draw() {
 
 void Restartinit()
 {
-
+    RestartCnt = 0;
     CatEndPosX=0;
     CatEndPosZ=0;
 

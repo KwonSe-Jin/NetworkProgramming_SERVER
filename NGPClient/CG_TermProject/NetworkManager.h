@@ -23,6 +23,7 @@ extern bool isBullet;
 
 #pragma comment(lib, "ws2_32.lib")
 void makeInfo(SC_PLAYER_PACKET* p);
+void restartCnt(SC_PLAYER_PACKET* p);
 void animalInfo(SC_MONSTER_PACKET* p);
 void bulletInfo(SC_BULLET_PACKET* p);
 void gun_clear();

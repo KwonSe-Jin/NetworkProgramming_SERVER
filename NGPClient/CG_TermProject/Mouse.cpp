@@ -12,8 +12,6 @@ extern int global_ID;
 //
 //bool is_ballfire = false;
 //int balltimer = 0;
-
-
 extern int ball_count;
 extern int BulletLimit;
 extern bool is_ballfire;
