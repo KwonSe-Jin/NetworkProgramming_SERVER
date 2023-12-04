@@ -132,9 +132,6 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
                 heroes[csPacket.player_id].ISR();
             cout << readycount << endl;
         }
-        if (csPacket.Player_key.is_q) {
-            heroes[csPacket.player_id].isQuit();
-        }
     }
 }
 
@@ -465,7 +462,6 @@ void CalculateThread()
             }
 
         }
-
 
         this_thread::sleep_for(0.5ms);
 
