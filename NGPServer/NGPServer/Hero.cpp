@@ -36,7 +36,7 @@ Hero::Hero(int id) : ID{ id }
 		PosY = -1.0;
 		PosZ = 10.0;
 	}
-	HP = 1000;
+	HP = 100;
 	is_q=false;
 
 	firstmap = true;
@@ -114,7 +114,7 @@ void Hero::Update()
 	}
 
 
-	if (PosZ < -10 && firstmap &&(readycount == 3) || g_catlive && firstmap) {
+	if (PosZ < -10 && firstmap && (readycount == 3)|| g_catlive && firstmap) {
 		if (ID == 0) {
 			PosX = -100;
 			PosZ = 0;

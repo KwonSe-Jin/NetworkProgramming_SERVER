@@ -103,19 +103,20 @@ bool NetworkManager::recvData() {
 	case SC_MONSTER: {
 		//std::cout << size << "monster" << std::endl;
 		SC_MONSTER_PACKET* p = reinterpret_cast<SC_MONSTER_PACKET*>(buf);
+		/*cout << "SC_MONSTER type " << p->animal_type << endl;
+		cout << " p->Monster_id ==  " << p->Monster_id << endl;*/
 		animalInfo(p);
 		break;
 
 	}
 	case SC_BULLET: {
 
-		//std::cout << size << "bullet size" << std::endl;
 		SC_BULLET_PACKET* p = reinterpret_cast<SC_BULLET_PACKET*>(buf);
 
 		bulletInfo(p);
 		
 	}
-				  break;
+		break;
 	default:
 		std::cout << "error" << endl;
 		break;

@@ -32,9 +32,9 @@ using namespace std;
 constexpr float PI = 3.14159265358979323846f;
 #define AnimalMax 6
 
-#define Cat 1
-#define Dog 2
-#define Bear 3
+#define Cat 0
+#define Dog 1
+#define Bear 2
 
 //전역은 여기에 선언해주세요.
 
