@@ -105,7 +105,7 @@ void restart() {
 	AniDogs.erase(AniDogs.begin(), AniDogs.end());
 
 	for (int i = 0; i < 6; ++i) {
-		AniCats.push_back(new Animal(Cat,i));
+		AniCats.push_back(new Animal(Cat, i));
 	}
 
 	for (int i = 0; i < 6; ++i) {
@@ -132,8 +132,7 @@ void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 		//std::cout << "Failed to send data" << std::endl;
 	}
 
-	if (p.restart_cnt == 3)
-		RestartCnt = 0;
+
 }
 
 void SC_MONSTER_Send(SC_MONSTER_PACKET& p, SOCKET clientSocket)
@@ -206,7 +205,7 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 {
 	scPacket.packet_type = SC_PLAYER;
-	scPacket.restart_cnt = RestartCnt;
+	//scPacket.restart_cnt = RestartCnt;
 	scPacket.player_id = i;
 	scPacket.player_hp = heroes[scPacket.player_id].HP;
 
@@ -347,12 +346,31 @@ void SendQueue()
 					for (int j = 0; j < heroes.size(); ++j)
 					{
 						if (!heroes[j].is_q && heroes[j].toggleID == false) {
-							
+
+							p.restart_cnt = RestartCnt;
+							if (p.restart_cnt == 3) {
+								heroes[j].send_restartCnt = true;
+							}
 							SC_PLAYER_Send(p, clientsocketes[j]);
 
 						}
 					}
-					
+
+					int cnt = 0;
+					for (int i = 0; i < heroes.size(); ++i) {
+						if (heroes[i].send_restartCnt == true) {
+							++cnt;
+						}
+
+					}
+
+					if (cnt == 3) {
+						RestartCnt = 0;
+					}
+
+					/*if (p.restart_cnt == 3)
+						RestartCnt = 0;*/
+
 				}
 			}
 

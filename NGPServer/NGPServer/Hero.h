@@ -7,6 +7,7 @@ class Hero
 {
 
 public:
+	bool send_restartCnt = false;
 	bool restart = false;
 
 	bool firstmap= true;

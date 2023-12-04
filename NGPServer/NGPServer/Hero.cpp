@@ -115,7 +115,7 @@ void Hero::Update()
 	}
 
 
-	if (PosZ < -10 && firstmap &&(readycount == 3) || g_catlive && firstmap) {
+	if (PosZ < -10 && firstmap &&(readycount == 1) || g_catlive && firstmap) {
 		if (ID == 0) {
 			PosX = -100;
 			PosZ = 0;
@@ -316,6 +316,7 @@ void Hero::initHero()
 	lightColorR = 1.0f;
 	lightColorG = 1.0f;
 	lightColorB = 1.0f;
+	send_restartCnt = false;
 
 	VAngleX = 0;
 	VAngleY = 0;

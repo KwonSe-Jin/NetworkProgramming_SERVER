@@ -203,7 +203,8 @@ void animalInfo(SC_MONSTER_PACKET* p)
 }
 
 void restartCnt(SC_PLAYER_PACKET* p) {
-    RestartCnt =  p->restart_cnt;
+    if(p->restart_cnt!=0)
+        RestartCnt =  p->restart_cnt;
     cout << "RestartCnt== " << p->restart_cnt << endl;
 }
 
