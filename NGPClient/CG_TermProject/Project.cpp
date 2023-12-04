@@ -106,9 +106,11 @@ GLuint crossVAO, crossVBO;
 
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
-
-
-	if (!networkManager.Connect()) {
+	const char* SERVERIP;
+	if (argc > 1) SERVERIP = argv[1];
+	else
+		SERVERIP = "127.0.0.1";
+	if (!networkManager.Connect(SERVERIP)) {
 		std::cerr << "Failed to connect to the server" << std::endl;
 		return;
 	}

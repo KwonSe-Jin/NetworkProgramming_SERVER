@@ -35,7 +35,7 @@ public:
 
     ~NetworkManager();
 
-    bool Connect();
+    bool Connect(const char* ipaddress);
 
     bool SendData(const std::string& data);
    

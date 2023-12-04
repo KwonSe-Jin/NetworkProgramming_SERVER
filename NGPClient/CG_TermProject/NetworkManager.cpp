@@ -23,11 +23,11 @@ NetworkManager::~NetworkManager() {
 	WSACleanup();
 }
 
-bool NetworkManager::Connect() {
+bool NetworkManager::Connect(const char* ipaddress) {
 	sockaddr_in serverAddr;
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_port = htons(serverPort);
-	inet_pton(AF_INET, serverIP, &serverAddr.sin_addr);
+	inet_pton(AF_INET, ipaddress, &serverAddr.sin_addr);
 
 	if (connect(clientSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
 		std::cout << "Failed to connect to the server" << std::endl;
