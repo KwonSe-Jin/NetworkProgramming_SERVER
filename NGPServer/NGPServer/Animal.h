@@ -44,6 +44,6 @@ public:
 	//friend void BulletCollideCat();
 	//friend void CatAndRoomCollision();
 
-	void initCat();
+	void initAnimals();
 };
 

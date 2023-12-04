@@ -11,7 +11,6 @@ enum AnimalNum
 	BEAR,
 };
 
-
 #pragma pack(push,1)
 struct SC_PLAYER_PACKET
 {
@@ -71,6 +70,7 @@ struct CS_PLAYER_PACKET
 	bool ready = false;
 
 	struct Player_key {
+		bool is_p = false;
 		bool is_w = false;
 		bool is_a = false;
 		bool is_s = false;

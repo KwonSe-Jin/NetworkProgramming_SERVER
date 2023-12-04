@@ -23,11 +23,14 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 	case 'P':
 	case 'p':
 		RestartPress = true;
+		p.Player_key.is_p = true;
+
 		break;
 	case 'w':
 	case 'W':
 		p.Player_key.is_w = true;
 		isW = true;
+
 		break;
 	case 'a':
 	case 'A':

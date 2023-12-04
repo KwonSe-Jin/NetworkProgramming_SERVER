@@ -205,15 +205,41 @@ float Animal::getTop()
 	return 0.0f;
 }
 
-void Animal::initCat()
+void Animal::initAnimals()
 {
+    random_device rd;
+    default_random_engine dre(rd());
+    AnimalCnt = 0;
 	if (AnimalType == Cat) {
+        uniform_real_distribution<float> urdX{ -104,-97 };
+        uniform_real_distribution<float> urdZ{ -3, 3 };
+        PosX = urdX(dre);
+        PosY = -1.0f;
+        PosZ = urdZ(dre);
+
 		HP = 20;
 		Attack = 10;
 	}
 	if (AnimalType == Dog) {
-		HP = 20;
-		Attack = 10;
+        uniform_real_distribution<float> urdX{ 97, 103 };
+        uniform_real_distribution<float> urdZ{ -3, 3 };
+        PosX = urdX(dre);
+        PosY = -1.0f;
+        PosZ = urdZ(dre);
+
+		HP = 40;
+		Attack = 20;
 	}
+
+    if (AnimalType == Bear) {
+        PosX = 0;
+        PosY = -1.0f;
+        PosZ = -100.f;
+        HP = 100;
+        Attack = 30;
+    }
+    Direction = 0.f;
 	AnimalCrushHero = false;
 }
+
+

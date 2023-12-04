@@ -23,19 +23,9 @@ Gun::~Gun()
 void Gun::Update()
 {
 	startP += 0.3;
-
-	//if (herodead) {
-	//	Damage = 0;
-	//}
-	/*BulletCollideBear();
-	BulletCollideDog();
-	BulletCollideCat();*/
 	GunDirX = dirX * startP + PosX;
 	GunDirY = dirY * startP + PosY;
 	GunDirZ = dirZ * startP + PosZ;	
-	//cout << dirX << endl;
-	//cout << dirY << endl;
-	//cout << dirZ << endl;
 
 }
 

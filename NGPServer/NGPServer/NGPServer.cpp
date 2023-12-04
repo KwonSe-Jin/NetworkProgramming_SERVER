@@ -1,9 +1,9 @@
 ﻿#include "pch.h"
-
 #include "protocol.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
 #include "Collision.h"
+
 
 
 int HeroID = 0;
@@ -11,6 +11,9 @@ vector<Hero> heroes;
 vector<SOCKET> clientsocketes;
 std::mutex g_m;
 queue<CS_PLAYER_PACKET*> playerInput;
+queue<CS_PLAYER_PACKET*> playerInput1;
+queue<CS_PLAYER_PACKET*> playerInput2;
+
 queue<SC_PLAYER_PACKET> playerqueue;
 queue<SC_MONSTER_PACKET> monsterqueue;
 queue<SC_BULLET_PACKET> bulletqueue;
@@ -19,7 +22,7 @@ mutex player_m;
 mutex send_m;
 //전역 만든 것 
 int AnimalCnt = 0;
-extern int readycount = 0;
+int readycount = 0;
 //vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 
 
@@ -27,6 +30,12 @@ bool g_catlive = false;
 bool g_doglive = false;
 bool g_bearlive = false;
 bool g_herodead = false;
+
+
+bool cattoggle = true;
+bool dogtoggle = true;
+bool beartoggle = true;
+
 
 float HeroLocationX = 0;
 float HeroLocationZ = 0;
@@ -54,6 +63,60 @@ SC_MONSTER_PACKET monsters[6];
 
 bool toggle1 = true;
 bool toggle2 = true;
+
+void restart() {
+	AnimalCnt = 0;
+
+
+
+	cattoggle = true;
+	dogtoggle = true;
+	beartoggle = true;
+	readycount = 0;
+
+	g_catlive = false;
+	g_doglive = false;
+	g_bearlive = false;
+	g_herodead = false;
+	toggle1 = true;
+	toggle2 = true;
+
+
+	HeroLocationX = 0;
+	HeroLocationZ = 0;
+
+	catdead = 0;
+	dogdead = 0;
+	beardead = 0;
+
+	for (int i = 0; i < 3; ++i) {
+		heroes[i].initHero();
+	}
+	//for (int i = 0; i < 6; ++i) {
+	//	AniCats[i]->initAnimals();
+	//	AniDogs[i]->initAnimals();
+	//}
+	//AniBear.initAnimals();
+	AniCats.erase(AniCats.begin(), AniCats.end());
+	AniDogs.erase(AniDogs.begin(), AniDogs.end());
+
+	for (int i = 0; i < 6; ++i) {
+		AniCats.push_back(new Animal(Cat,i));
+	}
+
+	for (int i = 0; i < 6; ++i) {
+		AniDogs.push_back(new Animal(Dog, i));
+	}
+	AniBear.initAnimals();
+
+
+
+	gun.erase(gun.begin(), gun.end());
+
+
+}
+
+
 
 void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
@@ -91,8 +154,6 @@ void SC_BULLET_Send(SC_BULLET_PACKET& p, SOCKET clientSocket)
 
 void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 {
-
-
 	heroes[csPacket.player_id].VAngleX = csPacket.camera.VangleX;
 	heroes[csPacket.player_id].VAngleY = csPacket.camera.VangleY;
 	/*cout << heroes[scPacket.player_id ].VAngleX << endl;
@@ -125,8 +186,9 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 				heroes[csPacket.player_id].ISR();
 			cout << readycount << endl;
 		}
-		if (csPacket.Player_key.is_q) {
-			heroes[csPacket.player_id].isQuit();
+		if (csPacket.Player_key.is_p) {
+			cout << "log is _ p " << endl;
+			restart();
 		}
 	}
 }
@@ -152,7 +214,7 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 	scPacket.Player_light.B = heroes[scPacket.player_id].lightColorB;
 
 	scPacket.ready = heroes[scPacket.player_id]._readyflag;
-	
+
 }
 
 
@@ -261,9 +323,9 @@ void processmonsterPacket(SC_MONSTER_PACKET& monster, int i) {
 
 void SendQueue()
 {
+	send_m.lock();
 	while (true)
 	{
-		send_m.lock();
 		if (heroes.size()) {
 			{
 				lock_guard<mutex> playerLock(player_m);
@@ -308,13 +370,12 @@ void SendQueue()
 			}
 
 		}
-
-		send_m.unlock();
 	}
-
+	send_m.unlock();
 }
 
 mutex heroMutex;
+mutex pop_m;
 //Hero heroInstance;
 // 게임 논리를 처리할 계산 스레드
 void CalculateThread()
@@ -323,18 +384,21 @@ void CalculateThread()
 	{
 		//todo
 
-		g_m.lock();
+		//g_m.lock();
 
 		for (int i = 0; i < heroes.size(); ++i) {
-			if (heroes[i].catlive) { // 한명이라도 들어간 순간? 
+			if (heroes[i].catlive && cattoggle) { // 한명이라도 들어간 순간? 
 				g_catlive = true;
 				g_doglive = false;
 				g_bearlive = false;
+				cattoggle = false;
+
 			}
-			else if (heroes[i].doglive) {
+			else if (heroes[i].doglive && dogtoggle && heroes[i]._flag) {
 				g_catlive = false;
 				g_doglive = true;
 				g_bearlive = false;
+				dogtoggle = false;
 				if (toggle1) {
 					gun.erase(gun.begin(), gun.end());
 					cout << " gun.size() == " << gun.size() << endl;
@@ -342,10 +406,12 @@ void CalculateThread()
 				}
 
 			}
-			else if (heroes[i].bearlive) {
+			else if (heroes[i].bearlive && beartoggle && heroes[i]._flag) {
 				g_catlive = false;
 				g_doglive = false;
 				g_bearlive = true;
+				beartoggle = false;
+
 				if (toggle2) {
 					gun.erase(gun.begin(), gun.end());
 					cout << " gun.size() == " << gun.size() << endl;
@@ -355,18 +421,30 @@ void CalculateThread()
 
 			}
 		}
+
 		if (heroes.size() && heroes.size() == HeroID)
 		{
 			SC_PLAYER_PACKET responsePacket;
 			SC_BULLET_PACKET bulletPacket;
-			player_m.lock();
-			if (!playerInput.empty()) {
-				CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
-				playerInput.pop();
-				processCSPlayerPacket(*playerInputPacket);
-			}
-			player_m.unlock();
 
+			{
+				//lock_guard<mutex> playerLock(player_m);
+				if (!playerInput.empty()) {
+					CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
+					playerInput.pop();
+					processCSPlayerPacket(*playerInputPacket);
+				}
+				if (!playerInput1.empty()) {
+					CS_PLAYER_PACKET* playerInputPacket = playerInput1.front();
+					playerInput1.pop();
+					processCSPlayerPacket(*playerInputPacket);
+				}
+				if (!playerInput2.empty()) {
+					CS_PLAYER_PACKET* playerInputPacket = playerInput2.front();
+					playerInput2.pop();
+					processCSPlayerPacket(*playerInputPacket);
+				}
+			}
 
 			for (int i = 0; i < heroes.size(); ++i)
 			{
@@ -377,12 +455,7 @@ void CalculateThread()
 				Posandlight(responsePacket, i);
 				lock_guard<mutex> playerLock(player_m);
 				playerqueue.push(responsePacket);
-				/*for (int j = 0; j < heroes.size(); ++j)
-				{
-					if (!heroes[j].is_q && heroes[j].toggleID == false) {
-						SC_PLAYER_Send(responsePacket, clientsocketes[j]);
-					}
-				}*/
+
 
 			}
 			for (int i = 0; i < gun.size(); ++i)
@@ -390,11 +463,7 @@ void CalculateThread()
 				bulletcalculate(bulletPacket, i);
 				lock_guard<mutex> playerLock(player_m);
 				bulletqueue.push(bulletPacket);
-				/*for (int j = 0; j < heroes.size(); ++j)
-				{
-					if (!heroes[j].is_q && heroes[j].toggleID == false)
-						SC_BULLET_Send(bulletPacket, clientsocketes[j]);
-				}*/
+
 
 			}
 
@@ -404,33 +473,24 @@ void CalculateThread()
 			if (g_catlive)
 			{
 				SC_MONSTER_PACKET monster;
-				for (int i = 0; i < 3; ++i)
+				for (int i = 0; i < 6; ++i)
 				{
 					processmonsterPacket(monster, i);
 					lock_guard<mutex> playerLock(player_m);
 					monsterqueue.push(monster);
-					//for (int j = 0; j < heroes.size(); ++j)
-					//{
-					//    if (!heroes[j].is_q && heroes[j].toggleID == false)
-					//        SC_MONSTER_Send(monster, clientsocketes[j]);
-					//}
+
 				}
 			}
 
 			if (g_doglive)
 			{
 				SC_MONSTER_PACKET monster;
-				for (int i = 0; i < 3; ++i)
+				for (int i = 0; i < 6; ++i)
 				{
 					processmonsterPacket(monster, i);
 					lock_guard<mutex> playerLock(player_m);
 					monsterqueue.push(monster);
 
-					/*for (int j = 0; j < heroes.size(); ++j)
-					{
-						if (!heroes[j].is_q && heroes[j].toggleID == false)
-							SC_MONSTER_Send(monster, clientsocketes[j]);
-					}*/
 				}
 			}
 
@@ -456,26 +516,20 @@ void CalculateThread()
 				lock_guard<mutex> playerLock(player_m);
 				monsterqueue.push(BossBear);
 
-				/*for (int i = 0; i < heroes.size(); ++i) {
-					if (!heroes[i].is_q && heroes[i].toggleID == false)
-						SC_BOSSBEAR_Send(clientsocketes[i]);
-				}*/
+
 			}
 
 		}
-
-
-		this_thread::sleep_for(0.1ms);
-
-		g_m.unlock();
+		this_thread::sleep_for(0.5ms);
+		//g_m.unlock();
 	}
-
-
 }
+
 std::mutex heroIdMutex;
+std::mutex push_m;
+
 void HandleClientSocket(SOCKET clientSocket)
 {
-
 	{
 		std::lock_guard<std::mutex> lock(heroIdMutex);
 		Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
@@ -531,9 +585,16 @@ void HandleClientSocket(SOCKET clientSocket)
 			return;
 		}
 		CS_PLAYER_PACKET* p = reinterpret_cast<CS_PLAYER_PACKET*>(buf);
-
-		lock_guard<mutex> playerLock(player_m);
-		playerInput.push(p);
+		//cout << p->player_id << endl;
+		{
+			lock_guard<mutex> pushlock(push_m);
+			if (p->player_id == 0)
+				playerInput.push(p);
+			if (p->player_id == 1)
+				playerInput1.push(p);
+			if (p->player_id == 2)
+				playerInput2.push(p);
+		}
 	}
 	// 클라이언트 소켓 종료
 	SocketUtils::Close(clientSocket);

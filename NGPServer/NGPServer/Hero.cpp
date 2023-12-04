@@ -185,6 +185,7 @@ void Hero::location()
 void Hero::isQuit()
 {
 	is_q = true;
+
 	_flag = false;
 
 }
@@ -263,18 +264,51 @@ float Hero::getFront()
 void Hero::initHero()
 {
 
-	PosX = 0;
-	PosY = 0.5;
-	PosZ = 10.0;
+	if (ID == 0) {
+		PosX = 0;
+		PosY = -1.0;
+		PosZ = 10.0;
+	}
+	else if (ID == 1)
+	{
+		PosX = 3;
+		PosY = -1.0;
+		PosZ = 10.0;
+	}
+	else if (ID == 2)
+	{
+		PosX = -3;
+		PosY = -1.0;
+		PosZ = 10.0;
+	}
 
+	is_q = false;
+
+	firstmap = true;
+	catlive = false;
+	doglive = false;
+	bearlive = false;
+	herodead = false;
+	//toggleID = true;
+
+	for (int i = 0; i < 6; ++i) {
+		catattack[i].Activate = false;
+		catattack[i].AttackCount = 0;
+
+		dogattack[i].Activate = false;
+		dogattack[i].AttackCount = 0;
+	}
+	bearattack.Activate = false;
+	bearattack.AttackCount = 0;
+
+
+	_flag = true;
+	_readyflag = false;
 	HP = 100;
-
 	lightColorR = 1.0f;
 	lightColorG = 1.0f;
 	lightColorB = 1.0f;
 
-
 	VAngleX = 0;
 	VAngleY = 0;
-	firstmap = true;
 }

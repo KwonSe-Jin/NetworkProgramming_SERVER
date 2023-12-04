@@ -16,7 +16,8 @@ extern bool isW, isA, isS, isD, isR;
 extern bool isBullet;
 
 //#define serverIP "192.168.121.55"
-#define serverIP "192.168.102.98"
+//#define serverIP "192.168.102.98"
+#define serverIP "127.0.0.1"
 //#define serverIP "192.168.41.237"
 #define serverPort 9000
 

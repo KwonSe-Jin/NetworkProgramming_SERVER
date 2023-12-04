@@ -79,6 +79,7 @@ bool catlive = false;
 bool doglive = false;
 bool bearlive = false;
 bool herodead = false;
+
 float HeroLocationX = 0;
 float HeroLocationZ = 0;
 CatAttack catattack[AnimCnt];
@@ -96,7 +97,6 @@ int DogCnt = 0;
 
 int ball_count = 0;
 int BulletLimit;
-
 bool is_ballfire = false;
 int balltimer = 0;
 
@@ -137,16 +137,16 @@ Tunnel Catopen{ 1 };
 DoorL Catleft{ 1 };
 DoorR Catright{ 1 };
 
-
-float CatEndPosX;
-float CatEndPosZ;
-
-int gun_size;
 struct Score
 {
     int id;
     int score;
 };
+
+float CatEndPosX;
+float CatEndPosZ;
+
+int gun_size;
 
 vector <Score> scorevec;
 
@@ -257,16 +257,17 @@ GLvoid drawScene()
 
 
 void draw() {
+    if (RestartPress) {
+        Restartinit();
+        RestartPress = false;
+    }
 
     if (hero[global_ID].HP <= 0) {
         herodead = true;
     }
 
     ///재시작 !! 
-    if (RestartPress) {
-        Restartinit();
-        RestartPress = false;
-    }
+ 
 
     if (beardead) {
         hero[global_ID].lightColorR = 1.0f;
@@ -485,9 +486,32 @@ void draw() {
 
 void Restartinit()
 {
+
+    CatEndPosX=0;
+    CatEndPosZ=0;
+
+    gun_size=0;
+    ScoreOnce = true;
+
+    //vector <Score> scorevec;
+    scorevec.erase(scorevec.begin(), scorevec.end());
+
+    //cats.erase(cats.begin(), cats.end());
+    //dogs.erase(dogs.begin(), dogs.end());
+
+    //for (int i = 0; i < 6; ++i) {
+    //    cats.push_back(new Cat);
+    //    dogs.push_back(new Dog);
+    //}
+    for (int i = 0; i < 6; ++i) {
+        cats[i]->initCat();
+        dogs[i]->initDog();
+    }
+    bear.InitBear();
+
     for (int i=0; i<3 ; ++i)
         hero[i].initHero();
-
+    herodead = false;
 
     ball_count = 0;
     BulletLimit;
@@ -498,27 +522,23 @@ void Restartinit()
     cameraPos = { 0,0,0 };
     catdead = 0;
     dogdead = 0;
-    beardead = 0;
+    beardead = false;
     HerogetHP = 10;
     lightPosX = 0.0;
     lightPosY = 30.0;
     lightPosZ = 0.0;
     lightcolorN = 0;
     lightRot = 0;
-    global_ID = -1;
     isParticle = false;
     isBullet = false;
     openingCat = 0;
     openingDog = 0;
     i = 0;
     HeroMovY = 0;
-
     DogCnt = 0;
     CatCnt = 0;
-
     MovX = 0;
     MovZ = 0;
-
     toggle1 = true;
     toggle2 = true;
 

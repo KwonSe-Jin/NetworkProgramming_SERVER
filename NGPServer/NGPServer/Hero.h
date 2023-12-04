@@ -4,11 +4,11 @@
 
 class Hero
 {
-	bool firstmap;
 
 public:
+	bool firstmap= true;
 	bool toggleID = true;
-	bool is_q;
+	bool is_q = false;
 	Attack catattack[6];
 	Attack dogattack[6];
 	Attack bearattack;

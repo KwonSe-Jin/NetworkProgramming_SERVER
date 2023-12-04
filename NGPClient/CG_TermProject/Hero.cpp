@@ -384,7 +384,6 @@ void Hero::initHero()
 	PosX = 0;
 	PosY = 0.5;
 	PosZ = 10.0;
-	Hero_ID = -1;
 	ready = false;
 	HP = 100;
 	lightColorR = 1.0f;
