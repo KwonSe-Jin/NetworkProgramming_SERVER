@@ -175,7 +175,6 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 	if (csPacket.ready) {
 		if (heroes[csPacket.player_id]._readyflag == false)
 			heroes[csPacket.player_id].ISR();
-		cout << readycount << endl;
 	}
 	if (csPacket.Player_key.is_p) {
 
@@ -351,7 +350,6 @@ void SendQueue()
 					}
 
 					if (cnt == 3) {
-						cout << "log here" << endl;
 						RestartCnt = 0;
 					}
 
