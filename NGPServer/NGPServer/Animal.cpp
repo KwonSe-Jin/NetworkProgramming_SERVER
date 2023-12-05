@@ -2,11 +2,8 @@
 #include <numeric>
 #include <limits>
 #include <random>
-extern vector<Hero> heroes; //���ΰ� ���� �ϴ� �������� ���߿� ������ ���� �� �ּ� �����ּ���. 
+extern vector<Hero> heroes; 
 
-//extern Attack catattack[AnimalMax];
-//extern Attack dogattack[AnimalMax];
-//extern Attack bearattack;
 
 extern bool g_catlive;
 extern bool g_doglive;

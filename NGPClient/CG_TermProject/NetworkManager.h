@@ -15,10 +15,7 @@ using namespace std;
 extern bool isW, isA, isS, isD, isR;
 extern bool isBullet;
 
-//#define serverIP "192.168.121.55"
-//#define serverIP "192.168.102.98"
-#define serverIP "127.0.0.1"
-//#define serverIP "192.168.123.146"
+
 #define serverPort 9000
 
 #pragma comment(lib, "ws2_32.lib")
@@ -38,7 +35,7 @@ public:
 
     ~NetworkManager();
 
-    bool Connect();
+    bool Connect(const char* ipaddress);
 
     bool SendData(const std::string& data);
    

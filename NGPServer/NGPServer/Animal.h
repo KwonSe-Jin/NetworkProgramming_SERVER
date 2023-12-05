@@ -1,9 +1,5 @@
 #pragma once
-//#include "Hero.h"
-//#include "Gun.h"
-//#include "particle.h"
 
-//extern Hero hero;
 
 
 
@@ -12,7 +8,6 @@ class Animal
 	float closelineX;
 	float closelineZ;
 
-	//glm::vec3 Position;
 	bool AnimalCrushHero;
 
 	int Attack;
@@ -40,9 +35,7 @@ public:
 	float getFront();
 	float getBottom();
 	float getTop();
-	//friend void AnimalCollideCat();
-	//friend void BulletCollideCat();
-	//friend void CatAndRoomCollision();
+
 
 	void initAnimals();
 };

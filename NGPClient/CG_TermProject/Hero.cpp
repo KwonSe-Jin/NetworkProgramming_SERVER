@@ -1,15 +1,10 @@
-//#include "Header.h"
 #include "Hero.h"
 #include "Sound.h"
-//#include "CatAttack.h"
-//#include "DogAttack.h"
-//#include "BearAttack.h"
+
 
 extern Sound playSound;
 
-//extern float HeroMovY;
-//extern float MovX;
-//extern float MovZ;
+
 extern bool catlive;
 extern bool doglive;
 extern bool bearlive;
@@ -17,10 +12,7 @@ extern bool herodead;
 
 extern float HeroLocationX;
 extern float HeroLocationZ;
-//extern CatAttack catattack[AnimCnt];
-//extern DogAttack dogattack[AnimCnt];
-//extern BearAttack bearattack;
-//extern bool jumpUp;
+
 
 Hero::Hero(int colorID) : Unit(1.f)
 {
@@ -49,34 +41,6 @@ Hero::~Hero()
 void Hero::damage()
 {
 
-	//HP = 100;
-	//lightColorG = 1.0;
-	//lightColorB = 1.0;
-	//for (int i = 0; i < 6; ++i) {
-	//	HP -= (catattack[i].AttackCount) * 10 / 24;
-	//	lightColorG -= catattack[i].AttackCount * 0.1f/24.;
-	//	lightColorB -= catattack[i].AttackCount * 0.1f/24.;
-
-	//	HP -= (dogattack[i].AttackCount) * 20 / 24;
-	//	lightColorG -= dogattack[i].AttackCount * 0.2f / 24.;
-	//	lightColorB -= dogattack[i].AttackCount * 0.2f / 24.;
-	//}
-
-
-	//HP -= (bearattack.AttackCount) * 30 / 24;
-	//lightColorG -= bearattack.AttackCount * 0.3f / 24.;
-	//lightColorB -= bearattack.AttackCount * 0.3f / 24.;
-
-
-	//if (lightColorG < 0.1) {
-	//	herodead = true;
-	//	lightColorB = 0.1;
-	//	lightColorG = 0.1;
-	//	lightColorR = 0.1;
-
-	//	// ������ ���� ����
-	//	playSound.stopBGM();
-	//}
 }
 
 
@@ -95,65 +59,7 @@ void Hero::Update()
 	Trans = glm::translate(Unit, glm::vec3(PosX, PosY, PosZ ));
 
 
-	//	if (PosX < -1 && firstmap)
-	//	{
-	//		PosX += 0.1;
-	//	}
-	//	if (PosX > 1 && firstmap)
-	//	{
-	//		PosX -= 0.1;
-	//	}
-
-	//	if (PosZ > 11 && firstmap)
-	//	{
-	//		PosZ -= 0.1;
-	//	}
-
-	//	if (PosZ < -10 && firstmap) {
-	//		PosX = -100;
-	//		PosZ = 0;
-	//		catlive = true;
-	//		bearlive = false;
-	//		doglive = false;
-
-	//		ortho = 5.0;
-
-	//		lightPosX = -100;
-	//		lightPosY = 15.0;
-	//		lightPosZ = 0;
-
-	//		// Ĺ����� �� �� ��� ����
-	//		playSound.BasicBGM();
-	//		firstmap = false;
-	//	}
-	//	if (PosZ < -7 &&catlive) {
-	//		PosX = 100;
-	//		PosZ = 0;
-	//		catlive = false;
-	//		doglive = true;
-	//		bearlive = false;
-
-	//		ortho = 5.0;
-
-	//		lightPosX = 100;
-	//		lightPosY = 15.0;
-	//		lightPosZ = 0;
-
-	//	}
-	//	if (PosZ < -7 && doglive) {
-	//		PosX = 0;
-	//		PosZ = -100;
-
-	//		doglive = false;
-	//		catlive = false;
-	//		bearlive = true;
-
-	//		ortho = 5.0;
-
-	//		lightPosX = 0;
-	//		lightPosY = 15.0;
-	//		lightPosZ = -100;
-	//	}
+	
 
 	glm::mat4 AddTrans = glm::translate(Unit, glm::vec3(0., 1., 0.));
 	Change = Trans * Scale * AddTrans;
@@ -182,32 +88,7 @@ void Hero::location()
 	HeroLocationX = PosX;
 	HeroLocationZ = PosZ;
 }
-//
-//void Hero::ISW()
-//{
-//	PosZ -= 0.075 * glm::cos(glm::radians(VAngleY));
-//	PosX += 0.075 * glm::sin(glm::radians(VAngleY));
-//
-//}
-//
-//void Hero::ISA()
-//{
-//	PosZ -= 0.075 * glm::sin(glm::radians(VAngleY));
-//	PosX -= 0.075 * glm::cos(glm::radians(VAngleY));
-//
-//}
-//
-//void Hero::ISS()
-//{
-//	PosZ += 0.075 * glm::cos(glm::radians(VAngleY));
-//	PosX -= 0.075 * glm::sin(glm::radians(VAngleY));
-//}
-//
-//void Hero::ISD()
-//{
-//	PosZ  += 0.075 * glm::sin(glm::radians(VAngleY));
-//	PosX  += 0.075 * glm::cos(glm::radians(VAngleY));
-//}
+
 
 float Hero::getLeft()
 {
@@ -270,7 +151,6 @@ void Hero::camera()
 	glm::mat4 view = glm::lookAt(cameraPos, cameraDirection, cameraUp);
 
 
-	//�̰� ���⼭ �Ѿ� �߻� ���� ����Ϸ���.... �Ѱ��� 
 	TermGunDir = normalize(cameraDirection - cameraPos);
 
 	/////////////////////////////////////////////////////////////////////

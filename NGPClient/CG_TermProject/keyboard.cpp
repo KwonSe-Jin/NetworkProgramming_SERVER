@@ -18,7 +18,6 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 		&(p.Player_key.dirx), &(p.Player_key.diry), &(p.Player_key.dirz));
 	p.player_id = global_ID;
 
-	//p.player_id = Th
 	switch (key) {
 	case 'P':
 	case 'p':
@@ -56,7 +55,6 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 	case 'Q':
 		p.Player_key.is_q = true;
 		if (!networkManager.SendPlayerData(p)) {
-			std::cout << "패킷보내기 실패" << std::endl;
 		}
 		glutLeaveMainLoop();
 		break;
@@ -65,15 +63,9 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 		p.ready = true;
 		isR = true;
 		break;
-	/*case 'z':
-	case 'Z':
 	
-		glutFullScreenToggle();
-		break;*/
-
 	}
 	if (!networkManager.SendPlayerData(p)) {
-		std::cout << "패킷보내기 실패" << std::endl;
 	}
 	glutPostRedisplay();
 }

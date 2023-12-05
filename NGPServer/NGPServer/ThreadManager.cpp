@@ -1,6 +1,5 @@
 #include "ThreadManager.h"
 
-//using HeroRef = std::shared_ptr<class Hero>;
 ThreadManager::ThreadManager()
 {
 	// Main Thread

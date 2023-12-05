@@ -23,7 +23,6 @@ mutex send_m;
 //전역 만든 것 
 int AnimalCnt = 0;
 int readycount = 0;
-//vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 
 
 bool g_catlive = false;
@@ -54,9 +53,7 @@ vector<Animal*> AniDogs{ new Animal(Dog,0), new Animal(Dog,1),new Animal(Dog,2),
 Animal AniBear(Bear, 0);
 vector<Gun*> gun;
 
-//Attack catattack[AnimalMax];
-//Attack dogattack[AnimalMax];
-//Attack bearattack;
+
 
 vector <SC_BULLET_PACKET> bullet;
 SC_MONSTER_PACKET monsters[6];
@@ -64,11 +61,9 @@ SC_MONSTER_PACKET monsters[6];
 bool toggle1 = true;
 bool toggle2 = true;
 
-//++
 int RestartCnt = 0;
 
 void restart() {
-	//RestartCnt = 0;
 	for (int i = 0; i < 3; ++i) {
 		heroes[i].initHero();
 	}
@@ -102,17 +97,7 @@ void restart() {
 	for (int i = 0; i < 6; ++i) {
 		AniDogs[i]->initAnimals();
 	}
-	//AniBear.initAnimals();
-	//AniCats.erase(AniCats.begin(), AniCats.end());
-	//AniDogs.erase(AniDogs.begin(), AniDogs.end());
-
-	//for (int i = 0; i < 6; ++i) {
-	//	AniCats.push_back(new Animal(Cat, i));
-	//}
-
-	//for (int i = 0; i < 6; ++i) {
-	//	AniDogs.push_back(new Animal(Dog, i));
-	//}
+	
 	AniBear.initAnimals();
 
 
@@ -125,7 +110,6 @@ void restart() {
 
 void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 {
-	//p.packet_type = SC_PLAYER;
 	if (p.packet_type == SC_PLAYER) {
 		int size = sizeof(p);
 		send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
@@ -138,7 +122,6 @@ void SC_PLAYER_Send(SC_PLAYER_PACKET& p, SOCKET clientSocket)
 
 void SC_MONSTER_Send(SC_MONSTER_PACKET& p, SOCKET clientSocket)
 {
-	//p.packet_type = SC_MONSTER;
 	if (p.packet_type == SC_MONSTER) {
 		int size = sizeof(p);
 		send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
@@ -167,8 +150,7 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 {
 	heroes[csPacket.player_id].VAngleX = csPacket.camera.VangleX;
 	heroes[csPacket.player_id].VAngleY = csPacket.camera.VangleY;
-	/*cout << heroes[scPacket.player_id ].VAngleX << endl;
-	cout << heroes[scPacket.player_id ].VAngleY << endl;*/
+
 	heroes[csPacket.player_id].nickname = csPacket.nickname;
 
 	if (csPacket.Player_key.is_w) {
@@ -187,10 +169,8 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 		heroes[csPacket.player_id].isQuit();
 	}
 	if (csPacket.Player_key.is_bullet) {
-		//cout << "총 생성" << endl;
 		gun.push_back(new Gun{ heroes[csPacket.player_id].PosX, heroes[csPacket.player_id].PosY + 0.5f ,heroes[csPacket.player_id].PosZ
 		   ,csPacket.Player_key.dirx,csPacket.Player_key.diry,csPacket.Player_key.dirz });
-		//cout << csPacket.Player_key.dirx << endl;
 	}
 	if (csPacket.ready) {
 		if (heroes[csPacket.player_id]._readyflag == false)
@@ -201,12 +181,10 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 
 		if (heroes[csPacket.player_id].restart == false) {
 			heroes[csPacket.player_id].ISP();
-			//cout << "RestartCnt == " << RestartCnt << endl;
 			if (RestartCnt == 3)
 				restart();
 		}
 
-		//cout << "RestartCnt == " << RestartCnt << endl;
 
 
 	}
@@ -216,7 +194,6 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
 void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
 {
 	scPacket.packet_type = SC_PLAYER;
-	//scPacket.restart_cnt = RestartCnt;
 	scPacket.player_id = i;
 	scPacket.player_hp = heroes[scPacket.player_id].HP;
 
@@ -379,8 +356,6 @@ void SendQueue()
 					}
 
 
-					/*if (p.restart_cnt == 3)
-					   RestartCnt = 0;*/
 
 				}
 			}
@@ -425,12 +400,9 @@ void CalculateThread()
 {
 	while (true)
 	{
-		//todo
-
-		//g_m.lock();
 
 		for (int i = 0; i < heroes.size(); ++i) {
-			if (heroes[i].catlive && cattoggle) { // 한명이라도 들어간 순간? 
+			if (heroes[i].catlive && cattoggle) { 
 				g_catlive = true;
 				g_doglive = false;
 				g_bearlive = false;
@@ -444,7 +416,7 @@ void CalculateThread()
 				dogtoggle = false;
 				if (toggle1) {
 					gun.erase(gun.begin(), gun.end());
-					//cout << " gun.size() == " << gun.size() << endl;
+					
 					toggle1 = !toggle1;
 				}
 
@@ -457,7 +429,7 @@ void CalculateThread()
 
 				if (toggle2) {
 					gun.erase(gun.begin(), gun.end());
-					//cout << " gun.size() == " << gun.size() << endl;
+					
 					toggle2 = !toggle2;
 				}
 
@@ -470,7 +442,7 @@ void CalculateThread()
 			SC_BULLET_PACKET bulletPacket;
 
 			{
-				//lock_guard<mutex> playerLock(player_m);
+				
 				if (!playerInput.empty()) {
 					CS_PLAYER_PACKET* playerInputPacket = playerInput.front();
 					playerInput.pop();
@@ -563,7 +535,6 @@ void CalculateThread()
 
 		}
 		this_thread::sleep_for(0.5ms);
-		//g_m.unlock();
 	}
 }
 
@@ -574,15 +545,11 @@ void HandleClientSocket(SOCKET clientSocket)
 {
 	{
 		std::lock_guard<std::mutex> lock(heroIdMutex);
-		Hero hero(HeroID); // 스마트 포인터 대신 객체 직접 생성
+		Hero hero(HeroID);
 		{
 			lock_guard<mutex> lock(heroMutex);
-			heroes.emplace_back(hero); // 직접 객체를 벡터에 추가
+			heroes.emplace_back(hero); 
 		}
-		//여기서 ID를 클라에게 보내주기
-
-		// 클라이언트에게 스레드 ID를 보내기 위한 작업
-
 
 		if (heroes[HeroID].ID != -1 && heroes[HeroID].toggleID) { //id할당받고, 보내지 않았음 
 			send(clientsocketes[HeroID], reinterpret_cast<char*>(&heroes[HeroID].ID), sizeof(heroes[HeroID].ID), 0);
@@ -592,9 +559,7 @@ void HandleClientSocket(SOCKET clientSocket)
 
 
 	}
-	//++HeroID;
-	//cout << LThreadId << endl;
-	//cout << heroes[0].ID << endl;
+
 
 	int clientID;
 	int result = recv(clientSocket, reinterpret_cast<char*>(&clientID), sizeof(clientID), 0);
@@ -608,9 +573,9 @@ void HandleClientSocket(SOCKET clientSocket)
 		return;
 	}
 
-	recvBuffer[result] = '\0';  // 문자열 마지막에 NULL 문자 추가
+	recvBuffer[result] = '\0'; 
 
-	// 받은 데이터를 해당 클라이언트의 ID를 사용해서 heroes 배열에 저장
+	
 	if (clientID >= 0 && clientID < heroes.size()) {
 		heroes[clientID].nickname = recvBuffer;
 	}

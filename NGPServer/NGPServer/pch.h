@@ -35,11 +35,11 @@ constexpr float PI = 3.14159265358979323846f;
 #define Dog 2
 #define Bear 3
 
-//전역은 여기에 선언해주세요.
 
-extern vector<Hero> heroes; //주인공 벡터 일단 만들어놓음 나중에 맵으로 수정 후 주석 지워주세요. 
 
-//using HeroRef = std::shared_ptr<class Hero>;
+extern vector<Hero> heroes; 
+
+
 extern int AnimalCnt ;
 
 
@@ -54,9 +54,6 @@ extern float HeroLocationX;
 extern float HeroLocationZ;
 
 
-//extern Attack CatAttack[6];
-//extern Attack DogAttack[6];
-//extern Attack BearAttack;
 
 extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;
@@ -71,25 +68,3 @@ extern Room dogRoom;
 extern Room bearRoom;
 extern int RestartCnt;
 
-
-
-//extern void AnimalCollideCat();
-//extern void AnimalCollideDog();
-//
-//extern void BulletCollideCat();
-//extern void BulletCollideDog();
-//extern void BulletCollideBear();
-//
-//extern void HeroVSDog();	
-//extern void HeroVSBear();
-//extern void HeroVSCat();
-//
-//
-//extern bool isCollideDog(Animal r1, Gun r2);
-//extern bool isCollide2D(Animal r1, Gun r2);
-//extern bool isCollideBear(Animal r1, Gun r2);
-
-
-//extern void CatAndRoomCollision();
-//extern void DogAndRoomCollision();
-//extern void Bearroomtest();

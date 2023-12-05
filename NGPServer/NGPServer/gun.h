@@ -32,8 +32,5 @@ public:
 	void Update();
 	float GetPosZ();
 	float GetPosX();
-	//friend void BulletCollideCat();
-	//friend void BulletCollideDog();
-	//friend void BulletCollideBear();
 
 };

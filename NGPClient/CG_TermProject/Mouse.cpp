@@ -7,11 +7,7 @@ extern NetworkManager networkManager;
 
 
 extern int global_ID;
-//int ball_count = 0;
-//int BulletLimit;
-//
-//bool is_ballfire = false;
-//int balltimer = 0;
+
 extern int ball_count;
 extern int BulletLimit;
 extern bool is_ballfire;
@@ -30,7 +26,6 @@ GLvoid Mouse(int button, int state, int x, int y) {
 			p.Player_key.is_bullet = true;
 			if (p.status) {
 				if (!networkManager.SendPlayerData(p)) {
-					std::cout << "패킷보내기 실패" << std::endl;
 				}
 			}
 			

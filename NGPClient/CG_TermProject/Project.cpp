@@ -30,11 +30,7 @@ void makeCastleColor() {
 		vcolor5.push_back(glm::vec3(skurd(skdre), skurd(skdre), skurd(skdre)));
 	}
 }
-//랜덤
 
-//random_device rd1;
-//default_random_engine dre1(rd1());
-//uniform_real_distribution<float> urd1{ 0.01f, 0.017f };
 
 //gl에서 쓰는 함수 
 void InitBuffer();
@@ -106,18 +102,21 @@ GLuint crossVAO, crossVBO;
 
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
-
-
-	if (!networkManager.Connect()) {
+	const char* SERVERIP;
+	if (argc > 1) SERVERIP = argv[1];
+	else
+		SERVERIP = "127.0.0.1";
+	if (!networkManager.Connect(SERVERIP)) {
 		std::cerr << "Failed to connect to the server" << std::endl;
 		return;
 	}
 
-	//// Receive data from the server
-	//std::string receivedData;
-	//if (networkManager.ReceiveData(receivedData)) {
-	//	std::cout << "Received from the server: " << receivedData << std::endl;
-	//}f
+	//if (!networkManager.Connect()) {
+	//	std::cerr << "Failed to connect to the server" << std::endl;
+	//	return;
+	//}
+
+	
 
 	// Send data to the server
 	networkManager.Receiveid();
@@ -128,12 +127,10 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	if (!networkManager.SendData(dataToSend)) {
 		return;
 	}
-	//mutex m;
 
 	std::thread networkThread([&]() {
 		while (true) {
-			//std::lock_guard<mutex>lock(m);
-			//networkManager.SendIdlePlayer();
+			
 
 			networkManager.recvData();
 		}

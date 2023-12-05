@@ -1,16 +1,12 @@
 #include "pch.h"
 #include <cmath>
-//
 extern bool  g_catlive;
 extern bool g_doglive;
 extern bool g_bearlive;
-//extern bool herodead;
 extern float HeroLocationX;
 extern float HeroLocationZ;
 extern int readycount;
-//extern Attack catattack[AnimalMax];
-//extern Attack dogattack[AnimalMax];
-//extern Attack bearattack;
+
 
 extern vector<Animal*> AniCats;
 extern vector<Animal*> AniDogs;
@@ -255,20 +251,6 @@ float Hero::getFront()
 
 
 
-//void Hero::VAngleMotion(int x, int y)
-//{
-//   VAngleY += (x - 1000 / 2) / 12.5;
-//
-//
-//   VAngleX += (y - 800 / 2) / 12.5;
-//   if (VAngleX >= 15.f) {
-//      VAngleX = 15.f;
-//   }
-//   else if (VAngleX <= -15.f) {
-//      VAngleX = -15.f;
-//   }
-//}
-
 void Hero::initHero()
 {
 
@@ -297,7 +279,6 @@ void Hero::initHero()
     doglive = false;
     bearlive = false;
     herodead = false;
-    //toggleID = true;
 
     for (int i = 0; i < 6; ++i) {
         catattack[i].Activate = false;

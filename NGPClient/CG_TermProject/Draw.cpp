@@ -15,26 +15,7 @@ bool RestartPress = false;
 Sound playSound;
 
 void draw();
-void AnimalCollideCat();
-void AnimalCollideDog();
-void BulletCollideCat();
-void BulletCollideDog();
 
-void CatAndRoomCollision();
-void DogAndRoomCollision();
-void Bearroomtest();
-
-bool isCollideCatroom(Cat r1, Room r2);
-bool isCollideDogroom(Dog r1, Room r2);
-bool isCollideBearroom(Bear r1, Room r2);
-bool HeroVSRoom(Hero r1, Room r2);
-void HeroVSDog();
-void HeroVSBear();
-void HeroVSCat();
-
-bool isCollideDog(Dog r1, Gun r2);
-bool isCollide2D(Cat r1, Gun r2);
-bool isCollideBear(Bear r1, Gun r2);
 
 
 int catdead{};
@@ -65,9 +46,7 @@ bool toggle1 = true;
 bool toggle2 = true;
 
 
-/// <summary>
-/// 주인공
-/// </summary>
+
 float HeroMovY = 0;
 
 
@@ -154,24 +133,19 @@ vector <Score> scorevec;
 
 
 bool ScoreOnce = true;
-//NetworkManager networkManager("127.0.0.1", 7777);
-
-//random_device rd;
-//default_random_engine dre(rd());
-//uniform_real_distribution<float> urd{ 0, 255 };
 
 void makeInfo(SC_PLAYER_PACKET* p)
 {
     hero[p->player_id].setInfo(p);
     if (hero[global_ID].ready == true && isR == true) {
         cout << "================" << endl;
-        cout << "My id : " << global_ID << endl;
+        cout << "My nickname : " << hero[global_ID].nickname << endl;
 
         for (int i = 0; i < 3; i++)
         {
             if (i != global_ID) {
                 if (hero[i].ready == true)
-                    cout << "player" << i << ": ready" << endl;
+                    cout << hero[i].nickname << " player" << " : ready" << endl;
             }
         }
         cout << "================" << endl;
@@ -183,7 +157,7 @@ void makeInfo(SC_PLAYER_PACKET* p)
 
 void animalInfo(SC_MONSTER_PACKET* p)
 {
-    // to_do 일단 캣으로!!
+ 
     if (p->animal_type == CAT)
     {
         cats[p->Monster_id]->catinfo(p);
@@ -205,9 +179,9 @@ void animalInfo(SC_MONSTER_PACKET* p)
 void restartCnt(SC_PLAYER_PACKET* p) {
     if (p->restart_cnt != 0) {
         RestartCnt = p->restart_cnt;
-        //cout << "RestartCnt === " << RestartCnt << endl;
+  
     }
-    //cout << "RestartCnt== " << p->restart_cnt << endl;
+
 }
 
 void gun_clear()
@@ -220,7 +194,6 @@ void bulletInfo(SC_BULLET_PACKET* p)
 {
     if (p->size > gun.size())
         gun.push_back(new Gun{ p->dirx,p->diry, p->dirz });
-    //cout << gun.size() << endl;
     gun[p->id]->setInfo(p);
 }
 
@@ -271,7 +244,7 @@ void draw() {
     if ( RestartCnt == 3) {
         Restartinit();
         RestartCnt == 1;
-        //RestartPress = false;
+        
     }
 
     if (hero[global_ID].HP <= 0) {
@@ -383,7 +356,6 @@ void draw() {
         if (c_dead == 6) {
             catdead = 6;
             if (toggle1) {
-                cout << "toggle1 == " << toggle1 << endl;
 
                 gun.erase(gun.begin(), gun.end());
                 toggle1 = !toggle1;
@@ -402,7 +374,6 @@ void draw() {
         if (d_dead == 6) {
             dogdead = 6;
             if (toggle2) {
-                cout << "toggle2 == " << toggle2 << endl;
 
                 gun.erase(gun.begin(), gun.end());
                 toggle2 = !toggle2;
@@ -420,22 +391,20 @@ void draw() {
         beardead = true;
     }
 
-    for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
+    for (int i = 0; i < 3; ++i) 
     {
         hero[i].Update();
     }
 
 
-    //hero[global_ID].Update();
-    // to_do 내가 죽었는데 다른 사람 플레이어가 안보임! 
-    for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
+    
+    for (int i = 0; i < 3; ++i) 
     {
         if (i != global_ID && hero[i].Hero_ID != -1 && hero[i].status) {
             hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
         }
-        //cout << hero[i].nickname << " ";
     }
-    //cout << endl;
+  
 
 
     for (Gun*& gunbullet : gun) {
@@ -482,10 +451,9 @@ void draw() {
         
         for (int i = 0; i < 3; ++i)
         {
-            cout << hero[i].nickname << endl;
             if (i == 0)
                 cout << "================" << endl;
-            cout << "Rank" << i + 1 << " : " << scorevec[i].name << " player " << scorevec[i].id << endl;
+            cout << "Rank " << i + 1 << " : " << scorevec[i].name << " player " << endl;
             cout << "Score : " << scorevec[i].score << endl;
             if (i == 2)
                 cout << "================" << endl;
@@ -505,21 +473,9 @@ void Restartinit()
     gun_size=0;
     ScoreOnce = true;
 
-    //vector <Score> scorevec;
+  
     scorevec.erase(scorevec.begin(), scorevec.end());
 
-    //cats.erase(cats.begin(), cats.end());
-    //dogs.erase(dogs.begin(), dogs.end());
-
-    //for (int i = 0; i < 6; ++i) {
-    //    cats.push_back(new Cat);
-    //    dogs.push_back(new Dog);
-    //}
-    //for (int i = 0; i < 6; ++i) {
-    //    cats[i]->initCat();
-    //    dogs[i]->initDog();
-    //}
-    //bear.InitBear();
 
     for (int i=0; i<3 ; ++i)
         hero[i].initHero();
@@ -564,13 +520,7 @@ void Restartinit()
         dogs[i]->initDog();
     }
 
-    //if (dogs.size() != 6)
-    //{
-    //    while (dogs.size() < 6)
-    //    {
-    //        dogs.emplace_back(new Dog());
-    //    }
-    //}
+   
 
     ////곰 초기화
     bear.InitBear();
@@ -595,7 +545,6 @@ void Restartinit()
     CatCnt = 0;
 
 
-    //bearattack.initBearAttack();
     jumpUp = true;
 
 
