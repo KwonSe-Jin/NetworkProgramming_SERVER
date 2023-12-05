@@ -113,6 +113,8 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 		return;
 	}
 
+	
+
 	//// Receive data from the server
 	//std::string receivedData;
 	//if (networkManager.ReceiveData(receivedData)) {
@@ -122,12 +124,14 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	// Send data to the server
 	networkManager.Receiveid();
 
-
-	std::string dataToSend;
+	string dataToSend;
 	std::cin >> dataToSend;
+
+
 	if (!networkManager.SendData(dataToSend)) {
 		return;
 	}
+	
 	//mutex m;
 
 	std::thread networkThread([&]() {

@@ -5,8 +5,7 @@ bool isJump;
 extern bool RestartPress ;
 extern NetworkManager networkManager;
 
-void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz, string* name);
-
+std::string get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz);
 
 
 extern int global_ID;
@@ -14,17 +13,16 @@ extern int global_ID;
 GLvoid Keyboard(unsigned char key, int x, int y)
 {
 	CS_PLAYER_PACKET p;
-	get_vangleandStatus(&(p.camera.VangleX), &(p.camera.VangleY), &(p.status),
-		&(p.Player_key.dirx), &(p.Player_key.diry), &(p.Player_key.dirz), &(p.nickname));
+	p.nickname = get_vangleandStatus(&(p.camera.VangleX), &(p.camera.VangleY), &(p.status),
+		&(p.Player_key.dirx), &(p.Player_key.diry), &(p.Player_key.dirz));
 	p.player_id = global_ID;
-
-	//p.player_id = Th
+	
 	switch (key) {
 	case 'P':
 	case 'p':
 		RestartPress = true;
 		p.Player_key.is_p = true;
-
+		cout << "pressP" << endl;
 		break;
 	case 'w':
 	case 'W':

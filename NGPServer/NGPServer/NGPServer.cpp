@@ -163,6 +163,7 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
     heroes[csPacket.player_id].VAngleY = csPacket.camera.VangleY;
     /*cout << heroes[scPacket.player_id ].VAngleX << endl;
     cout << heroes[scPacket.player_id ].VAngleY << endl;*/
+    heroes[csPacket.player_id].nickname = csPacket.nickname;
 
     if (csPacket.status) {
         if (csPacket.Player_key.is_w) {
@@ -194,6 +195,7 @@ void processCSPlayerPacket(const CS_PLAYER_PACKET& csPacket)
         if (csPacket.Player_key.is_p) {
             if (heroes[csPacket.player_id].restart == false)
                 heroes[csPacket.player_id].ISP();
+            cout << csPacket.player_id << " " << heroes[csPacket.player_id].restart << endl;
             cout << "RestartCnt == " << RestartCnt << endl;
             if (RestartCnt == 3)
                 restart();
@@ -214,6 +216,7 @@ void Posandlight(SC_PLAYER_PACKET& scPacket, int i)
     else {
         scPacket.status = false;
     }
+
     scPacket.nickname = heroes[scPacket.player_id].nickname;
     scPacket.Player_pos.x = heroes[scPacket.player_id].PosX;
     scPacket.Player_pos.y = heroes[scPacket.player_id].PosY;
@@ -547,10 +550,7 @@ void CalculateThread()
                 BossBear.z = AniBear.PosZ;
                 lock_guard<mutex> playerLock(player_m);
                 monsterqueue.push(BossBear);
-
-
             }
-
         }
         this_thread::sleep_for(0.5ms);
         //g_m.unlock();
@@ -579,27 +579,50 @@ void HandleClientSocket(SOCKET clientSocket)
             heroes[HeroID].toggleID = false; // 바로 토글끄기 
         }
         ++HeroID;
-
-
     }
     //++HeroID;
     //cout << LThreadId << endl;
     //cout << heroes[0].ID << endl;
 
-    char recvBuffer[1000 + 1];
-    int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
-    if (recvLen == SOCKET_ERROR)
-    {
 
-        cout << "클라이언트와 연결이 끊김" << endl;
+    int clientID;
+    int result = recv(clientSocket, reinterpret_cast<char*>(&clientID), sizeof(clientID), 0);
+    if (result == SOCKET_ERROR) {
+        std::cout << "Failed to receive client ID" << std::endl;
         return;
     }
 
-    recvBuffer[recvLen] = '\0';
-    heroes[HeroID - 1].nickname = recvBuffer;
+    char recvBuffer[1000 + 1];
+    result = recv(clientSocket, recvBuffer, 1000, 0);
+    if (result == SOCKET_ERROR) {
+        std::cout << "Failed to receive data" << std::endl;
+        return;
+    }
 
-    cout << "Recv Data = " << recvBuffer << endl;
-    cout << "Recv Data len = " << recvLen << endl;
+    recvBuffer[result] = '\0';  // 문자열 마지막에 NULL 문자 추가
+
+    // 받은 데이터를 해당 클라이언트의 ID를 사용해서 heroes 배열에 저장
+    if (clientID >= 0 && clientID < heroes.size()) {
+        heroes[clientID].nickname = recvBuffer;
+    }
+
+
+
+    //char recvBuffer[1000 + 1];
+    //int recvLen = ::recv(clientSocket, recvBuffer, 1000, 0);
+    //if (recvLen == SOCKET_ERROR)
+    //{
+
+    //    cout << "클라이언트와 연결이 끊김" << endl;
+    //    return;
+    //}
+
+    //recvBuffer[recvLen] = '\0';
+    //heroes[HeroID - 1].nickname = recvBuffer;
+    //cout << heroes[HeroID - 1].nickname << endl;
+    //
+    //cout << "Recv Data = " << recvBuffer << endl;
+    //cout << "Recv Data len = " << recvLen << endl;
 
 
     while (true)

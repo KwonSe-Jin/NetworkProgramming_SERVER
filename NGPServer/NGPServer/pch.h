@@ -1,5 +1,7 @@
 #pragma once
 #pragma comment(lib, "ws2_32.lib")
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "TLS.h"
 #include "Hero.h"
 #include "Attack.h"
@@ -25,6 +27,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <assert.h>
+#include <stdlib.h>
 
 using namespace std;
 

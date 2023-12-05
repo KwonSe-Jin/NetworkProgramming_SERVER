@@ -58,7 +58,7 @@ class Hero
 public:
 	bool status;
 	int HP;
-	string nickname;
+	std::string nickname;
 
 	bool ready = false;
 	int Hero_ID = -1;
@@ -81,9 +81,9 @@ public:
 	float getRight();
 	float getBehind();
 	float getFront();
-	void get_Info(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz, string* name);
+	void get_Info(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz);
 	
-
+	std::string getNickname();
 	
 	friend void HeroVSDog();
 	friend void HeroVSBear();

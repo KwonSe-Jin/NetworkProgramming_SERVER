@@ -1,5 +1,6 @@
 #pragma once
 #define AnimCnt 6
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "NetworkManager.h"
 

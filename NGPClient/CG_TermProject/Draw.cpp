@@ -2,7 +2,6 @@
 #include "DogAttack.h"
 #include "BearAttack.h"
 #include <algorithm>
-#include <ranges>
 
 
 //전역 변수
@@ -142,7 +141,7 @@ struct Score
 {
     int id;
     int score;
-    string name;
+    std::string name;
 };
 
 float CatEndPosX;
@@ -223,9 +222,11 @@ void bulletInfo(SC_BULLET_PACKET* p)
 }
 
 
-void get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz, string * name)
+std::string get_vangleandStatus(float* x, float* y, bool* status, float* dirx, float* diry, float* dirz)
 {
-    hero[global_ID].get_Info(x, y, status, dirx, diry, dirz, name);
+    hero[global_ID].get_Info(x, y, status, dirx, diry, dirz);
+    //memcpy(name, (const char*)hero[global_ID].nickname, 10);
+    return (hero[global_ID].getNickname());
 }
 
 int t_count;
@@ -430,10 +431,9 @@ void draw() {
         if (i != global_ID && hero[i].Hero_ID != -1 && hero[i].status) {
             hero[i].Draw(); //나 자신은 안 그리도록 코드를 짰음 
         }
-        //cout << hero[i].nickname << " ";
+        cout << hero[i].nickname << " ";
     }
     cout << endl;
-
 
     for (Gun*& gunbullet : gun) {
         gunbullet->Update();

@@ -38,12 +38,26 @@ bool NetworkManager::Connect() {
 }
 
 bool NetworkManager::SendData(const std::string& data) {
-	int result = send(clientSocket, data.c_str(), static_cast<int>(data.size()), 0);
+	/*int result = send(clientSocket, data.c_str(), static_cast<int>(data.size()), 0);
 	if (result == SOCKET_ERROR) {
 		std::cout << "Failed to send data" << std::endl;
 		return false;
 	}
-	return true;
+	return true;*/
+
+
+	int result = send(clientSocket, reinterpret_cast<char*>(&global_ID), sizeof(global_ID), 0);
+	if (result == SOCKET_ERROR) {
+		std::cout << "Failed to send client ID" << std::endl;
+		return false;
+	}
+
+	// 닉네임 전송
+	result = send(clientSocket, data.c_str(), static_cast<int>(data.size()), 0);
+	if (result == SOCKET_ERROR) {
+		std::cout << "Failed to send nickname" << std::endl;
+		return false;
+	}
 }
 
 bool NetworkManager::SendPlayerData(CS_PLAYER_PACKET& p) {
