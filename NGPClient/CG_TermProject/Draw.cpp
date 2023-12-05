@@ -203,8 +203,10 @@ void animalInfo(SC_MONSTER_PACKET* p)
 }
 
 void restartCnt(SC_PLAYER_PACKET* p) {
-    if (p->restart_cnt != 0)
+    if (p->restart_cnt != 0) {
         RestartCnt = p->restart_cnt;
+        cout << "RestartCnt === " << RestartCnt << endl;
+    }
     //cout << "RestartCnt== " << p->restart_cnt << endl;
 }
 
@@ -265,9 +267,10 @@ GLvoid drawScene()
 
 
 void draw() {
-    if (RestartPress && RestartCnt == 3) {
+    if ( RestartCnt == 3) {
         Restartinit();
-        RestartPress = false;
+        RestartCnt == 1;
+        //RestartPress = false;
     }
 
     if (hero[global_ID].HP <= 0) {
@@ -423,7 +426,7 @@ void draw() {
     }
 
 
-    hero[global_ID].Update();
+    //hero[global_ID].Update();
     // to_do 내가 죽었는데 다른 사람 플레이어가 안보임! 
     for (int i = 0; i < 3; ++i) // to_do 두명일 때는?!?!?!!
     {
@@ -432,7 +435,6 @@ void draw() {
         }
         //cout << hero[i].nickname << " ";
     }
-    cout << endl;
 
 
     for (Gun*& gunbullet : gun) {
@@ -512,11 +514,11 @@ void Restartinit()
     //    cats.push_back(new Cat);
     //    dogs.push_back(new Dog);
     //}
-    for (int i = 0; i < 6; ++i) {
-        cats[i]->initCat();
-        dogs[i]->initDog();
-    }
-    bear.InitBear();
+    //for (int i = 0; i < 6; ++i) {
+    //    cats[i]->initCat();
+    //    dogs[i]->initDog();
+    //}
+    //bear.InitBear();
 
     for (int i=0; i<3 ; ++i)
         hero[i].initHero();
@@ -552,27 +554,14 @@ void Restartinit()
     toggle2 = true;
 
     // cat 초기화 
-    //for (int i = 0; i < cats.size(); ++i) {
-    //    cats[i]->initCat();
-    //    cats[i]->Index = CatCnt;
-    //    ++CatCnt;
-    //}
+    for (int i = 0; i < cats.size(); ++i) {
+        cats[i]->initCat();
+    }
 
-    //if (cats.size() != 6)
-    //{
-    //    while (cats.size() < 6)
-    //    {
-    //        cats.emplace_back(new Cat());
-    //    }
 
-    //}
-    //// 강아지 초기화 
-
-    //for (int i = 0; i < dogs.size(); ++i) {
-    //    dogs[i]->initDog();
-    //    dogs[i]->Index = DogCnt;
-    //    ++DogCnt;
-    //}
+    for (int i = 0; i < dogs.size(); ++i) {
+        dogs[i]->initDog();
+    }
 
     //if (dogs.size() != 6)
     //{
@@ -583,7 +572,7 @@ void Restartinit()
     //}
 
     ////곰 초기화
-    //bear.InitBear();
+    bear.InitBear();
 
     gun.erase(gun.begin(), gun.end());
 
@@ -605,7 +594,7 @@ void Restartinit()
     CatCnt = 0;
 
 
-    bearattack.initBearAttack();
+    //bearattack.initBearAttack();
     jumpUp = true;
 
 

@@ -229,7 +229,7 @@ void Hero::ISR()
 
 void Hero::ISP()
 {
-   
+    RestartCnt++;
     restart = true;
 }
 
@@ -306,6 +306,7 @@ void Hero::initHero()
         dogattack[i].Activate = false;
         dogattack[i].AttackCount = 0;
     }
+
     bearattack.Activate = false;
     bearattack.AttackCount = 0;
 

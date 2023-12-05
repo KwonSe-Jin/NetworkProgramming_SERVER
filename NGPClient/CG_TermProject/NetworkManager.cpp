@@ -50,7 +50,13 @@ bool NetworkManager::SendPlayerData(CS_PLAYER_PACKET& p) {
 	// ??????????? ?????? ID?? ?????? ???? ???
 
 	int size = sizeof(p);
-	send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
+	if (send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0)) {
+	}
+	else {
+		cout << "NO" << endl;
+
+	}
+	//send(clientSocket, reinterpret_cast<char*>(&size), sizeof(size), 0);
 	int result = send(clientSocket, reinterpret_cast<char*>(&p), sizeof(p), 0);
 	if (result == SOCKET_ERROR) {
 		std::cout << "Failed to send data" << std::endl;

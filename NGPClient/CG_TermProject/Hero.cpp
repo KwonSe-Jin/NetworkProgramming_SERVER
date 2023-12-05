@@ -233,7 +233,7 @@ void Hero::get_Info(float* x, float* y, bool* status, float* dirx, float *diry, 
 {
 	*x = VAngleX;
 	*y = VAngleY;
-	if (HP < 0)
+	if (HP <= 0)
 		*status = false;
 	else
 		*status = true;
